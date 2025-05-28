@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    #wrapper{
+        width: 600px;
+        height: 600px;
+        background-color: yellow;
+        margin:auto;
+    }
+
+    #header{
+        height: 50px;
+        background-color: aqua;
+        /*컨텐츠에 대한 수평 중앙 정렬*/
+        text-align: center;
+        line-height: 50px;
+        
+    }
+
+    #section{
+        height: 550px;
+        background-color: blueviolet;
+        text-align: center;
+    }
+
+    #header button:nth-child(1){
+        background-color: yellow;
+        width: 80px;
+        height: 45px;
+        border-radius: 5px;
+    }
+    
+    #header button:nth-child(2){
+        background-color: red;
+        width: 80px;
+        height: 45px;
+        border-radius: 5px;
+
+    }
+
+    img{
+        width: 100%;
+        height: 100%;
+    }
+
+</style>
+
+<script>
+    let n=1;
+
+   
+   //현재 보고있는 사진의 다음 사진을 나오도록 처리...
+   function next() {
+    //문서내의 img 요소의 src 속성값을 1씩 증가시켜 대입한다.
+    n++;
+    document.querySelector("img").src="../../../images/geographic/geo ("+n+").jpg"
+    }
+    function prev() {
+    n--;
+    document.querySelector("img").src="../../../images/geographic/geo ("+n+").jpg"
+    }
+    
+</script>
+<body>
+
+
+    <div id = "wrapper">
+        <div id="header">
+            <button onclick="prev()">◀</button>
+            <button onclick="next()">▶</button>
+        </div>
+        <div id="section">
+            <img src ="../../../images/geographic/geo (1).jpg" alt="">
+        </div>
+    </div>
+    
+</body>
+</html>

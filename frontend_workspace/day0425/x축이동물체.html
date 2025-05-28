@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #box{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: red;
+            position: absolute;
+            left:0px;
+            top:150px;
+            
+        }
+
+        #field{
+            width: 700px;
+            height: 1000px;
+            background-color: aqua;
+        }
+
+    </style>
+
+    <script>
+        let n = 0;
+        let flag = true;
+        
+        //문서내의 빨간원의 css중 포지션 left 값을 증가시킨다.
+
+        function move(){
+            if (n>=700){             
+                flag = true;
+            }else if(n<=0){ 
+                flag = false;
+           } else {
+            
+           }
+
+           if(flag){
+            n-=10;
+           }else {
+            n+=10;
+           }
+
+        box.style.left =n+"px"
+   
+        }
+        addEventListener("load",function(){
+
+           let m = document.querySelector("#manual");
+           let auto = document.querySelector("#auto");
+
+
+           //m에 클릭 이벤트 연결
+           m.addEventListener("click",function(){
+            move();
+           })
+           
+           auto.addEventListener("click",function(){ 
+            //자동은 기존의 수동 구현 코드를 일정간격으로 호출하면 됨
+            //따라서 언제나 수동 코드를 완성해놓아야 함
+            //setTimeout("move()",);
+            setInterval("move()",10);
+           })
+        });
+
+    </script>
+</head>
+<body>
+
+    <button id="manual">수동</button>
+    <button id="auto">자동</button>
+    
+
+    <div id="box"></div>
+    <div id="field"></div>
+    
+</body>
+</html>

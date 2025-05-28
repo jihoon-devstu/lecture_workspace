@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src = "../lib/common.js"></script>
+
+    <script>
+        let arr = ["순대국밥","육개장","설렁탕","갈비탕","김치찌개","된장찌개","서브웨이","제육","돈까스","햄버거"]
+        
+        let brr = new Array(10)
+        brr[1] = "순대국밥"
+        
+
+        function food(){
+                alert(arr[getRandom(getRandom(arr.length-1))])
+        }
+        addEventListener("load",function(){
+            document.querySelector("button").addEventListener("click",function(){
+                food();
+
+            })
+        })
+    </script>
+
+</head>
+<body>
+    <button>점심 뭐먹지</button>
+    <img>
+
+    
+</body>
+</html>

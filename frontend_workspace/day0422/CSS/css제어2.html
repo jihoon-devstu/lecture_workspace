@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #wrapper{
+            width: 800px;
+            height: 650px;
+        }
+
+        #asside{
+            width: 200px;
+            height: 650px;
+            background-color: yellow;
+            float: left;
+        
+        }
+
+        #section{
+            width: 600px;
+            height: 650px;
+            background-color: green;
+            float: left;
+        
+        }
+        #pic{ 
+            width: 300px;
+
+        }
+        #button{
+            width: 70px;
+        }
+        img:hover{
+            border:3px solid red; 
+            border-radius: 50%;
+        }
+        /*이미지에 마우스가 올라간 '상태' 마저도 선택자가 될 수 있다.*/
+
+    </style>
+
+    <script>
+        a=1
+
+        function Setopacityplus(){
+            a=a+0.1
+            document.querySelector("#pic").style.opacity=a;
+
+        }
+
+        function Setopacityminus(){
+            a=a-0.1
+            document.querySelector("#pic").style.opacity=a;
+
+        }
+    </script>
+</head>
+<body>
+   
+    <div id="wrapper">
+        <div id="asside">
+            <div>
+                투명도 조절 <br>
+                <img id="button" src="../images/warrior/plus_btn.png" alt="" onclick="Setopacityplus()">
+                 <img id="button" src="../images/warrior/minus_btn.png" alt="" onclick="Setopacityminus()">
+            </div>
+        </div>
+        <div id="section">
+            <img id="pic" src="../images/warrior/warior.png" alt="" >
+        </div>
+    </div>
+
+
+
+</body>
+</html>

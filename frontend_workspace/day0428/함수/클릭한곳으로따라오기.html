@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #wrapper {
+            width: 100%;
+            height: 600px;
+            background-color: yellow;
+            position:relative;
+        }
+        body {
+            margin: 0px;
+        }
+
+    </style>
+    
+    <script>
+        let img;
+        let a=0.1; //1에 가까울수록 투박함, 소숫점이 작을수록 부드러워짐.
+        let targetX = 200;
+        let targetY = 150;
+
+        function createPic(){
+            //이미지 생성 및 크기 조절
+            img = document.createElement("img");
+            img.src="../images/pikachu.png";
+            img.style.width=40+"px";
+
+            //위치 지정
+            img.style.position="absolute";
+            img.style.left=200+"px";
+            img.style.top=150+"px";
+
+            //wrapper에 부착
+            let wrapper = document.getElementById("wrapper");
+            wrapper.appendChild(img);
+        }
+
+        //그냥 단번에 건너뛰기가 아니라 , 폭죠 지점에 야금야금 다가가는 
+        //감속도 운동으로 다가가자!
+        function move(){
+            //0.3456 의 경우 parseInt 하면 소숫점을 버려버림
+            // 따라서 parseFloat의 경우 소숫점도 존중해줌
+            // ex, 3.44556 parseInt(3.44556) --> 3 반환
+            // ex, 3.4456 parseFloat(3.44556) --> 3.44556 반환
+            //나의 위치는 = 현재 내 위치 + 비율계수*(남은거리 = 목표지점 - 현재 내 위치)
+
+            img.style.left=parseFloat(img.style.left)+a*(targetX-parseFloat(img.style.left))+"px"
+            img.style.top=parseFloat(img.style.top)+a*(targetY-parseFloat(img.style.top))+"px"
+        }
+
+        function gameLoop(){
+            //console.log("gameLoop() called...");
+            move();
+        }
+
+        window.addEventListener("load",function(){
+            createPic();
+            //마우스 이벤트 연결하기
+            document.getElementById("wrapper").addEventListener("mousedown",function(){
+                targetX = event.clientX;
+                targetY = event.clientY;
+            });
+            setInterval("gameLoop()",10);
+        });
+
+    </script>
+
+</head>
+<body>
+
+    <div id="wrapper">
+
+
+    </div>
+    
+</body>
+</html>

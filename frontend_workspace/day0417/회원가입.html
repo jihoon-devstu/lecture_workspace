@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 폼</title>
+    <!--css의 3가지 적용 방법 중, 내부CSS 는 style 태그 안에 css의 코드를 
+    작성하는 방법으로, 가장 보편적인 적용 방법-->
+  <!--  <style>
+        td{
+            font-size:15px;
+            color: red;
+        }
+        input{
+            background-color: yellow;
+        }
+        ::placeholder{color: blue;}
+    </style>-->
+    <!--스타일의 재사용성을 높이기 위해, 여러 문서에 걸쳐서
+    사용되는 CSS는 공통의 파일로 저장해놓고 링크시키자. -->
+    <link rel="stylesheet" href="./css/style.css">
+
+</head>
+<body>
+    <table width="500px" border="1px" align="center">
+        <tr>
+            <td colspan="2" align="center">회원가입</td>
+        </tr>
+        <tr>
+            <td style="font-size:9px">ID</td>
+            <td><input type="text" placeholder="ID를 입력하세요"></td>
+        </tr>
+        <tr>
+            <td style="font-size:9px">Password</td>
+            <td><input type="password" placeholder="비밀번호를 입력하세요" maxlength="8"></td>
+        </tr>
+        <tr>
+            <td style="font-size:9px">이름</td>
+            <td><input type="text" placeholder="이름을 입력하세요"></td>
+        </tr>
+        <tr>
+            <td style="font-size:9px">이메일</td>
+            <td>
+                <input type="text" placeholder="메일 아이디입력">
+                @ 
+                <select>
+                    <option value="">구글</option>
+                    <option value="">네이버</option>
+                    <option value="">다음</option>
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size:9px">메일 수신 여부</td>
+            <td>
+                예<input type="radio" name="receive">
+                아니오<input type="radio" name="receive">
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size:9px">보유기술</td>
+            <td>
+               JAVA <input type="checkbox">
+               MYSQL <input type="checkbox">
+               Spring <input type="checkbox">
+               Linux <input type="checkbox">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <button>회원가입</button>
+            </td>
+        </tr>
+
+    </table>
+</body>
+</html>

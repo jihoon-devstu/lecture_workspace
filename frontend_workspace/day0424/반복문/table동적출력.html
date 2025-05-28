@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+       
+    </style>
+
+    <script>
+        let f = prompt("몇층짜리 건축물을 원하세요");
+        let r = prompt("몇호수까지 원하세요")
+
+        document.write("<table border='1px'>");
+            for(let a=1;a<=f;a++){
+                
+                document.write("<tr>")
+                for(let i=1;i<=r;i++){document.write(`<td>${a}0${i}</td>`);
+                }
+                document.write("</tr>");
+            }
+
+    </script>
+</head>
+<body>
+<!--
+    <table>
+        <tr>
+            <td>101</td>
+        </tr>
+        <tr>
+            <td>201</td>
+            <td>202</td>
+        </tr>
+        <tr>
+            <td>301</td>
+            <td>302</td>
+            <td>303</td>
+        </tr>
+
+
+    </table>
+-->
+    
+</body>
+</html>

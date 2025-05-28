@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        let spans =[];
+        let x=0; //화살의 x좌표
+        let velX=5;//화살의 속도
+        let ArrowArrey = [];
+        let Arrow1 = [100,"red"];
+        let Arrow2 = [300,"blue"];
+        let Arrow3 = [500,"green"];
+        let Arrow4 = [700,"navy"];
+
+        ArrowArrey.push(Arrow1);
+        ArrowArrey.push(Arrow2);
+        ArrowArrey.push(Arrow3);
+        ArrowArrey.push(Arrow4);
+
+
+        //화살을 움직이게 하는 함수
+        function move(){
+            x = x+velX;
+            span.style.left=x+"px";
+        }
+
+
+
+        //화살을 태어나게 하는 함수
+        function init(){
+            //문서에 요소를 생성하여 left값을 증가시켜보자(계속)
+            
+            for(let i=0;i<ArrowArrey.length;i++){
+            let span = document.createElement("span"); //inline : 너비 , 높이 , 마진 , 패딩 X
+            span.innerText = "→";
+            span.style.position="absolute";
+            span.style.left = 0 + "px";
+            span.style.top = ArrowArrey[i][0] + "px";
+            span.style.fontSize=20+"px";
+            span.style.color=ArrowArrey[i][1];
+
+            document.body.appendChild(span);
+            spans.push(span);
+            }
+
+        };
+
+        addEventListener("load",function(){
+            init();
+            setInterval(move,10);
+        });
+
+    </script>
+</head>
+<body>
+
+    
+    
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+    "storeList" : [
+        {	
+            "store_name" : "진밀옥",
+            "tel" : "0507-1346-4124",
+            "pos" : "37.508211, 127.057129",
+            "iconImg" : "../images/map/chicken.png"
+        },
+        {
+            "store_name" : "덴키카츠",
+            "tel" : "0507-1358-1717",
+            "pos" : "37.508541, 127.058022",
+            "iconImg" : "../images/map/chicken.png"
+
+        },
+        {
+            "store_name" : "천미미",
+            "tel" : "0507-1328-5340",
+            "pos" : "37.509743, 127.055669",
+            "iconImg" : "../images/map/chicken.png"
+        }   
+    ]
+}

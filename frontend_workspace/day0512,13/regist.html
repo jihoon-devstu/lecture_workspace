@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{margin: 0px;}
+        #header{
+            height: 40px;
+            background-color: yellow;   
+            line-height: 40px;         
+        }
+
+        #header input[type="file"]{
+            width: 70%;
+        }
+
+        #content{
+            width: 100%;
+            height: 560px;
+            background-color: bisque;
+        }
+
+        #footer{
+            width: 50px;
+            background-color: pink;
+            line-height: 50px;
+        }
+    </style>
+
+    <script>
+        let obj;
+
+        //alert("나를 생성시킨 오프너의 변수값은"+window.opener.x);
+        /*
+        store1={
+            store_name:"김밥천국",
+            tel:"02-8002-801",
+            pos:"123,123"
+        };
+
+        store2={
+            store_name:"종로돈까스",
+            tel:"02-222-333",
+            pos:"35,3622"
+        };
+
+        store3={
+            store_name:"파스타",
+            tel:"02-5555-666",
+            pos:"5321,35631"
+        };
+        
+
+        storeList.push(store1);
+        storeList.push(store2);
+        storeList.push(store3);
+        */
+        
+        function printTable(obj){
+
+            
+
+            let tag="<table wtidh = '100%' border = '1px' >";
+                    tag+="<tr>"
+                        tag+="<td>No</td>"
+                        tag+=`<td>상호명</td>`
+                        tag+=`<td>전화번호</td>`
+                        tag+=`<td>위도,경도</td>`
+                        tag+=`<td>대표사진</td>`
+                    tag+="</tr>"
+
+            let n = obj.storeList.length;
+
+                    for (let i=0;i<n;i++){
+                        let storeL = obj.storeList[i];
+                        tag+="<tr>"
+                            tag+=`<td>${i+1}</td>`
+                            tag+=`<td>${storeL.store_name}</td>`
+                            tag+=`<td>${storeL.tel}</td>`
+                            tag+=`<td>${storeL.pos}</td>`
+                            tag+=`<td>대표사진</td>`
+                        tag+="</tr>"
+                    }
+    
+                tag += "</table>";
+
+            document.getElementById("content").innerHTML=tag;
+
+        }
+        //사용자가 선택한 정보를 알고있는 이벤트 객체를 전달받아서 파일을 읽어들이자.
+        function loadData(e){
+            //console.log(e);
+            let file = e.target.files[0]; //사용자가 선택한 바로 그 메모장..
+
+            //파일 읽기
+            let reader = new FileReader(); //2008~2014년도 쯤...
+
+
+            reader.onload=function(data){
+                console.log(data);
+                obj=JSON.parse(data.target.result);
+                console.log("파싱결과는",obj); 
+                
+                //읽어들인 문자열..(json 문자열.. 즉 객체 아니므로 파싱 하기 전엔 사용 못함)
+
+                printTable(obj);
+            }
+            reader.readAsText(file);
+
+
+        }
+        //지도를 보유한 부모창에, 현재 내가 보유한 리스트를 이용해서 마커 출력
+        function showIcons(){
+            window.opener.registAll(obj);
+        }
+
+
+        addEventListener("load", function(){
+            document.querySelector("#header input[type='file']").addEventListener("change",function(e){
+                loadData(e);
+            })
+
+            document.querySelector("#footer button").addEventListener("click",function(){
+                showIcons();
+            })
+        })
+    </script>
+</head>
+<body>
+    <div id="header">
+        <input type="file">
+    </div>
+    <div id="content"></div>
+    <div id="footer">
+        <button>버튼</button>
+    </div>
+    
+</body>
+</html>

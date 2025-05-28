@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        button{
+            background-color: green;
+            width: 200px;
+            font-size: 20px;
+        }
+
+
+
+    </style>
+
+    <script>
+        // 문서 내의 num 요소와 요소 사이의 텍스트를 동적으로 변환하자
+        let n=0;
+
+        function count(){
+            n++;
+           let num = document.getElementById("num");
+           let msg = (n%5==0)? "사과" : n;
+           num.innerText=msg; //변수값을 삼항연산자에게 맡기자
+
+
+        }
+
+    </script>
+</head>
+<body>
+
+    <button onclick="count()">카운터 증가</button>
+    <div id="num">0</div>
+    
+</body>
+</html>

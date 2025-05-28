@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #wrapper{
+            height: 600px;
+            width: 700px;
+        }
+        #header{
+            height: 80px;
+            width: 700px;
+            background-color: aqua;
+        }
+        #content{
+            height: 600px;
+            width: 700px;
+            background-color: red;
+        }
+        #header div {
+            width: 100px;
+            height: 80px;
+            float: left;
+        }
+        #header div:nth-child(1){background-color: red;}
+        #header div:nth-child(2){background-color: orange;}
+        #header div:nth-child(3){background-color: yellow;}
+        #header div:nth-child(4){background-color: green;}
+        #header div:nth-child(5){background-color: blue;}
+        #header div:nth-child(6){background-color: navy;}
+        #header div:nth-child(7){background-color: purple;}
+        
+    </style>
+
+    <script>
+        //문서 내의 content 아이디를 가지는 요소의 배경색을 바꿔 본다
+       
+        function setColor(c){ //매개변수 c의 값은 호출자가 결정한다
+            let content = document.getElementById("content");
+            content.style.background=c;
+        }
+
+
+
+
+
+
+    </script>
+</head>
+<body>
+    
+    <div id="wrapper">
+    <div id="header">
+        <div onClick="setColor('red')">빨</div>
+        <div onClick="setColor('orange')">주</div>
+        <div onClick="setColor('yellow')">노</div>
+        <div onClick="setColor('green')">초</div>
+        <div onClick="setColor('blue')">파</div>
+        <div onClick="setColor('navy')">남</div>
+        <div onClick="setColor('purple')">보</div>
+    </div>
+
+    <div id="content"></div>
+    </div>
+
+
+
+</body>
+</html>

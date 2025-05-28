@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./Aimstyle.css">
+    <script src="./Target.js" defer></script>
+    <script src="./Aim_pro-function.js"></script>
+</head>
+<body>
+
+    <div id="wrapper">
+        <div id="aside">
+            <button id="start">게임 시작</button>
+            <button id="level">난이도 선택</button>
+            <button id="howPlay">게임 설명</button>
+            <button id="reset">게임 초기화</button>
+            <button id="record">이전 기록</button>
+            <div id="watchWrapper">
+                <div id="watch">00:00:00</div>
+            </div>               
+            <div id="levelprint">1단계</div>
+        </div>
+        <div id="content"></div>
+        <div id="footer"> 직전 기록 : 없음.</div>
+        </div>
+
+    <div id="levelWrapper">
+        <div id="wrap">
+            <div id="lev1">1단계 : 타겟 10개 생성</div>
+            <div id="lev2">2단계 : 타겟 20개 생성</div>
+            <div id="lev3">3단계 : 타겟 30개 생성</div>
+            <div id="lev4">4단계 : 타겟 40개 생성</div>
+            <div id="lev5">5단계 : 타겟 50개 생성</div>
+            <div id="lev6">6단계 : 타겟 60개 생성</div>
+            <div id="lev7">7단계 : 타겟 70개 생성</div>
+            <div id="lev8">8단계 : 타겟 80개 생성</div>
+        </div>
+    </div>
+
+    <div id="howtowrapper">
+        <div id="howto">
+            <h2>게임 설명</h2>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <button id="closehowto">닫기</button>
+        </div>
+    </div>
+
+    <div id="gameResultWrapper">
+        <div id="gameResult">
+            <div id="gameHeaderWrapper">
+                <div id="record_round">회차</div>
+                <div id="record_level">난이도</div>
+                <div id="record_time">기록</div>
+            </div>
+            <div id="scoreBoardWrapper">
+                <div id="scoreBoard">
+                    <div id="c_round"></div>
+                    <div id="c_level"></div>
+                    <div id="c_time"></div>
+                </div>
+                <div id="buttonWrapper">
+                    <button id="recordClose">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

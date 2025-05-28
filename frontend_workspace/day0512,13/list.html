@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        //alert("나를 생성시킨 오프너의 변수값은"+window.opener.x);
+        /*
+        store1={
+            store_name:"김밥천국",
+            tel:"02-8002-801",
+            pos:"123,123"
+        };
+
+        store2={
+            store_name:"종로돈까스",
+            tel:"02-222-333",
+            pos:"35,3622"
+        };
+
+        store3={
+            store_name:"파스타",
+            tel:"02-5555-666",
+            pos:"5321,35631"
+        };
+        
+
+        storeList.push(store1);
+        storeList.push(store2);
+        storeList.push(store3);
+        */
+        
+        function printTable(){
+
+            let tag="<table wtidh = '100%' border = '1px' >";
+                    tag+="<tr>"
+                        tag+="<td>No</td>"
+                        tag+=`<td>상호명</td>`
+                        tag+=`<td>전화번호</td>`
+                        tag+=`<td>위도,경도</td>`
+                        tag+=`<td>대표사진</td>`
+                    tag+="</tr>"
+
+            let n = window.opener.storeList.length;
+
+                    for (let i=0;i<n;i++){
+                        let storeL = window.opener.storeList[i];
+                        tag+="<tr>"
+                            tag+=`<td>${n--}</td>`
+                            tag+=`<td>${storeL.store_name}</td>`
+                            tag+=`<td>${storeL.tel}</td>`
+                            tag+=`<td>${storeL.pos}</td>`
+                            tag+=`<td>대표사진</td>`
+                        tag+="</tr>"
+                    }
+    
+                tag += "</table>";
+
+            document.body.innerHTML=tag;
+
+        }
+        addEventListener("load", function(){
+            printTable();
+        })
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

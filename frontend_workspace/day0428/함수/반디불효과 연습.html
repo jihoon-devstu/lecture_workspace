@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{margin: 0;}
+
+        #wrapper{
+            height: 900px;
+            background-image:url(../../images/night/night.jpg);
+            background-size: 100% 100%;
+            position: relative;
+        }
+
+    </style>
+
+    <script>
+        let img ;
+        let a=0.1;
+        let targetX = 100;
+        let targetY = 100;
+
+        function init(){
+            img = document.createElement("img")
+            img.src=("../../images/night/bug.png");
+            img.style.width=40+"px";
+
+            img.style.position="absolute";
+            img.style.left=100+"px";
+            img.style.top=100+"px"
+            
+            document.getElementById("wrapper").appendChild(img);
+
+        }
+       function move(){
+        img.style.left=parseFloat(img.style.left)+a*(targetX-parseFloat(img.style.left))+"px"
+        img.style.top=parseFloat(img.style.top)+a*(targetY-parseFloat(img.style.top))+"px"
+
+       }
+       function gameLoop() {
+        move();
+
+
+       }
+
+       
+       window.addEventListener("load",function(){
+
+            init();
+
+            let wrapper = document.getElementById("wrapper");
+            wrapper.addEventListener("mousedown",function(){
+                targetX = event.clientX;
+                targetY = event.clientY;
+            })
+
+                setInterval("gameLoop()",10);
+ 
+            
+        })
+    </script>
+
+</head>
+<body>
+    
+    <div id="wrapper"></div>
+
+
+
+</body>
+</html>

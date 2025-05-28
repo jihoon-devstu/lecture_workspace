@@ -1,0 +1,16 @@
+try{
+    //여기 안에는 하고싶은거 막 작성
+
+}catch(FileNotFoundException e){
+    System.out.println("파일을 찾을 수 없습니다");
+}catch(IOException e){
+    System.out.println("입출력 오류입니다");
+}finally{
+    if(fis != null){
+        try{
+            fis.close();
+        }catch(IOException){
+            System.out.println("입출력 오류입니다");
+        }
+    }
+}

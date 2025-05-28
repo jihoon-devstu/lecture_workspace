@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            margin:0px;
+        }
+        #wrapper{
+            width: 850px;
+            height: 550px;
+
+        }
+        #content{
+            width: 700px;
+            height: 100%;
+            float: left;
+            background-color: bisque;
+            position: relative;
+        }
+        #aside{
+            width: 150px;
+            height: 100%;
+            float: left;
+            background-color: rgb(92, 175, 175);
+            overflow: scroll;
+        }
+
+
+    </style>
+
+    <script>
+        //프로그램에서 자주 사용될 가능성이 있는 요소들을 초기화 작업시, 전역변수화 시키기.
+        let content;
+        let aside;
+        let img; //다른 함수 영역 (scope) 에서도 접근할 수 있도록 전역으로 빼놓자
+        let flag=false;
+    
+
+        function createFood(){
+            img = document.createElement("img"); // <img> 동일
+            img.src="../images/food/steak.png"; //<img src=""> 동일
+            img.style.width=100+"px";
+            img.style.position="absolute"; //부모를 기준으로 한 위치 속성
+            img.style.left=100+"px";
+            img.style.top=200+"px";
+            
+            //음식이 따라다니고, 안따라다니고의 기준은 flag변수이므로,
+            //유저를 배려하여, 클릭시 마다 논리값을 뒤집어 버리자.
+            img.addEventListener("click",function(){
+                flag =!flag;
+
+                //테두리는 falg true일때만 적용하자
+
+                if(flag){
+                    this.style.border="3px solid red"
+                }else{
+                    this.style.border="none"
+                }
+             })
+
+            content.appendChild(img);
+
+
+        }
+        
+        //접시 만들기
+        function createDish(){
+            dish = document.createElement("img");
+            dish.src="../images/food/dish.png"; //<img src=""> 동일
+            dish.style.width=150+"px";
+            dish.style.position="absolute"; //부모를 기준으로 한 위치 속성
+            dish.style.left=400+"px";
+            dish.style.top=200+"px";
+            content.appendChild(dish);
+            
+        }
+
+        //프로그래밍 가동되면, 초기화할 작업이 있을 경우 초기화 함수를 정의하는게 좋음.
+        function init(){
+            content = document.getElementById("content");
+            aside = document.getElementById("aside");
+            createDish(); //접시 등장 시키기
+            createFood(); //음식 등장 시키기
+
+            //문서 전체를 대상으로  마우스 이벤트를 연결하자
+            document.body.addEventListener("mousemove",function(){
+                console.log("지금 움직임?");
+
+                // 마우스에 의한 x,y좌표를 음식의 좌표와 일치시키면 따라다니는 효과가능 
+                let x = event.clientX;
+                let y = event.clientY;
+                
+                //아래의 조건 식은 flag에 따라 수행될지 말지가 결정된다.
+                if(flag){
+                //유효한 범위라면
+                if(x<=(750-100) && y<=(550-40)){
+                img.style.left=(x-(img.width /2))+"px";
+                img.style.top=(y-(img.width /2))+"px";
+                //aside 영역에 좌표를 출력하자
+                aside.innerHTML=aside.innerHTML+`x=${x},y=${y}<br>`;
+                }
+            }
+
+            });
+        }
+        //문서가 로드된 이후에 작업을 진행해야함.
+        addEventListener("load",function(){
+            init();
+        });
+        /*content 요소에 대해 마우스 움직임 이벤트 연결하기*/
+       
+
+    </script>
+
+    
+</head>
+<!--body는 1개다 따라서 아이디는 굳이 주지 말자. 무식해보임-->
+<body>
+
+<div id="wrapper">
+    <dix id="content"></dix>
+    <dix id="aside"></dix>
+</div>
+
+    
+</body>
+</html>

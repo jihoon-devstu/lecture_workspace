@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       #wrapper{
+        width: 900px;
+        height: 800px;
+        background-color: yellow;
+        margin: auto;
+       }
+       
+       #asside{
+            float: left;
+            background-color: aqua;
+            width: 200px;
+            height: 800px;
+        }
+
+        #section{
+            float: left;
+            background-color: brown;
+            width: 700px;
+            height: 800px;
+        }
+
+        #pic{
+            width: 500px;
+            height: 350px;
+            opacity: 1; /* 투명 0~1 불투명*/
+            transform: rotate(150deg);
+        }
+        img{
+            width: 45px;
+
+        }
+    </style>
+
+    <script>
+        a=500
+        
+        //현재 여전사 이미지의 css 중 width의 크기를 높여보자
+        function setWidthplus(){
+            a=a+10;
+            //문서 내의 pic이라 불리는 요소의 스타일중에서 width를 증가
+            document.querySelector("#pic").style.width=a+"px";
+
+        }
+        function setWidthminus(){
+            a=a-10;
+            document.querySelector("#pic").style.width=a+"px";
+
+        }
+
+        b=1
+
+        function setOpacityMinus(){
+            b=b-0.1;
+            //문서내의 pic 요소의 스타일중 투명도 값을 증가시켜본다..
+            //(1에 가까울 수록 증가할수록 불투명해진다)
+            document.querySelector("#pic").style.opacity=b;
+
+        }
+        function setOpacityPlus(){
+            b=b+0.1;
+            //문서내의 pic 요소의 스타일중 투명도 값을 증가시켜본다..
+            //(1에 가까울 수록 증가할수록 불투명해진다)
+            document.querySelector("#pic").style.opacity=b;
+
+        }
+
+        c=150
+
+        function setRotateLeft(){
+            c=c-10
+            document.querySelector("#pic").style.transform="rotate("+c+"deg)";
+        }
+
+        function setRotateRight(){
+            //문서내의 pic라는 요소에 적용된 스타일중에서 rotate값을 증가시켜본다 (시계방향으로 회전)
+            c=c+10
+            document.querySelector("#pic").style.transform="rotate("+c+"deg)";
+        }
+
+        d = 350;
+        function setHeightPlus(){
+            d=d+10
+            document.querySelector("#pic").style.height=d+"px"
+
+        }
+
+        function setHeightMinus(){
+            d=d-10
+             document.querySelector("#pic").style.height=d+"px"
+        }
+
+    </script>
+</head>
+<body>
+
+    <div id="wrapper">
+    <div id="asside">
+        <div>
+            너비 조절
+            <img src="../../../images/warrior/plus_btn.png" onclick="setWidthplus()">
+            <img src="../../../images/warrior/minus_btn.png" onclick="setWidthminus()">
+        </div>
+        <div>
+            높이 조절
+            <img src="../../../images/warrior/plus_btn.png" alt="" onclick="setHeightPlus()">
+            <img src="../../../images/warrior/minus_btn.png" alt=""onclick="setHeightMinus()">
+        </div>
+        <div>
+            투명도 조절 <!--opacity : 0~1 -->
+            <img src="../../../images/warrior/plus_btn.png"  onclick="setOpacityPlus()">
+            <img src="../../../images/warrior/minus_btn.png"  onclick="setOpacityMinus()">
+        </div>
+        <div>
+            각도 조절 <!--rotate(숫자deg)-->
+            <img src="../../../images/warrior/plus_btn.png" alt="" onclick="setRotateLeft()">
+            <img src="../../../images/warrior/minus_btn.png" alt="" onclick="setRotateRight()">
+        </div>
+    </div>
+    <div id="section">
+        <img id = "pic" src="../../../images/warrior/warior.png" alt="">
+    </div>
+    </div>
+
+    
+</body>
+</html>

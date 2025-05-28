@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function runLater(fn) {
+  console.log("나중에 함수 실행할게요");
+  fn(); // 함수 실행
+}
+
+function move() {
+  console.log("움직입니다!");
+}
+
+let n = move;
+runLater(n);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

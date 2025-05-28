@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./style.css">
+    <script src="./Cell.js"></script>
+
+    <script>
+        
+        let currentYear; //유저가 현재 보고있는 연도
+        let currentMonth; //유저가 현재 보고있는 월
+        let diaryArray= []; //모든 다이어리 객체들을 누적해놓자
+        let currentCell; //유저가 현재 선택한 셀(모든게 다 들어있음)
+
+        //C , java , C#등 대부분의 프로그래밍 언어가 배열 선언 시, 정적 배열을 원칙으로 함.
+        //-> 위 언어들에서 배열은 생성시 그 크기를 고정하지 않으면 안됨 !! 
+        //그러나 JavaScript는 그 원칙이 적용되지 않음. (크기가 고정되지 않은 빈 배열 선언 가능)
+        let cellArray=Array.from({length:6},()=>Array(7).fill(0));
+
+         /*
+        제목 출력 함수 (로드 시점, 이전 , 다음 버튼 누를때도 수시로 사용..)
+        */
+        function printTitle(){
+            document.querySelector("#header h2").innerText=`${currentYear}년 ${currentMonth+1}월`;
+        }
+        /*
+        해당 월의 시작 요일 반환하는 함수
+        */
+        function getStartDay(year,month){
+            let d = new Date(year, month,1);
+            return d.getDay();
+        }
+        /*
+        해당 월의 마지막날을 반환하는 함수
+        */
+        function getLastDate(year,month){
+            let d = new Date(year, month+1,0);
+            return d.getDate();
+        }
+
+        /*달력과 다이어리 비교하여 랜더링 처리*/
+        function checkData(cell,year,month,date){
+            for(let k=0; k<diaryArray.length;k++){
+                let diary = diaryArray[k];
+                if(diary.year==year && diary.month ==month && diary.date == date){
+                    cell.titleDiv.innerText=diary.title;
+                    cell.renderIcon(diary.icon, 25);
+                }
+            }
+        }
+
+        /*해당 년,월의 달력의 숫자 출력하기*/
+
+        function printNum(){
+            //총 42개의 셀을 대상으로 날짜를 출력하되, 단 1일은 해당 월의 시작요일부터 출력
+            //또한 마지막 일은 해당 월의 마지막 날에 도달하면 멈춰야함.
+
+            let index=0; //셀의 순번
+            let date=1; //출력될 실제 날짜
+            for(let i=0; i<6; i++){
+                for(let a=0;a<7;a++){
+                    //index값이 시작요일에 도달하게 되면 해당월의 마지막 일까지만
+                    if(index>=getStartDay(currentYear,currentMonth) && date<=getLastDate(currentYear,currentMonth)){
+                        date++;
+                        cellArray[i][a].setDate(currentYear,currentMonth,date);
+
+                        checkData(cellArray[i][a], currentYear, currentMonth, date);
+                    }
+                    index++;                   
+                }
+            }
+        } 
+
+        /*
+        로드 시점 뿐만 아니라, 다음버튼 , 이전 버튼에 의해서도 currentYear과 currentMonth를 구해야하므로
+        코드가 중복되기 때문에 함수로 빼놓자.
+        */
+        function getCurrentTime(year,month){
+            //0이하가 되면 연도 자동 이전 처리 , 11이 넘어가면 연도도 자동계산
+            let d = new Date(year,month); 
+            currentYear=d.getFullYear();
+            currentMonth=d.getMonth();
+        }
+        
+
+        //총 42개의 셀을 생성하자
+        function createCell(){
+            let content = document.getElementById("content");
+            for(i=0;i<6;i++){
+                for(a=0;a<7;a++){
+                    cellArray[i][a]=new Cell(content,a*100,i*100,100,100,"bisque","lightgray",0);
+                }
+            }
+            
+        }
+
+        //기존 셀의 그래픽 초기화
+        function clearCell(){
+            for(let i=0;i<6;i++){
+                for(let a=0; a<7;a++){
+                    //1) div에 출력된 모든 텍스트 지우기
+                    cellArray[i][a].numDiv.innerText="";
+                    cellArray[i][a].titleDiv.innerText="";
+                    if(cellArray[i][a].iconDiv.children.length>0){
+                        cellArray[i][a].iconDiv.removeChild(cellArray[i][a].icon);
+                    }              
+                }
+            }
+        }
+
+        function next(){
+            getCurrentTime(currentYear,currentMonth+1);
+            printTitle();
+            clearCell();
+            printNum();
+        }
+
+        function prev(){
+            getCurrentTime(currentYear,currentMonth-1);
+            printTitle();
+            clearCell();
+            printNum();
+
+        }
+        //숨겨져 있던 대화창을 띄우되, 그 위치는 지금 클릭한 바로 그 셀의 x,y를 따라가야함.
+        function openDialog(obj){
+            //전역변수인 currentCell에 obj 보관해놓자
+            currentCell = obj;
+            let dialog = document.getElementById("dialog");
+            dialog.style.display = "block"; //반대는 none
+
+            //팝업의 위치는 사용자가 클릭한 셀의 좌표와 일치시키자
+            console.log(`넘겨받은 셀의 좌표는 x= ${obj.x},y=${obj.y} `);
+            console.log();
+
+            dialog.style.position="absolute";
+            dialog.style.left=obj.x+"px";
+            dialog.style.top=obj.y+"px";
+        }
+        
+        //dialog 닫기
+        function closeDialog(){
+            document.getElementById("dialog").style.display="none";
+            document.getElementById("t_title").value="";
+            document.getElementById("t_detail").value="";
+        }
+
+        function regist(){
+            //아래의 총 6개의 데이터가 모여서 다이어리 한건이 구성되는 것이므로
+            //개발자는 저 데이터를 담기위한 용도로 2가지를 고민해야함.
+            //년,월,일
+            //글의 제목
+            //글의 내용
+            //사용할 아이콘
+
+            let diary = {
+                year:currentYear,
+                month:currentMonth,
+                date:currentCell.date,
+                title:document.getElementById("t_title").value,
+                detail:document.getElementById("t_detail").value,
+                icon:"../images/heart.png"
+            }
+            //입력한 정보를 현재 셀에 반영, 데이터를 랜더링...
+            //지금 등록중인 셀의 제목 및 아이콘 나오기
+
+            currentCell.titleDiv.innerText=diary.title;
+            currentCell.renderIcon(diary.icon,25);
+                       
+            //배열에 객체1건 푸시
+            diaryArray.push(diary);
+
+            //등록 후 팝업 닫기
+            closeDialog();
+
+        }
+        //화살표 함수의 사용 목적 
+        //1) 코드의 간결성
+        //2) this를 가질 수 없으므로 , 화살표 안에서 사용되는 this는 상위 스코프를 가리킴.
+        addEventListener("load",()=>{
+            let d = new Date();
+            getCurrentTime(d.getFullYear(),d.getMonth()); //현재 날짜 구하기
+            printTitle(); //달력 제목 출력
+            createCell(); //달력 셀 만들기
+            printNum(); //달력 날짜 출력
+
+            document.getElementById("file").addEventListener("click", ()=>{
+                //강제 클릭 유도 (fileChooser를)
+                //프로그래밍적 클릭
+                document.getElementById("fileChooser").click();
+                //유저가 파일 탐색기에서 파일을 선택한 순간에 파일 읽어들이자
+                document.getElementById("fileChooser").addEventListener("change",(e)=>{
+                    //console.log(e);
+
+                    //e.target.files 라는 유사배열의 0번째 파일
+                    let file = e.target.files[0];
+                    let reader = new FileReader();
+                    reader.onload=function(data){
+                        //읽어들인 데이터는 단지 js 객체 표기를 차용한 것 뿐이기 때문에
+                        //단순한 문자열에 불과하고 , 따라서 객체처럼 .찍고 접근 불가하다.
+                        //따라서 객체로서 사용하려면 파싱(실체 객체화)이 필요함.
+                        let obj = JSON.parse(data.target.result);
+                        diaryArray=obj.diaryList;
+
+                        printTitle();
+                        clearCell(); //기존의 div의 기록된 데이터 삭제
+                        printNum();
+                    }
+                    reader.readAsText(file);
+                    
+                })
+            })
+
+            //새창 닫기 이벤트 구현
+            document.getElementById("bt_regist").addEventListener("click", ()=>{
+                regist();
+            });
+
+            document.getElementById("bt_close").addEventListener("click", ()=>{
+                closeDialog();
+            });
+
+            document.body.addEventListener("keyup",(e)=>{
+                if(e.keyCode==27){
+                    closeDialog();
+                }
+            })
+        })
+
+    </script>
+
+</head>
+<body>
+
+    <div id="wrapper">
+        <div id="info">
+            <input type="file" style="display: none;" id="fileChooser">
+            <img src="../images/file.png" alt="파일첨부" style="width: 50px;" id="file">
+        </div>
+        <div id="header">
+            <a href="javascript:prev()">이전</a>
+            <h2></h2>
+            <a href="javascript:next()">다음</a>
+        </div>
+        <div id="days"></div>
+        <div id="content">
+            <div id="dialog">
+                <div>
+                    <input type="text" placeholder="제목입력" id="t_title">
+                </div>
+                <div>
+                    <textarea placeholder="내용 입력..." id="t_detail"></textarea>
+                </div>
+                <div>
+                    <button id="bt_regist">등록</button>
+                    <button id="bt_close">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

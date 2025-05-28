@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        /*아래 두개의 링크의 차이점이라면, 
+        1) href 의 값이 다름 (따라서 선택자가 될 수 있음_속성2)
+        2) target 속성의 존재여부가 다름 (따라서 선택자가 될 수 있음)
+        */
+        a[target]{
+            text-decoration:none; /*링크 아래의 밑줄 없애기*/
+            color: red;
+        }        
+    </style>
+</head>
+<body>
+    <!-- a 태그는 target 을 지정하지 않으면 디폴트카 _self -->
+<a href="http://google.com" target="_blank">이 링크 누르면 새로운 탭으로 열림</a>
+
+<a href="http://daum.net">이 링크를 누르면 현재 페이지가 전환됨</a>
+
+</body>
+</html>
+
