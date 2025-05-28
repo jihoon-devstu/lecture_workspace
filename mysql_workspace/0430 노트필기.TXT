@@ -1,0 +1,107 @@
+SQL> --현재 유저가 보유한 테이블을 보고 싶은 경우
+SQL> --MYSQL인 경우 SHOW TABLES 명령이지만 , 오라클은 복잡함.
+SQL> --ORACLE은 시스템의 정보를 얻기 위해서는 사전이라 불리는
+SQL> --즉 DICTIONARY를 조회할줄 알아야함.
+SQL> --수백여개의 딕셔너리를 개발자가 암기해야 하나?
+SQL> -- 하지만 , 딕셔너리의 어느정도의 명명 규칙이 있다.
+SQL> --현재 접속한 사용자 계정이 일반 계정인 경우
+SQL> -- 접두어가 user_ 로 시작. 그리고 현재 접속한 계정이 관리자인 경우
+SQL> --sys , system 등 인경우 dba_로 시작 , v$_ 접두어로 시작
+SQL> SELECT TABLE_NAME FROM USER_TABLES;
+
+TABLE_NAME                                                                      
+------------------------------------------------------------                    
+MEMBERSHIP                                                                      
+MEMBER                                                                          
+
+SQL> --DDL 중 제거하는 명령어는 DROP VS DELETE
+SQL> DROP TABLE MEMBERSHIL;
+DROP TABLE MEMBERSHIL
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> DROP TABLE MEMBERSHIP;
+
+Table dropped.
+
+SQL> -- 앞으로 테이블 만들때에는 까다롭게 컬럼에 제한을 가하자
+SQL> --즉 제약조건을 부여하자
+SQL> -- 레코드는 유일한 것만 받아들이겠다. UNIQUE
+SQL> -- NULL을 허용하지 않겠다 NOT NULL
+SQL> -- 지정된 값만 허용하겠다 CHECK
+SQL> -- 아무런 값을 넣지 않으면 기본으로 값을 자동 지정하겠다 DEFAULT
+SQL> -- 위의 모든 제약 조건을 부여해서 테이블 실습
+SQL> CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(30) NOT NULL
+  4  , GENDER VARCHAR2(6)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7  );
+CREATE TABLE MEMBER(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(30) NOT NULL
+  4  , GENDER VARCHAR2(6)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7* )
+SQL> ;
+  1  CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(30) NOT NULL
+  4  , GENDER VARCHAR2(6)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7* )
+SQL> ;
+  1  CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(30) NOT NULL
+  4  , GENDER VARCHAR2(6)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7* )
+SQL> S
+SP2-0042: unknown command "S" - rest of line ignored.
+SQL> ;
+  1  CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(30) NOT NULL
+  4  , GENDER VARCHAR2(6)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7* )
+SQL> DROP TABLE MEMBER;
+
+Table dropped.
+
+SQL> CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR2(30) NOT NULL
+  4  , GENDER VARCHAR2(6)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK (GENDER='남' OR GENDER='여')
+  7  );
+
+Table created.
+
+SQL> -- 제약 조건이 동작하는지 테스트하자
+SQL> INSERT INTO MEMBER(ID,GENDER) VALUES('ADAMS','남');
+INSERT INTO MEMBER(ID,GENDER) VALUES('ADAMS','남')
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("JS"."MEMBER"."NAME") 
+
+
+SQL> SPOOL OFF

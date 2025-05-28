@@ -1,0 +1,169 @@
+SQL> -- 오라클의 최고 권한자로 로그인하여 , 새로운 프로젝트에 대비하여
+SQL> -- 데이터베이스를 구축하고 , 새로운 계정도 만들자.
+SQL> -- 현재 접속한 계정을 확인하는 방법
+SQL> show user
+USER is "SYS"
+SQL> --오라클은 데이터베이스라는 용어보다는 table space라는 용어를 사용하여
+SQL> -- 여러 데이터베이스 파일을 묶는 논리적 개념.
+SQL> -- 데이터 베이스 신규 구축
+SQL> CREATE TABLESPACE JAVASPACE
+  2  DATAFILE 'C:\oraclexe\app\oracle\oradata\XE\JAVASPACE.DBF'
+  3  SIZE 2M;
+
+Tablespace created.
+
+SQL> -- 유저를 생성한다
+SQL> CREATE USER JS
+  2  IDENTIFIED BY 1234
+  3  DEFAULT TABLESPACE JAVASPACE
+  4  QUOTA UNLIMITED ON JAVASPACE;
+
+User created.
+
+SQL> --접속할 수 있는 권한한
+SQL> --SQL문의 3가지 DDL,DCL,DML
+SQL> GRANT CREATE SESSION TO JS;
+
+Grant succeeded.
+
+SQL> --이 시점부터 이 유저로 로그인 가능함
+SQL> --로그인은 가능하지만 , 테이블 생성권한이 없다.
+SQL> -- 주의 명령어가 CREATE TABLE 이라고 해서 만드는 권한만 부여한것이 아니라
+SQL> -- 테이블에 대한 모든 권한을 주는 것임 (다중권한)
+SQL> GRANT CREATE TABLE TO JS;
+
+Grant succeeded.
+
+SQL> -- 이 시점부터 접속 유저를 전환하자
+SQL> -- 즉 , 새로운 즉 , 새로운 접속 프로그램을 실행하자는 뜻이 아니라,
+SQL> -- 현재 프로그램은 유지한 채로 , 접속 유저만 바꾸자
+SQL> CONNECT JS/1234
+Connected.
+SQL> SOHW USER
+SP2-0042: unknown command "SOHW USER" - rest of line ignored.
+SQL> SHOW USER
+USER is "JS"
+SQL> -- 접속 유저가 누군지 확인했음.
+SQL> CREATE TABLE MEMBERSHIP(
+  2  id varchar2(20)
+  3  , pwd varchar2(64)
+  4  , name varchar2(20)
+  5  , age number
+  6  );
+
+Table created.
+
+SQL> show table
+SP2-0158: unknown SHOW option "table"
+SQL> edit
+Wrote file afiedt.buf
+
+  1  CREATE TABLE MEMBERSHIP(
+  2  id varchar2(20)
+  3  , pwd varchar2(64)
+  4  , name varchar2(20)
+  5  , age number
+  6* )
+SQL> /
+CREATE TABLE MEMBERSHIP(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> -- 레코드 1건 넣기
+SQL> INSERT INTO MEMBERSHIP (ID,PWD,NAME,AGE) VALUES('ADAMS','0000','AD',25);
+
+1 row created.
+
+SQL> --1건의 레코드가 들어간 내용을 출력해보자
+SQL> SELECT *FROM MEMBERSHIP
+  2  ;
+
+ID                                                                              
+----------------------------------------                                        
+PWD                                                                             
+--------------------------------------------------------------------------------
+NAME                                            AGE                             
+---------------------------------------- ----------                             
+ADAMS                                                                           
+0000                                                                            
+AD                                               25                             
+                                                                                
+
+SQL> --SQLPLUS 툴 자체 명령어 중, 한줄에 몇개의 글자가 올지를 결정짓는 기능
+SQL> -- 주의) SQL문이 아님 , 그냥 툴명령
+SQL> SET LINE 400
+SQL> SELECT *FROM MEMBERSHIP;
+
+ID                                       PWD                                                                                                                              NAME                                            AGE                                                                                                                                                                                   
+---------------------------------------- -------------------------------------------------------------------------------------------------------------------------------- ---------------------------------------- ----------                                                                                                                                                                                   
+ADAMS                                    0000                                                                                                                             AD                                               25                                                                                                                                                                                   
+
+SQL> INSERT INTO MEMBERSHIP (ID,PWD,NAME,AGE) VALUES('ADAMS','0000','AD',25);
+
+1 row created.
+
+SQL> SELECT *FROM MEMBERSHIP
+  2  ;
+
+ID                                       PWD                                                                                                                              NAME                                            AGE                                                                                                                                                                                   
+---------------------------------------- -------------------------------------------------------------------------------------------------------------------------------- ---------------------------------------- ----------                                                                                                                                                                                   
+ADAMS                                    0000                                                                                                                             AD                                               25                                                                                                                                                                                   
+ADAMS                                    0000                                                                                                                             AD                                               25                                                                                                                                                                                   
+
+SQL> INSERT INTO MEMBERSHIP (ID,PWD,NAME,AGE) VALUES('ADAMS','0000','AD',25);
+
+1 row created.
+
+SQL> SELECT *FROM MEMBERSHIP
+  2  ;
+
+ID                                       PWD                                                                                                                              NAME                                            AGE                                                                                                                                                                                   
+---------------------------------------- -------------------------------------------------------------------------------------------------------------------------------- ---------------------------------------- ----------                                                                                                                                                                                   
+ADAMS                                    0000                                                                                                                             AD                                               25                                                                                                                                                                                   
+ADAMS                                    0000                                                                                                                             AD                                               25                                                                                                                                                                                   
+ADAMS                                    0000                                                                                                                             AD                                               25                                                                                                                                                                                   
+
+SQL> DELETE MEMBERSHIP WHERE ID = 'ADAMS';
+
+3 rows deleted.
+
+SQL> --까다롭게 제약 조건을 부여한 다음 테스트 해보기
+SQL> --UNIQUE 제약조건이 동작하는지 테스트하기
+
+
+SQL> CREATE TABLE MEMBER(
+  2  ID VARCHAR2(20) UNIQUE
+  3  , NAME VARCHAR(20) NOT NULL
+  4  , GENDER CHAR(2)
+  5  , REGDATE DATE DEFAULT SYSDATE
+  6  , CONSTRAINT CHK_MEMBER CHECK(GENDER = '남' OR GENDER = '여')
+  7  );
+
+Table created.
+
+SQL> ALTER TABLE MEMBER
+  2  ADD GENDER VARCHAR(8) CHECK (GENDER'남' OR GENDER'여');
+ADD GENDER VARCHAR(8) CHECK (GENDER'남' OR GENDER'여')
+                                   *
+ERROR at line 2:
+ORA-00920: invalid relational operator 
+
+
+SQL> INSERT INTO MEMBER(ID, NAME, GENDER) VALUES('BATMAN', '배트맨', '여');
+INSERT INTO MEMBER(ID, NAME, GENDER) VALUES('BATMAN', '배트맨', '여')
+                                                                   *
+ERROR at line 1:
+ORA-12899: value too large for column "JS"."MEMBER"."GENDER" (actual: 3, maximum: 2) 
+
+
+SQL> ALTER TABLE MEMBER
+  2  ;
+
+*
+ERROR at line 2:
+ORA-02210: no options specified for ALTER TABLE 
+
+
+SQL> SPOOL OFF
