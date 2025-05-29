@@ -1,0 +1,62 @@
+제목
+<h1>~</h6>
+
+볼드
+<b>
+
+링크
+<link> , <nav>
+
+수평선
+<hr>
+
+문단으로 묶기
+<p>
+
+인터넷 링크
+<img width="100px" src="링크">
+
+로컬 링크
+<img src ="../파일 경로 선택">
+
+순서있는 목록
+<ol>
+	<li> </li>
+</ol>
+
+순서 없는 목록
+<ul>
+	<li> </li>
+</ul>
+
+체크박스
+<input type ="check box">
+
+입력 텍스트 박스 (text대신 Password 넣으면 안보이게 가능)
+<input type ="text">
+
+힌트 넣기
+<input type ="text" placeholder="">
+
+선택 상자
+<select>
+<option value="">   여기다가 넣기 </option>
+</select>
+
+양자택일 선택 박스
+<input type="radio" name="receive">
+(같은 그룹으로 묶여있어야 함)
+
+
+div#wrapper
+wrapper라는 id의 div만들기
+
+div>div*3
+div 안에 div3개 만들기
+
+
+
+
+
+
+

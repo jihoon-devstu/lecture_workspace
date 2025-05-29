@@ -1,0 +1,161 @@
+JavaScript 지금까지 배운 예문
+
+온클릭
+onclick="지정명()"
+
+버튼 눌러서 다음 이미지로 넘기기
+let n = 1
+function 지정명() {
+	n++
+	document.querySelector("img").src="../../../images/hero/image"+n+".png";
+혹은	document.querySelector("img").src="../../../images/hero/image ("+n+").png";
+}
+
+넓이 증가
+function 지정명() {
+	변수=변수+10
+	document.querySelector("#pic").style.width=a+"px";
+}
+
+높이 증가
+function 지정명() {
+	변수=변수+10
+	document.querySelector("#pic").style.height=d+"px"
+}
+
+투명도 증가
+function 지정명() {
+	변수=변수+0.1
+	document.querySelector("#pic").style.opacity=b;
+}
+
+각도 조절
+function 지정명() {
+	변수=변수+10
+	document.querySelector("#pic").style.transform="rotate("+c+"deg)";
+}
+
+실행 시 , 푸시메세지 팝업 출력
+prompt ("여기에 내용을 쓰세요");
+let n =prompt("")
+let result = (n%2==0)? "숫자홀수" : "숫자짝수" ;
+
+HTML 문서에 지정한 문자 출력
+document.write("입력한 해의 2월은 28일까지 네요")
+
+스위치 눌렀을 때 , on , off 변경시키기
+        let flag=false;  
+        function onoff(){
+            flag = !flag;
+            let img = document.querySelector("img");
+            let light=(flag)? "on" : "off";
+            img.src="../../images/light/switch_"+light+".png";
+        }
+
+
+if ~ else 구문
+if (함수수식) { true 실행문
+}
+else { false 실행문
+}
+
+else if 구문
+
+if (함수수식) { true 실행문
+}
+else if { 다른 경우 실행문
+}
+
+
+on 이벤트 
+onclick - 클릭 시
+dblclick - 더블 클릭 시
+mouseover - 대상에 마우스 올려졌을 때
+mouseout - 대상에 마우스 내려졌을 때
+focus - 대상에 커서가 올려졌을 때
+blur - 대상에 커서가 벗어났을 때
+change - 데이터 변경 시
+load - 문서 로드
+keydown - 키보드 눌렀을 때
+keyup - 키보드 떼었을 때
+
+
+신규 요소 생성 (이미지)
+let img = document.createElement("img"); // <img> 태그 작성과 동일
+img.src="../images/plane.png";
+
+요소를 자식으로 부착하기
+let stage = document.getElementById("stage");
+        stage.appendChild(img); 
+
+요소 생성 = createElement();
+이미 문서에 존재하는 요소 가져오기 = getElementById() 혹은 querySelector()
+
+초단위로 진행하게 하기 = setInterval (OO , 100); 
+onload = "init()" 바디단에 적용 필요 ! 
+
+JS에서 style적용시키기
+    img.style.width="45px"; // 프로그래밍으로 css 제어
+    img.style.position="absolute"; // 부모를 기준으로 한 위치
+    img.style.left=300+"px";
+    img.style.top=200+"px";
+
+배경 이펙트 주기
+
+let bgX=0;
+
+function bgEffect() {
+bgX-=5;
+stage.style.backgroundPosition=bgX+ "px 0px";
+}
+
+
+프롬프트의 경우 , 무조건 "" 문자열로 인식함. 
+""을 떼고 인식하게 하는 법
+변수 = parseInt(변수);
+
+
+
+레프트값 조정
+
+            img.style.left=200+(i*40)+"px";
+	
+탑값 조정
+
+            img.style.left=200+(i*40)+"px";
+
+셀렉트박스에 옵션 for구문으로 넣기
+
+        function createYear(){
+            //문서내의 yy라는 요소에 , 동적으로 태그를 생성하여 , option 자식 요소로 대량으로 붙이자.
+            for(i=2010;i>=1930;i--){
+            let op = document.createElement("option");
+            let yy = document.getElementById("yy");
+            op.text=i;
+            yy.add(op)
+         }
+
+이후 init 에 함수 호출 필수 (createYear();)
+
+함수로 바디단의 온로드 및 디자인 요소대신 JS 스크립트단에 작성하기.
+
+addEventListener("load",test());
+
+onclick 등을 함수로 처리하여 스크립트단에 넣기
+            img.addEventListener("click", function() {
+                alert("나 눌렀어?");
+            });
+
+마우스 이벤트
+
+addEventListener("mousemove", function(){
+	console.log("너 마우스 움직이고 있어?");
+})
+
+바디 (문서전체)에 적용시키는 문법들은
+document.body ~~~ 로 적용.
+
+호출 함수 (무한호출,1회호출)
+    //setInterval("함수", 호출시간간격) - 지정한 함수를 지정된 간격으로 (무한)호출
+    //setTimeout("함수", 호출시간간격) - 지정한 함수를 지정된 시간이 흐른 후 (1회)호출 _ 카운트 가능
+
