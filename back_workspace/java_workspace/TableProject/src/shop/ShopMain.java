@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import shop.pages.Cs;
 import shop.pages.Home;
 import shop.pages.Mypage;
+import shop.pages.Page;
 import shop.pages.Product;
 
 public class ShopMain extends JFrame implements ActionListener{
@@ -26,6 +27,13 @@ public class ShopMain extends JFrame implements ActionListener{
 	JPanel p_center;
 	
 	ImageUtil imageUtil;
+	
+	Page[] pageArray = new Page[4];
+	
+	public static final int HOME = 0;
+	public static final int PRODUCT = 1;
+	public static final int MYPAGE = 2;
+	public static final int CS = 3;
 	
 	/*쇼핑몰을 구성하느 모든 페이지를 보유한다*/
 	
@@ -46,12 +54,18 @@ public class ShopMain extends JFrame implements ActionListener{
 		bt_mypage = new JButton(imageUtil.getIcon("update.png", 35, 30));
 		bt_cs = new JButton(imageUtil.getIcon("menu.png", 35, 30));
 		
+		//개발자가 버튼에 추가적인 값을 심을 수 있다..
+		bt_home.putClientProperty("id", 0);
+		bt_product.putClientProperty("id", 1);
+		bt_mypage.putClientProperty("id", 2);
+		bt_cs.putClientProperty("id", 3);
+		
 		p_center = new JPanel();
 		
-		home = new Home();
-		product = new Product();
-		mypage = new Mypage();
-		cs = new Cs();
+		pageArray[0] = new Home();
+		pageArray[1] = new Product();
+		pageArray[2] = new Mypage();
+		pageArray[3] = new Cs();
 			
 		//스타일
 		p_north.setPreferredSize(new Dimension(800,50));
@@ -69,10 +83,9 @@ public class ShopMain extends JFrame implements ActionListener{
 		p_north.add(bt_mypage);
 		p_north.add(bt_cs);
 		
-		p_center.add(home); //메인 페이지 
-		p_center.add(product);
-		p_center.add(mypage);
-		p_center.add(cs);
+		for(int i = 0;i<pageArray.length;i++) {
+			p_center.add(pageArray[i]); //페이지를 센터 패널에 부착.
+		}
 		
 		add(p_north, BorderLayout.NORTH);
 		add(p_center);
@@ -89,27 +102,12 @@ public class ShopMain extends JFrame implements ActionListener{
 	}
 	
 	//원하는 페이지만 보여지게 처리하는 메서드
-	public void showHide(Object e) {
-		if(e == bt_home) {
-			home.setVisible(true);
-			product.setVisible(false);
-			mypage.setVisible(false);
-			cs.setVisible(false);
-		}else if(e == bt_product) {
-			home.setVisible(false);
-			product.setVisible(true);
-			mypage.setVisible(false);
-			cs.setVisible(false);
-		}else if(e == bt_mypage) {
-			home.setVisible(false);
-			product.setVisible(false);
-			mypage.setVisible(true);
-			cs.setVisible(false);
-		}else if(e == bt_cs) {
-			home.setVisible(false);
-			product.setVisible(false);
-			mypage.setVisible(false);
-			cs.setVisible(true);
+	//눈 뜨기를 원하는 페이지의 인덱스를 호출시 결정.
+	//showPage(2)
+	public void showPage(int target) {
+		
+		for(int i=0;i<pageArray.length;i++) {
+			pageArray[i].setVisible((i==target)? true : false);
 		}
 	}
 	
@@ -117,8 +115,11 @@ public class ShopMain extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Object obj = e.getSource();
-		showHide(obj);
+		JButton obj = (JButton)e.getSource();
+		
+		int id = (int)obj.getClientProperty("id");
+		
+		showPage(id);
 		
 	}
 	
@@ -127,7 +128,6 @@ public class ShopMain extends JFrame implements ActionListener{
 		new ShopMain();
 
 	}
-
 
 
 }
