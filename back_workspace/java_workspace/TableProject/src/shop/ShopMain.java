@@ -3,9 +3,12 @@ package shop;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,15 +29,24 @@ public class ShopMain extends JFrame{
 		Class myClass = getClass();
 		
 		//패키지 안에 들어있는 자원의 이름을 명시하면 , URL을 반환해줌
-		URL url = myClass.getClassLoader().getResource("cart.png");
-		ImageIcon icon = new ImageIcon(url);
+		URL url = myClass.getClassLoader().getResource("home.png");
 		
-		BufferedImage buffrImg;
+		ImageIcon icon = null;
+		
+		try {
+			BufferedImage buffrImg = ImageIO.read(url);		
+			Image image = buffrImg.getScaledInstance(35, 30, Image.SCALE_SMOOTH);		
+			icon = new ImageIcon(image);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		//생성
 		p_north = new JPanel();
 		
-		bt_home = new JButton();
+		bt_home = new JButton(icon);
 		bt_product = new JButton();
 		bt_mypage = new JButton();
 		bt_cs = new JButton();
