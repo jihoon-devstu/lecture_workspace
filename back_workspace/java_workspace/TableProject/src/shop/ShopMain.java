@@ -3,7 +3,10 @@ package shop;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +22,15 @@ public class ShopMain extends JFrame{
 	JPanel p_center;
 	
 	public ShopMain() {
+		//아이콘 얻기
+		Class myClass = getClass();
+		
+		//패키지 안에 들어있는 자원의 이름을 명시하면 , URL을 반환해줌
+		URL url = myClass.getClassLoader().getResource("cart.png");
+		ImageIcon icon = new ImageIcon(url);
+		
+		BufferedImage buffrImg;
+		
 		//생성
 		p_north = new JPanel();
 		
