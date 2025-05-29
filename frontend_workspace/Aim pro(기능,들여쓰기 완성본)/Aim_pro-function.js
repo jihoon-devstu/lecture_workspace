@@ -306,7 +306,7 @@
             content.appendChild(wrap);
             wrap.style.display="block";
             wrap.style.left=18+"%";
-            wrap.style.top=10+"%";
+            wrap.style.top=7+"%";
         }else{gamelevel=false;
             levelWrapper.appendChild(wrap);
             wrap.style.display="none";
@@ -352,7 +352,7 @@
         h6.innerHTML=`⑥ <span style="font-weight:bold;font-size: 23px;">마지막 타겟</span>을 클릭하면 게임이 종료되며 <br>${spacebar(5)} 직전 게임의 기록이 화면 아래 표기됩니다.`;
 
         let h7 = document.querySelector("#howto > :nth-child(8)")
-        h7.innerHTML=`⑦ <span style="font-weight:bold;font-size: 23px;">이전 기록</span> 버튼을 누르면 플레이했던 게임의 기록을 확인할 수 있습니다.<br>${spacebar(5)} 단, 도중에 초기화한 게임은 기록되지 않습니다.`;
+        h7.innerHTML=`⑦ <span style="font-weight:bold;font-size: 23px;">이전 기록</span> 버튼을 누르면 플레이했던 게임의 기록을 확인할 수 있습니다.<br>${spacebar(5)} 단, 도중에 초기화한 게임은 기록되지 않으며, 10회까지만 기록됩니다.`;
         
         let h8 = document.querySelector("#howto > :nth-child(9)")
         h8.innerHTML=`⑧ 게임 종료 후 , 따로 난이도 설정을 하지 않으면 게임 시작 시 , <span style="color:blue; font-weight:bold;font-size: 23px;"><br>${spacebar(5)}직전 단계</span>의 난이도로 설정됩니다.`;
