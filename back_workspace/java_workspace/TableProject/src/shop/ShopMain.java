@@ -78,6 +78,9 @@ public class ShopMain extends JFrame implements ActionListener{
 		add(p_center);
 		
 		bt_home.addActionListener(this);
+		bt_product.addActionListener(this);
+		bt_mypage.addActionListener(this);
+		bt_cs.addActionListener(this);
 		
 		setSize(800,650);
 		setVisible(true);
@@ -86,18 +89,36 @@ public class ShopMain extends JFrame implements ActionListener{
 	}
 	
 	//원하는 페이지만 보여지게 처리하는 메서드
-	public void showHide() {
-		home.setVisible(true);
-		product.setVisible(false);
-		mypage.setVisible(false);
-		cs.setVisible(false);
+	public void showHide(Object e) {
+		if(e == bt_home) {
+			home.setVisible(true);
+			product.setVisible(false);
+			mypage.setVisible(false);
+			cs.setVisible(false);
+		}else if(e == bt_product) {
+			home.setVisible(false);
+			product.setVisible(true);
+			mypage.setVisible(false);
+			cs.setVisible(false);
+		}else if(e == bt_mypage) {
+			home.setVisible(false);
+			product.setVisible(false);
+			mypage.setVisible(true);
+			cs.setVisible(false);
+		}else if(e == bt_cs) {
+			home.setVisible(false);
+			product.setVisible(false);
+			mypage.setVisible(false);
+			cs.setVisible(true);
+		}
 	}
 	
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		showHide();
+		Object obj = e.getSource();
+		showHide(obj);
 		
 	}
 	
