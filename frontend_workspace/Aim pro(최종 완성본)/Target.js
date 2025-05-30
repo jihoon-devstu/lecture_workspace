@@ -31,10 +31,10 @@ class Target{
 
         this.div.innerText=number;
 
-        //함수로 빼지 않고 , 작성해야 모든 생성되는 div들에 클릭 이벤트 부여 가능
-        //clicked를 통해 각각의 div와 num의 숫자가 같을때만 클릭이벤트로 사라지도록 부여.
-        //사라지기만 하면 뒤에있는 div가 겹쳐져서 눌리지 않을 수 있으므로 , 일치한다면 사라지게한후 removeChild 필수.
-        //--> 유저가 누르는 숫자와 눌러야되는 div의 숫자가 일치하지 않으면 눌리지 않음.
+        //함수로 빼지 않고 , div가 하나하나 생성될 때 마다 각 div에 전부 클릭 이벤트 부여
+        //clicked를 통해 각각의 div와 num의 숫자가 같을때만 클릭이벤트로 흰색으로 background가 바뀌며 사라지도록 제어.
+        //보이지않게만 하면 뒤에있는 div가 겹쳐져서 눌리지 않을 수 있으므로 , 일치한다면 사라지게한후 removeChild 필수.
+        //유저가 누르는 숫자와 눌러야되는 div의 숫자가 일치하지 않으면 사라지지 않으며 , 잠시 빨간색으로 바뀌었다 돌아오도록 제어.
         this.div.addEventListener("click",()=>{
             if(game==false) return;
 

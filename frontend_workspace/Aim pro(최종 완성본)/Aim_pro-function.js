@@ -1,3 +1,7 @@
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    변수 영역
+--------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    
     let setX; //Target의 x값 
     let setY; //Target의 y값
     let targetX= []; //Target.x를 랜덤하게 출력하기 위해서 선언한 배열
@@ -42,66 +46,9 @@
     //게임이 끝날 때, 게임 기록을 누적시키기 위한 변수
     let gameCount = 1;
 
-
-    // 게임 시작 눌렀을 때 , 글씨 빨간색으로 바꾼 후 , 3초 뒤에 검은색으로 바꿔주는 함수.
-    // gamestart에서 3,2,1 출력되게 활용
-    function countDown(){
-        
-        let watchWrapper = document.getElementById("watchWrapper");
- 
-        content.appendChild(watch);
-        watch.style.position="absolute";
-        watch.style.width=500+"px";
-        watch.style.height=200+"px";
-        watch.style.lineHeight=200+"px";
-        watch.style.textAlign="center";
-        watch.style.fontSize=60+"px";
-        watch.style.backgroundColor="lightcoral";
-        watch.style.left=150+"px";
-        watch.style.top=260+"px";
-        
-        setTimeout(()=>{
-            watch.innerText=`00:03:00`
-        },1);
-        setTimeout(()=>{
-            watch.innerText=`00:02:00`
-        },1000);
-        setTimeout(()=>{
-            watch.innerText=`00:01:00`
-        },2000);
-
-        setTimeout(()=>{
-            watchWrapper.appendChild(watch);
-            watch.style.position="static";
-            watch.style.width=150+"px";
-            watch.style.height=100+"px";
-            watch.style.fontSize=30+"px";
-            watch.style.lineHeight=100+"px";
-            watch.style.textAlign="center";
-            watch.style.backgroundColor="lightgreen";
-        },3000)
-        }
-
-
-    //게임의 stopwatch를 셋팅하는 함수
-    function setStopWatch() {
-        sec_dec++;
-
-        if (sec_dec >= 100) {
-            sec_dec = 0;
-            sec++;
-        }
-        if (sec >= 60) {
-            sec = 0;
-            min++;
-        }
-        mm = min < 10 ? '0' + min : '' + min;
-        ss = sec < 10 ? '0' + sec : '' + sec;
-        sss = sec_dec < 10 ? '0' + sec_dec : '' + sec_dec;
-
-        watch.innerText=`${mm}:${ss}:${sss}`;
-    }
-
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    asside 의 UI 함수 영역
+--------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
     //게임 시작 , 일시중지 , 재개를 담당하는 함수
     function gameStart(){
@@ -161,7 +108,45 @@
         })
     }
 
-    //gameover 됐을 때 게임을 target을 다 삭제 후 모든 조건을 초기화시키는 함수
+    // 게임 시작 눌렀을 때 , content 영역에 카운트다운을 출력하는 함수
+    function countDown(){
+        
+        let watchWrapper = document.getElementById("watchWrapper");
+ 
+        content.appendChild(watch);
+        watch.style.position="absolute";
+        watch.style.width=500+"px";
+        watch.style.height=200+"px";
+        watch.style.lineHeight=200+"px";
+        watch.style.textAlign="center";
+        watch.style.fontSize=60+"px";
+        watch.style.backgroundColor="lightcoral";
+        watch.style.left=150+"px";
+        watch.style.top=260+"px";
+        
+        setTimeout(()=>{
+            watch.innerText=`00:03:00`
+        },1);
+        setTimeout(()=>{
+            watch.innerText=`00:02:00`
+        },1000);
+        setTimeout(()=>{
+            watch.innerText=`00:01:00`
+        },2000);
+
+        setTimeout(()=>{
+            watchWrapper.appendChild(watch);
+            watch.style.position="static";
+            watch.style.width=150+"px";
+            watch.style.height=100+"px";
+            watch.style.fontSize=30+"px";
+            watch.style.lineHeight=100+"px";
+            watch.style.textAlign="center";
+            watch.style.backgroundColor="lightgreen";
+        },3000)
+    }
+
+    //게임 시작 시 , content영역을 청소하고 Stopwatch를 초기화하고 , 타겟을 생성해주는 함수
     function Gamestart_reset(){
         let targets = document.querySelectorAll("#content div");
         targets.forEach(function(el){
@@ -179,33 +164,35 @@
         },3000);
     }
 
-    //게임 종료시 , 아래 직전 게임의 기록을 보여주는 함수
-    function footerResult(){
-        let footerprint = (mm > 0) ? `${mm} 분 ${ss} 초 ${sss}` : `${ss} 초 ${sss}`;
-        document.getElementById("footer").innerText=`직전기록 : ${level} 단계 _ ${footerprint}`
+    //난이도 셋팅 영역을 content 영역에 출력했다 지웠다를 담당하는 함수
+    function printLevel(){
+        let wrap = document.getElementById("wrap");
+        if(gamelevel==false){
+            gamelevel=true;
+            content.appendChild(wrap);
+            wrap.style.display="block";
+            wrap.style.left=18+"%";
+            wrap.style.top=7+"%";
+        }else{gamelevel=false;
+            levelWrapper.appendChild(wrap);
+            wrap.style.display="none";
+        }   
     }
 
-    //게임 종료 시 , 판수 누적 및 게임 기록을 누적시켜서 기록하는 함수
-    function printRecord(){
- 
-        let c_round = document.getElementById("c_round");
-        let r_newRecord = `${gameCount}회차<br>` 
-        c_round.innerHTML += r_newRecord;
-
-        let c_level = document.getElementById("c_level");
-        let l_newRecord = `${level}단계<br>` 
-        c_level.innerHTML += l_newRecord;
-
-        let c_time = document.getElementById("c_time");
-
-        let t_newRecord = (mm > 0) ? `${mm} 분 ${ss} 초 ${sss}<br>` : `${ss} 초 ${sss}<br>`;
-
-        c_time.innerHTML += t_newRecord;
-
-        gameCount++;
+    //게임 설명 영역을 content 영역에 출력했다 지웠다를 담당하는 함수
+    function printHowPlay(){
+        if(printhow==false){
+            printhow=true;
+            howto.style.display="block";
+            content.appendChild(howto);
+        }else{
+            printhow=false;
+            howto.style.display="none";
+            howtowrapper.appendChild(howto);
+        }
     }
 
-    //이전 기록 결과창을 불러왔다가 , 사라지게 하는 함수
+    //이전 기록 영역을 content 영역에 출력했다 지웠다를 담당하는 함수
     function moveRecord(){
         if(setRecord==false){
             setRecord=true;
@@ -218,32 +205,33 @@
         }
     }
 
-    //content에 부착된 target이 다 사라지면, 걸린 시간초 표시 후에 게임을 재시작 할 수 있도록 리셋하는 함수
-    function gameOver(){
-        if(document.querySelectorAll("#content div").length === 0){
-            clearInterval(intervalID); //인터벌 제거
-            moveRecord();
-            printRecord();
+    //게임이 종료되거나, 게임 초기화시, 다른 창을 열 시, 게임 설명이 el.remove에 걸리지 않게 하기 위해 만든 함수.
+    function closeHowPlay(){
+        if(printhow==true){
+            howto.style.display="none";
+            howtowrapper.appendChild(howto);
+            printhow = false;
+        }                
+    }
 
-            footerResult(); //아랫단에 직전 기록 갱신
-
-            gameStarted = false; //게임 시작 조건 초기화
-            gamelevel = false; //난이도 설정 조건 초기화
-
-            watch.innerText="00:00:00"; //스탑워치 초기화
-            start.innerText="게임 시작"; //게임시작버튼 초기화
-
-            wrap.style.display = "none"; //wrap에 있던 난이도 설정 버튼 비활성화
-
-            //게임이 종료되었을 때 , 난이도 선택 버튼 재활성화
-            document.getElementById("level").disabled=false;
-            resetbutton = false;
-            reset.disabled=true;
+    //게임이 종료되거나 , 게임 초기화시, 다른 창을 열 시, 이전 기록이 el.remove에 걸리지 않게 하기 위해 만든 함수.
+    function closeRecord(){
+        if(setRecord==true){
+            setRecord=false;
+            gameResult.style.display="none";
+            gameResultWrapper.appendChild(gameResult);
+        }
+    }
+    //게임이 종료되거나 , 게임 초기화시, 다른 창을 열 시, 난이도 선택이 el.remove에 걸리지 않게 하기 위해 만든 함수.
+    function closeLevel(){
+        if(gamelevel==true){
+            gamelevel=false;
+            wrap.style.display="none";
+            levelWrapper.appendChild(wrap);
         }
     }
 
-    //게임 초기화 버튼을 눌렀을 때 , 게임 모든 조건 초기화
-
+    //게임 초기화 버튼을 눌렀을 때 , 게임 모든 조건 초기화시켜주는 함수
     function resetGame(){
         closeHowPlay();
         closeRecord(); 
@@ -270,62 +258,44 @@
             reset.disabled=true;
         }
     }
-    
-    
-    //target의 x값과 y값을 랜덤하게 주기 위해 배열에 push하여 준비하는 함수
-    function prepareXY(){
-        for(x=30;x<700;x+=20){
-            targetX.push(x);
-        }
 
-        for(y=30;y<700;y+=20){
-            targetY.push(y);
-        }
-    }
-    
-    //target의 x값과 y값을 정해진 구역 내에서 랜덤하게 뿌려주는 변수
-    function setTargetXY(){
-        setX = targetX[parseInt(Math.random()*34)];
-        setY = targetY[parseInt(Math.random()*32)];
-    }
-    
-    //1~30까지 target의 xy를 랜덤하게 주며 Target 인스턴스를 level값만큼 생성
-    //30부터 1까지 역순으로 생성해야 아래숫자가 위 숫자에 가려지는 경우가 없음.
-    function createTarget(){            
-        for(let i=(level*10);i>0;i--){
-            setTargetXY();
-            new Target(document.getElementById("content"),setX,setY,i);              
-        }
+    //난이도를 눌렀을 때 , 타겟 생성 갯수를 제어하고 화면에서 해당 div를 내리는 함수
+    function ClickLevel(levnum){
+
+        level = levnum;
+
+        let levelWrapper = document.getElementById("levelWrapper");
+        let wrap =document.getElementById("wrap");
+        let levelprint = document.getElementById("levelprint");
+        
+        gamelevel=false;
+        start.disabled=false;
+        wrap.style.display="none";
+        levelWrapper.appendChild(wrap);
+        levelprint.innerText=`${levnum}단계`;
     }
 
-    //난이도 설정 (1단계 : 1~10 , 2단계 : 1~20 ~~~ 5단계 : 1~50)
-    function setLevel(){
-        let wrap = document.getElementById("wrap");
-        if(gamelevel==false){
-            gamelevel=true;
-            content.appendChild(wrap);
-            wrap.style.display="block";
-            wrap.style.left=18+"%";
-            wrap.style.top=7+"%";
-        }else{gamelevel=false;
-            levelWrapper.appendChild(wrap);
-            wrap.style.display="none";
-        }   
-    }
+    //게임의 stopwatch를 셋팅하는 함수
+    function setStopWatch() {
+        sec_dec++;
 
-    function printHowPlay(){
-        if(printhow==false){
-            printhow=true;
-            howto.style.display="block";
-            content.appendChild(howto);
-        }else{
-            printhow=false;
-            howto.style.display="none";
-            howtowrapper.appendChild(howto);
+        if (sec_dec >= 100) {
+            sec_dec = 0;
+            sec++;
         }
+        if (sec >= 60) {
+            sec = 0;
+            min++;
+        }
+        mm = min < 10 ? '0' + min : '' + min;
+        ss = sec < 10 ? '0' + sec : '' + sec;
+        sss = sec_dec < 10 ? '0' + sec_dec : '' + sec_dec;
+
+        watch.innerText=`${mm}:${ss}:${sss}`;
     }
 
-    //innerHTML 에 스페이스바를 담당하는 함수.
+    // 게임 설명에 삽입할 innerHTML 중 스페이스바를 담당하는 함수.
+    //"&nbsp;"가 반복되면 코드가 너무 길어져서 보기 불편함.
     function spacebar(n) {
         return "&nbsp;".repeat(n);
     }
@@ -356,52 +326,96 @@
         
         let h8 = document.querySelector("#howto > :nth-child(9)")
         h8.innerHTML=`⑧ 게임 종료 후 , 따로 난이도 설정을 하지 않으면 게임 시작 시 , <span style="color:blue; font-weight:bold;font-size: 23px;"><br>${spacebar(5)}직전 단계</span>의 난이도로 설정됩니다.`;
+    }
 
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Target 생성에 관여하는 함수 영역 (X,Y값 랜덤 생성 및 배열에 push , 타겟을 난이도*10 만큼 생성)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    //target의 x값과 y값을 랜덤하게 주기 위해 배열에 push하여 준비하는 함수
+    function prepareXY(){
+        for(x=30;x<700;x+=20){
+            targetX.push(x);
+        }
+
+        for(y=30;y<700;y+=20){
+            targetY.push(y);
+        }
     }
     
-    //게임이 종료되거나 , 게임 초기화시 게임 설명이 el.remove에 걸리지 않게 하기 위해 만든 함수.
-    function closeHowPlay(){
-        if(printhow==true){
-            howto.style.display="none";
-            howtowrapper.appendChild(howto);
-            printhow = false;
-        }                
+    //target의 x값과 y값을 정해진 구역 내에서 랜덤하게 뿌려주는 변수
+    function setTargetXY(){
+        setX = targetX[parseInt(Math.random()*34)];
+        setY = targetY[parseInt(Math.random()*32)];
     }
-
-    //게임이 종료되거나 , 게임 초기화시 이전 기록이 el.remove에 걸리지 않게 하기 위해 만든 함수.
-    function closeRecord(){
-        if(setRecord==true){
-            setRecord=false;
-            gameResult.style.display="none";
-            gameResultWrapper.appendChild(gameResult);
-        }
-    }
-    //게임이 종료되거나 , 게임 초기화시 난이도 선택이 el.remove에 걸리지 않게 하기 위해 만든 함수.
-    function closeLevel(){
-        if(gamelevel==true){
-            gamelevel=false;
-            wrap.style.display="none";
-            levelWrapper.appendChild(wrap);
+    
+    //Target 인스턴스를 셋팅 레벨에 맞게 , xy값을 랜덤하게 받아온 뒤 레벨*10개씩 화면에 출력하는 함수.
+    //30부터 1까지 역순으로 생성해야 아래숫자가 위 숫자에 가려지는 경우가 없음.
+    function createTarget(){            
+        for(let i=(level*10);i>0;i--){
+            setTargetXY();
+            new Target(document.getElementById("content"),setX,setY,i);              
         }
     }
 
-    function ClickLevel(levnum){
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    게임이 종료되면 관여하는 영역. (마지막 타겟 클릭 시 , 게임 조건 초기화 및 footer영역에 직전 게임 출력 , 이전 기록에 끝날 때 마다 innerHTML 누적)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
-        level = levnum;
+    //content에 부착된 target이 다 사라지면, 걸린 시간초 표시 후에 게임을 재시작 할 수 있도록 리셋하는 함수
+    function gameOver(){
+        if(document.querySelectorAll("#content div").length === 0){
+            clearInterval(intervalID); //인터벌 제거
+            moveRecord();
+            printRecord();
 
-        let levelWrapper = document.getElementById("levelWrapper");
-        let wrap =document.getElementById("wrap");
-        let levelprint = document.getElementById("levelprint");
-        
-        gamelevel=false;
-        start.disabled=false;
-        wrap.style.display="none";
-        levelWrapper.appendChild(wrap);
-        levelprint.innerText=`${levnum}단계`;
+            footerResult(); //아랫단에 직전 기록 갱신
 
+            gameStarted = false; //게임 시작 조건 초기화
+            gamelevel = false; //난이도 설정 조건 초기화
+
+            watch.innerText="00:00:00"; //스탑워치 초기화
+            start.innerText="게임 시작"; //게임시작버튼 초기화
+
+            wrap.style.display = "none"; //wrap에 있던 난이도 설정 버튼 비활성화
+
+            //게임이 종료되었을 때 , 난이도 선택 버튼 재활성화
+            document.getElementById("level").disabled=false;
+            resetbutton = false;
+            reset.disabled=true;
+        }
     }
 
-    //onload시 준비되어야하는 함수 
+    //게임 종료시 , 컨텐트 영역 아래 직전 게임의 기록을 보여주는 함수
+    function footerResult(){
+        let footerprint = (mm > 0) ? `${mm} 분 ${ss} 초 ${sss}` : `${ss} 초 ${sss}`;
+        document.getElementById("footer").innerText=`직전기록 : ${level} 단계 _ ${footerprint}`
+    }
+
+    //게임 종료 시 , 판수 누적 및 게임 기록을 이전 기록 영역에 누적시켜서 기록하는 함수
+    function printRecord(){
+ 
+        let c_round = document.getElementById("c_round");
+        let r_newRecord = `${gameCount}회차<br>` 
+        c_round.innerHTML += r_newRecord;
+
+        let c_level = document.getElementById("c_level");
+        let l_newRecord = `${level}단계<br>` 
+        c_level.innerHTML += l_newRecord;
+
+        let c_time = document.getElementById("c_time");
+
+        let t_newRecord = (mm > 0) ? `${mm} 분 ${ss} 초 ${sss}<br>` : `${ss} 초 ${sss}<br>`;
+
+        c_time.innerHTML += t_newRecord;
+
+        gameCount++;
+    }
+
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Onload 시점에 관여하는 클릭 이벤트 및 각 요소들을 제어할 수 있도록 id를 변수에 할당
+--------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
     function init(){
         content = document.getElementById("content");
         howtowrapper = document.getElementById("howtowrapper");
@@ -420,7 +434,7 @@
 
         prepareXY();
         gameStart();
-        setLevel();
+        printLevel();
         setHowplay();
     }
 
@@ -439,7 +453,7 @@
         selectLevel.addEventListener("click",()=>{
             closeRecord();
             closeHowPlay();
-            setLevel();
+            printLevel();
         })
 
         record.addEventListener("click",()=>{
