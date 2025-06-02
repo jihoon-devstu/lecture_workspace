@@ -21,6 +21,10 @@ public class DataModel extends AbstractTableModel{
 		// TODO Auto-generated method stub
 		return title.length;
 	}
+	
+	public String getColumnName(int column) {
+		return title[column];
+	}
 
 	//JTable에 의해 row x col 수만큼 아래의 메서드 호출됨..
 	public Object getValueAt(int row, int col) {
