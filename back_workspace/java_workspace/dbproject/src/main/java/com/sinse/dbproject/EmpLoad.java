@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,6 +21,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /*JTable은 껍데기에 불과하므로, 연동할 테이블이 수백개라 할지라도
  * TableModel은 1개만 충분하다..결국 바뀌는 건 쿼리문만...
@@ -87,7 +95,8 @@ public class EmpLoad extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int result = chooser.showOpenDialog(EmpLoad.this);
 				if(result == JFileChooser.APPROVE_OPTION) { //파일 열기를 수락했다면
-					loadExcel();
+					File file = chooser.getSelectedFile();
+					loadExcel(file);
 				}
 			}
 		});
@@ -206,8 +215,48 @@ public class EmpLoad extends JFrame {
 
 	}
 	
-	public void loadExcel() {
-		
+	public void loadExcel(File file) {
+		//Excel 97 ~2001 구버전 xls : HSSFWorkBook
+		//이후 버전 xslx : XSSWorkbook;
+		try {
+			XSSFWorkbook workbook = new XSSFWorkbook(file);
+			
+			//시트에 접근하자.
+			XSSFSheet sheet=workbook.getSheetAt(0); //첫번째 시트
+			
+			//Row에 접근하자
+			XSSFRow row = sheet.getRow(0);
+			
+			model = new DataModel();
+			model.title = new String[row.getLastCellNum()];
+			for(int i=0;i<row.getLastCellNum();i++) {
+				model.title[i]=row.getCell(i).getStringCellValue();
+			}
+			
+			model.data = new String[sheet.getLastRowNum()][model.title.length];
+			
+			//2번째 행 부터 데이터를 접근하여 Model의 rows에 대입하자.
+			System.out.println(sheet.getFirstRowNum());
+			for(int i = sheet.getFirstRowNum()+1; i<=sheet.getLastRowNum();i++) {
+				XSSFRow r = sheet.getRow(i);
+				
+				for(int a=0;a<r.getLastCellNum();a++) {
+					XSSFCell cell = r.getCell(a);
+					System.out.print(cell.getStringCellValue()+"\t");
+					model.data[i-1][a]=cell.getStringCellValue();
+				}
+				System.out.println("");
+			}
+			
+			
+			
+		} catch (InvalidFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
