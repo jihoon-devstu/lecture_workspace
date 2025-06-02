@@ -6,11 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -27,84 +27,84 @@ import javax.swing.JTable;
  
  * */
 
-
-public class EmpLoad extends JFrame{
+public class EmpLoad extends JFrame {
 	JPanel p_north;
 	JButton bt_emp;
 	JButton bt_dept;
-	
+
+	DataModel model; // JTable에 바라보는 Model 객체
 	JTable table;
 	JScrollPane scroll;
-	
-	//윈도우 프레임이 뜰때 한번 접속하고, 윈도우 닫을때 데이터베이스 닫자
-	String url="jdbc:mysql://localhost:3306/dev";
-	String user="root";
-	String pwd="1234";
-	Connection con; //윈도우 창 닫으면 접속을 끊어야 하므로, 멤버변수로 빼두어야 함
-							//Connection은 접속 정보를 가진 객체이므로, 접속을 끊을 수도 있다
-	
+
+	// 윈도우 프레임이 뜰때 한번 접속하고, 윈도우 닫을때 데이터베이스 닫자
+	String url = "jdbc:mysql://localhost:3306/dev";
+	String user = "root";
+	String pwd = "1234";
+	Connection con; // 윈도우 창 닫으면 접속을 끊어야 하므로, 멤버변수로 빼두어야 함
+					// Connection은 접속 정보를 가진 객체이므로, 접속을 끊을 수도 있다
+
 	public EmpLoad() {
 		p_north = new JPanel();
 		bt_emp = new JButton("사원테이블 로드");
 		bt_dept = new JButton("부서테이블 로드");
-		
-		table = new JTable();
+
+		table = new JTable(); // 테이블과 모델 연결은 반드시 생성자에서만 할 수 있는 건 아니다...
 		scroll = new JScrollPane(table);
-		
-		//style 
+
+		// style
 		p_north.setPreferredSize(new Dimension(800, 30));
-		
-		//assemble
+
+		// assemble
 		p_north.add(bt_emp);
 		p_north.add(bt_dept);
 		add(p_north, BorderLayout.NORTH);
 		add(scroll);
-		//이벤트 구현 시 정의되는 리스너 클래스는 재사용성이 없으므로, 굳이 
-		//.java 파일까지 정의해가면서 개발할 필요가 있는가? 
-		//내부클래스 중, 이름 없는 클래스를 가리켜 익명내부 클래스라 한다.
-		//주로, 일회성 객체 사용시(이벤트)
-		//익명 내부클래스는, 자신을 감싸고 있는 바깥쪽 외부 클래스의 멤버들을 
-		//같이 사용할 수 있다..즉 접근할 수 있다는 점이 장점
-		bt_emp.addActionListener(new ActionListener(){
+		// 이벤트 구현 시 정의되는 리스너 클래스는 재사용성이 없으므로, 굳이
+		// .java 파일까지 정의해가면서 개발할 필요가 있는가?
+		// 내부클래스 중, 이름 없는 클래스를 가리켜 익명내부 클래스라 한다.
+		// 주로, 일회성 객체 사용시(이벤트)
+		// 익명 내부클래스는, 자신을 감싸고 있는 바깥쪽 외부 클래스의 멤버들을
+		// 같이 사용할 수 있다..즉 접근할 수 있다는 점이 장점
+		bt_emp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadEmp();
 			}
 		});
-		
-		bt_dept.addActionListener(new ActionListener(){
+
+		bt_dept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadDept();
 			}
 		});
-		
-		this.addWindowListener(new WindowAdapter() {			
-				public void windowClosing(WindowEvent e) {
-					System.out.println("창 닫았어?");
-					
-					if(con !=null) {
-						try {
-							con.close();
-						}catch(SQLException e1) {
-							e1.printStackTrace();
-						}
+
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.out.println("창 닫았어?");
+
+				if (con != null) {
+					try {
+						con.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
 					}
 				}
+			}
 		});
-		
-		connect();//db접속 
-		
+
+		connect();// db접속
+
 		setSize(800, 630);
 		setVisible(true);
 	}
-	
-	//데이터베이스 접속 
+
+	// 데이터베이스 접속
 	public void connect() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con=DriverManager.getConnection(url, user, pwd);
-			if(con!=null) {
+			con = DriverManager.getConnection(url, user, pwd);
+			if (con != null) {
 				this.setTitle("접속 성공");
-			}else {
+			} else {
 				this.setTitle("접속 실패");
 			}
 		} catch (ClassNotFoundException e) {
@@ -112,10 +112,10 @@ public class EmpLoad extends JFrame{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	//사원 테이블 가져오기 
+
+	// 사원 테이블 가져오기
 	public void loadEmp() {
 		String sql = "select *from emp";
 		
@@ -124,12 +124,53 @@ public class EmpLoad extends JFrame{
 		//결과 표를 표현한 객체
 		ResultSet rs = null; 
 		
+		
 		try {
-			pstmt= con.prepareStatement(sql);		//pstmt 객체 생성
-			rs = pstmt.executeQuery(); //표 반환... 커서의 초기 위치는 첫번째 레코드보다 더 위쪽
+			pstmt= con.prepareStatement(sql
+					,ResultSet.TYPE_SCROLL_INSENSITIVE
+					, ResultSet.CONCUR_READ_ONLY);		//pstmt 객체 생성
+			
+			//표 반환... 커서의 초기 위치는 첫번째 레코드보다 더 위쪽
+			//현재의 rs 자체는 JTable이 이해할 수 없는 상태 이므로 , TableModel에 rs를 가공하여 넣어주면 된다.
+			rs = pstmt.executeQuery(); 
+		
+			//현재 select 문의 대상이 되는 table의 컬럼 정보를
+			//프로그래밍에서 얻어오려면 ResultSetMetaData라는 객체를 이용하면 된다.
+			ResultSetMetaData metaData = pstmt.getMetaData();
+			//rs는 몇층까지일까?
+			rs.last();
+			
+			int total = rs.getRow(); //총 레코드 수
+			int colCount = metaData.getColumnCount(); //총 컬럼 수
+			
+			//레코드 수와 컬럼수를 알아냈으니 , 모델 객체가 보유한 현재 null인 상태인
+			//2차원 배열을 메모리에 올리자.
+			model = new DataModel();
+			model.data = new String[total][colCount];
+			model.title = new String[colCount]; //컬럼 배열 생성
+			
+			for(int i=0;i<colCount;i++) {
+			model.title[i] = metaData.getColumnName(i);
+			}
+			
+			//rs의 데이터를 이차원 배열로 옮겨심기
+			rs.beforeFirst(); //rs의 커서 원위치
+			
+			int index = 0; //층수를 접근하기 위한 index
+			
+			while(rs.next()) {
+				//어떤 테이블인지는 모르나 , 그 테이블의 컬럼수만큼 반복
+				for(int i = 0; i<colCount;i++) {
+					model.data[index++][i]=rs.getString(i);
+				}
+			}
+			
+			//모든 데이터가 완성 되었으므로 , JTable에 모델을 동적으로 적용하자.
+			
+			table.setModel(model);
+			table.updateUI();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			
@@ -152,16 +193,15 @@ public class EmpLoad extends JFrame{
 		
 		
 	}
-	
-	//부서 테이블 가져오기
-	public void loadDept() {
 
-		
-		
+	// 부서 테이블 가져오기
+	public void loadDept() {
+		String sql = "select *from dept";
+
 	}
-	
+
 	public static void main(String[] args) {
 		new EmpLoad();
 	}
-	
+
 }
