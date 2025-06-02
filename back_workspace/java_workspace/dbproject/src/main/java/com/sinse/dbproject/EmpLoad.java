@@ -246,6 +246,9 @@ public class EmpLoad extends JFrame {
 					model.data[i-1][a]=cell.getStringCellValue();
 				}
 				System.out.println("");
+				
+				table.setModel(model);
+				table.updateUI();
 			}
 			
 			
