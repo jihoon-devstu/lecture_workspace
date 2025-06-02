@@ -18,6 +18,7 @@ public class EmpLoad extends JFrame{
 	
 	JTable table;
 	JScrollPane scroll;
+	
 	MyActionListener myActionListener;
 	
 	public EmpLoad() {
@@ -43,7 +44,9 @@ public class EmpLoad extends JFrame{
 		setSize(800,630);
 		setVisible(true);
 		
-		
+		//ActionListener 연결
+		bt_emp.addActionListener(myActionListener);
+		bt_dept.addActionListener(myActionListener);
 	}
 	
 	
