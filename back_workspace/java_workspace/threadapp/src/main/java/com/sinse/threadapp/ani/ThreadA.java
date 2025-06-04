@@ -1,13 +1,19 @@
 package com.sinse.threadapp.ani;
 
-public class ThreadA extends Thread{
+import javax.swing.JProgressBar;
 
-	ProgressTest p = new ProgressTest();
+public class ThreadA extends Thread{
+	int n ;
+	JProgressBar bar;
+	public ThreadA(JProgressBar bar) {
+		this.bar=bar;
+	}
 	public void run() {
 		while (true) {
 			try {
 				Thread.sleep(100);
-				p.move();
+				n += 2;
+				bar.setValue(n);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

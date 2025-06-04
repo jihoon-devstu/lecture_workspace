@@ -29,9 +29,9 @@ public class ProgressTest extends JFrame {
 		bar3 = new JProgressBar();
 		bt = new JButton("진행");
 
-		thread1 = new ThreadA();
-		thread2 = new ThreadA();
-		thread3 = new ThreadA();
+		thread1 = new ThreadA(bar1);
+		thread2 = new ThreadA(bar2);
+		thread3 = new ThreadA(bar3);
 
 		Dimension d = new Dimension(750, 45);
 		bar1.setPreferredSize(d);
@@ -47,7 +47,9 @@ public class ProgressTest extends JFrame {
 
 		bt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				thread.start();
+				thread1.start();
+				thread2.start();
+				thread3.start();
 			}
 		});
 
@@ -57,11 +59,6 @@ public class ProgressTest extends JFrame {
 
 	}
 
-	public void move(JProgressBar bar) {
-		// bar1 증가
-		n += 2;
-		bar.setValue(n);
-	}
 
 	public static void main(String[] args) {
 		new ProgressTest();
