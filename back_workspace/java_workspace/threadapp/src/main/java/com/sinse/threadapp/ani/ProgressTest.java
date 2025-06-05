@@ -29,9 +29,9 @@ public class ProgressTest extends JFrame {
 		bar3 = new JProgressBar();
 		bt = new JButton("진행");
 
-		thread1 = new ThreadA(bar1);
-		thread2 = new ThreadA(bar2);
-		thread3 = new ThreadA(bar3);
+		thread1 = new ThreadA(bar1,5);
+		thread2 = new ThreadA(bar2,7);
+		thread3 = new ThreadA(bar3,1);
 
 		Dimension d = new Dimension(750, 45);
 		bar1.setPreferredSize(d);
