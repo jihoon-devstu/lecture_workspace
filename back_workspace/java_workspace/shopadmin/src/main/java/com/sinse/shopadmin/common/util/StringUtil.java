@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class StringUtil {
 
-	public String getSecuredPass(String pwd) {
+	public static String getSecuredPass(String pwd) {
 
 		String pass = "minzino";
 		StringBuffer sb = new StringBuffer();

@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -134,23 +136,33 @@ public class AppMain extends JFrame {
 			}
 		});
 		
+		this.addWindowListener(new WindowAdapter(){
+			
+			public void windowClosing(WindowEvent e){
+				if(con!=null) {
+					try {
+						con.close();
+					}catch(SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		
 		createPage();
 		//최초에는 로그인 폼은 기본으로 떠있게 처리
 		showPage(-1);
 		
-		setDefaultCloseOperation(EXIT_ON_CLOSE); // DB연동후엔 제거
 		setBounds(300, 100, Config.ADMINMAIN_WIDTH, Config.ADMINMAIN_HEIGHT);
 		setVisible(true);
 	}
 
 	public void connect() {
-		String url = "jdbc:mysql://localhost:3306/shop";
-		String user = "shop";
-		String pass = "1234";
+
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(url, user, pass);
+			con = DriverManager.getConnection(Config.url, Config.user, Config.pass);
 
 			if (con != null) {
 				this.setTitle("MySQL 접속 완료");
@@ -188,7 +200,8 @@ public class AppMain extends JFrame {
 	
 	public void showPage(int target) {
 		//로그인 체크
-		if(admin==null && target !=-1 && target !=Config.JOIN_PAGE) {
+		if(admin==null && target !=-1 && target !=Config.JOIN_PAGE
+				&& target!=Config.LOGIN_PAGE) {
 			JOptionPane.showMessageDialog(this, "로그인이 필요한 서비스 입니다.");
 			pages[Config.LOGIN_PAGE].setVisible(true);
 			return;
