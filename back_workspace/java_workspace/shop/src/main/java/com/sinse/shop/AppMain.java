@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,6 +38,7 @@ public class AppMain extends JFrame {
 	JPanel p_container;
 
 	Page[] pages;
+	
 
 	public AppMain() {
 		// util,navi를 감싸는 패널 하나 생성 후 , 마진 없애기.
@@ -86,6 +90,8 @@ public class AppMain extends JFrame {
 
 		add(p_north, BorderLayout.NORTH);
 		add(p_container);
+		
+		
 
 		createPage(); // 앱이 가동 될 때 , 모든 페이지 생성 및 부착
 		showPage(Config.MAIN_PAGE);
@@ -119,6 +125,9 @@ public class AppMain extends JFrame {
 			pages[i].setVisible((i == target) ? true : false);
 		}
 	}
+	
+
+
 
 	public static void main(String[] args) {
 		new AppMain();
