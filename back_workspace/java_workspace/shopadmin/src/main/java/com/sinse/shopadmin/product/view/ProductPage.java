@@ -2,6 +2,9 @@ package com.sinse.shopadmin.product.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,8 +16,8 @@ import javax.swing.JTextField;
 import com.sinse.shopadmin.AppMain;
 import com.sinse.shopadmin.common.view.Page;
 
-public class ProductPage extends Page{
-	
+public class ProductPage extends Page {
+
 	JLabel la_topcategory;
 	JLabel la_subcategory;
 	JLabel la_product_name;
@@ -23,7 +26,7 @@ public class ProductPage extends Page{
 	JLabel la_discount;
 	JLabel la_color;
 	JLabel la_size;
-	JButton bt_open; //파일탐색기 띄우기 버튼
+	JButton bt_open; // 파일탐색기 띄우기 버튼
 	JLabel la_introduce;
 	JLabel la_detail;
 
@@ -35,19 +38,17 @@ public class ProductPage extends Page{
 	JTextField t_discount;
 	JTextField t_color;
 	JTextField t_size;
-	JPanel p_preview; //관리자가 선택한 상품 이미지를 미리보기 한다
-	JTextArea t_introduce; //상품 소개
+	JPanel p_preview; // 관리자가 선택한 상품 이미지를 미리보기 한다
+	JTextArea t_introduce; // 상품 소개
 	JTextArea t_detail;
-	JButton bt_regist; //상품 등록
-	JButton bt_list; //상품 목록
-	
-	
+	JButton bt_regist; // 상품 등록
+	JButton bt_list; // 상품 목록
+
 	public ProductPage(AppMain appMain) {
 		super(appMain);
 		setBackground(Color.ORANGE);
-		
-		
-		//생성
+
+		// 생성
 		la_topcategory = new JLabel("최상위 카테고리");
 		la_subcategory = new JLabel("최상위 카테고리");
 		la_product_name = new JLabel("최상위 카테고리");
@@ -59,7 +60,7 @@ public class ProductPage extends Page{
 		bt_open = new JButton("상품 사진 등록");
 		la_introduce = new JLabel("상품 소개");
 		la_detail = new JLabel("상세 설명");
-		
+
 		cb_topcategory = new JComboBox<>();
 		cb_subcategory = new JComboBox<>();
 		t_product_name = new JTextField();
@@ -73,11 +74,11 @@ public class ProductPage extends Page{
 		t_detail = new JTextArea();
 		bt_regist = new JButton("등록");
 		bt_list = new JButton("목록");
-		
-		//스타일
-		
-		Dimension d = new Dimension(200, 30);
-		
+
+		// 스타일
+
+		Dimension d = new Dimension(400, 30);
+
 		la_topcategory.setPreferredSize(d);
 		la_subcategory.setPreferredSize(d);
 		la_product_name.setPreferredSize(d);
@@ -89,22 +90,25 @@ public class ProductPage extends Page{
 		bt_open.setPreferredSize(d);
 		la_introduce.setPreferredSize(d);
 		la_detail.setPreferredSize(d);
-		
+
 		cb_topcategory.setPreferredSize(d);
 		cb_subcategory.setPreferredSize(d);
-		
+
 		t_product_name.setPreferredSize(d);
 		t_brand.setPreferredSize(d);
 		t_price.setPreferredSize(d);
 		t_discount.setPreferredSize(d);
 		t_color.setPreferredSize(d);
 		t_size.setPreferredSize(d);
-		p_preview.setPreferredSize(new Dimension(200,80)); //이미지 미리보기 도화지
-		t_introduce.setPreferredSize(new Dimension(200,50)); //GPT를 연동한 소개글
-		t_detail.setPreferredSize(new Dimension(260,60));
-		
-		//조립
-		
+		p_preview.setPreferredSize(new Dimension(400, 80)); // 이미지 미리보기 도화지
+		t_introduce.setPreferredSize(new Dimension(400, 50)); // GPT를 연동한 소개글
+		t_detail.setPreferredSize(new Dimension(400, 60));
+
+		bt_regist.setPreferredSize(new Dimension(130, 30));
+		bt_list.setPreferredSize(new Dimension(130, 30));
+
+		// 조립
+
 		add(la_topcategory);
 		add(cb_topcategory);
 		add(la_subcategory);
@@ -129,8 +133,45 @@ public class ProductPage extends Page{
 		add(t_detail);
 		add(bt_regist);
 		add(bt_list);
-		
-		setPreferredSize(new Dimension(480,750));
+
+		setPreferredSize(new Dimension(880, 750));
+
+		// 최상위 카테고리 불러오기
+
+		getTopCategory();
+	}
+
+	public void getTopCategory() {
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("select *from topcategory");
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = appMain.con.prepareStatement(sql.toString());
+			rs = pstmt.executeQuery(); // select 문일 경우...
+
+			// 한칸씩 커서를 이동하면서 , 콤보박스에 채워넣기
+
+			while (rs.next()) {
+				cb_topcategory.addItem(rs.getString("top_name"));
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
 	}
 
 }
