@@ -2,9 +2,9 @@ package com.sinse.shopadmin.product.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,6 +15,10 @@ import javax.swing.JTextField;
 
 import com.sinse.shopadmin.AppMain;
 import com.sinse.shopadmin.common.view.Page;
+import com.sinse.shopadmin.product.model.SubCategory;
+import com.sinse.shopadmin.product.model.TopCategory;
+import com.sinse.shopadmin.product.repository.SubCategoryDAO;
+import com.sinse.shopadmin.product.repository.TopCategoryDAO;
 
 public class ProductPage extends Page {
 
@@ -30,7 +34,7 @@ public class ProductPage extends Page {
 	JLabel la_introduce;
 	JLabel la_detail;
 
-	JComboBox cb_topcategory;
+	JComboBox<TopCategory> cb_topcategory;
 	JComboBox cb_subcategory;
 	JTextField t_product_name;
 	JTextField t_brand;
@@ -43,6 +47,8 @@ public class ProductPage extends Page {
 	JTextArea t_detail;
 	JButton bt_regist; // 상품 등록
 	JButton bt_list; // 상품 목록
+	TopCategoryDAO topCategoryDAO;
+	SubCategoryDAO subCategoryDAO;
 
 	public ProductPage(AppMain appMain) {
 		super(appMain);
@@ -50,13 +56,13 @@ public class ProductPage extends Page {
 
 		// 생성
 		la_topcategory = new JLabel("최상위 카테고리");
-		la_subcategory = new JLabel("최상위 카테고리");
-		la_product_name = new JLabel("최상위 카테고리");
-		la_brand = new JLabel("최상위 카테고리");
-		la_price = new JLabel("최상위 카테고리");
-		la_discount = new JLabel("최상위 카테고리");
-		la_color = new JLabel("최상위 카테고리");
-		la_size = new JLabel("최상위 카테고리");
+		la_subcategory = new JLabel("하위 카테고리");
+		la_product_name = new JLabel("상품명");
+		la_brand = new JLabel("브랜드");
+		la_price = new JLabel("가격");
+		la_discount = new JLabel("할인가");
+		la_color = new JLabel("색상");
+		la_size = new JLabel("사이즈");
 		bt_open = new JButton("상품 사진 등록");
 		la_introduce = new JLabel("상품 소개");
 		la_detail = new JLabel("상세 설명");
@@ -74,6 +80,8 @@ public class ProductPage extends Page {
 		t_detail = new JTextArea();
 		bt_regist = new JButton("등록");
 		bt_list = new JButton("목록");
+		topCategoryDAO = new TopCategoryDAO();
+		subCategoryDAO = new SubCategoryDAO();
 
 		// 스타일
 
@@ -136,42 +144,52 @@ public class ProductPage extends Page {
 
 		setPreferredSize(new Dimension(880, 750));
 
+		// 최상위 카테고리에 이벤트 연결
+		cb_topcategory.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+
+					// 내가 선택한 아이템의 pk를 출력해 보기. 신발 = 3
+
+					TopCategory topCategory = (TopCategory) cb_topcategory.getSelectedItem();
+
+					// 하위 카테고리 목록 가져오기
+					List<SubCategory> subList = subCategoryDAO.selectByTop(topCategory);
+					
+					//모든 하위 카테고리 콤보아이템 지우기
+					cb_subcategory.removeAllItems();
+					
+					//서브 카테고리 수만큼 반복하면서 , 두번째 콤보박스에 SubCategory 모델을 채워넣기.
+					for (int i = 0; i < subList.size(); i++) {
+						SubCategory subCategory = subList.get(i); //i번째 요소 꺼내기
+						cb_subcategory.addItem(subCategory);
+					}
+
+				}
+			}
+		});
+
 		// 최상위 카테고리 불러오기
 
 		getTopCategory();
 	}
 
+	// DAO를 통해 얻어온 List를 이용하여 콤보박스 채우기
 	public void getTopCategory() {
 
-		StringBuffer sql = new StringBuffer();
-		sql.append("select *from topcategory");
+		List<TopCategory> topList = topCategoryDAO.selectAll();
 
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = appMain.con.prepareStatement(sql.toString());
-			rs = pstmt.executeQuery(); // select 문일 경우...
+		// 안내 문구 역할을 수행할 dummy 모델을 콤보박스에 넣어주자
+		TopCategory dummy = new TopCategory();
+		dummy.setTop_name("상위 카테고리를 선택하세요");
+		dummy.setTopcategory_id(0);
+		cb_topcategory.addItem(dummy);
 
-			// 한칸씩 커서를 이동하면서 , 콤보박스에 채워넣기
-
-			while (rs.next()) {
-				cb_topcategory.addItem(rs.getString("top_name"));
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+		for (int i = 0; i < topList.size(); i++) {
+			TopCategory topcategory = topList.get(i);
+			cb_topcategory.addItem(topcategory);
 		}
-
 	}
 
 }
