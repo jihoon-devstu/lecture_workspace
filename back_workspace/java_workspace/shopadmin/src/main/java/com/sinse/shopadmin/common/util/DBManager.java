@@ -48,6 +48,18 @@ public class DBManager {
 	}
 
 	// 데이터 베이스 관련된 자원을 해제하는 메서드
+	
+	public void release(Connection con) { 
+
+		if (con != null) {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void release(PreparedStatement pstmt) { // DMA(insert , update , delete)
 
 		if (pstmt != null) {
