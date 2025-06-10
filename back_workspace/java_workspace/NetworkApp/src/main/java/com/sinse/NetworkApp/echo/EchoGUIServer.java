@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -61,13 +62,13 @@ public class EchoGUIServer extends JFrame{
 			server = new ServerSocket(Integer.parseInt(port));
 			area.append("서버 생성 및 접속자 청취중..\n");
 			
-			server.accept();
-			area.append("접속자 발견\n");
+			Socket socket = server.accept();
+			String ip = socket.getInetAddress().getHostAddress();
+			area.append(ip + "님 접속\n");
+			
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

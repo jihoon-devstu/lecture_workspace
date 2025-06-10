@@ -3,8 +3,17 @@ package com.sinse.NetworkApp.echo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.net.ServerSocket;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,6 +34,15 @@ public class EchoClient extends JFrame{
 	JTextArea area;
 	JScrollPane scroll;
 	JTextField t_input;
+	
+	BufferedWriter buffw;
+	
+	BufferedReader buffr;
+	
+	/*대화용 소켓.. 이 객체를 메모리에 올릴 때 접속이 발생함
+	  또한 접속이 성공되면 , 그 시점부터 연결이 이루어진 것이므로 스트림을 통해 
+	  데이터를 주고받을 수 있음.*/
+	Socket socket; 
 	
 	public EchoClient() {
 		//생성
@@ -62,6 +80,18 @@ public class EchoClient extends JFrame{
 			connect();
 		});
 		
+		t_input.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					//서버로 내보내기 !!(출력)
+					String msg = t_input.getText();
+					send(msg);
+					t_input.setText("");
+				}
+			}
+		});
+		
 		
 		setSize(450,500);
 		setVisible(true);
@@ -69,7 +99,40 @@ public class EchoClient extends JFrame{
 	}
 	
 	public void connect() {
+	//소켓 서버 접속해보기
+		String ip = (String)box_ip.getSelectedItem();
+		int port = Integer.parseInt(t_port.getText());
 		
+		try {
+			socket = new Socket(ip,port);
+			
+			//소켓으로부터 스트림을 얻어오자
+			
+			//바이트 기반 , 출력 스트림(말하기)...
+			buffw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+					
+			// 바이트 기반 , 입력 스트림(듣기)
+			buffr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			
+		}catch(NumberFormatException e) {
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//실행중인 프로그램에서 , 데이터를 내보내야 하므로 , 필요한 스트림은 바로 출력 스트림 !! 	
+	public void send(String msg) {
+		//서버로 한줄 보내기..
+		try {
+			buffw.write(msg+"\n"); //보내기....
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 	
 	public void createIp() {
