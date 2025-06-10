@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import com.sinse.shopadmin.AppMain;
 import com.sinse.shopadmin.common.config.Config;
+import com.sinse.shopadmin.common.util.DBManager;
 import com.sinse.shopadmin.common.view.Page;
 import com.sinse.shopadmin.security.model.Admin;
 
@@ -29,6 +30,7 @@ public class LoginForm extends Page {
 
 	JButton bt_login;
 	JButton bt_join;
+	DBManager dbManager=DBManager.getInstance();
 
 
 	public LoginForm(AppMain appMain) {
@@ -122,21 +124,7 @@ public class LoginForm extends Page {
 			e.printStackTrace();
 		} finally {
 
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			dbManager.release(pstmt,rs);
 		}
 
 	}
