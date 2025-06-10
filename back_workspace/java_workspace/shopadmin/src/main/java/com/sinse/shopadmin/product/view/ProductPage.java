@@ -149,23 +149,9 @@ public class ProductPage extends Page {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-
 					// 내가 선택한 아이템의 pk를 출력해 보기. 신발 = 3
-
 					TopCategory topCategory = (TopCategory) cb_topcategory.getSelectedItem();
-
-					// 하위 카테고리 목록 가져오기
-					List<SubCategory> subList = subCategoryDAO.selectByTop(topCategory);
-					
-					//모든 하위 카테고리 콤보아이템 지우기
-					cb_subcategory.removeAllItems();
-					
-					//서브 카테고리 수만큼 반복하면서 , 두번째 콤보박스에 SubCategory 모델을 채워넣기.
-					for (int i = 0; i < subList.size(); i++) {
-						SubCategory subCategory = subList.get(i); //i번째 요소 꺼내기
-						cb_subcategory.addItem(subCategory);
-					}
-
+					getSubCategory(topCategory);
 				}
 			}
 		});
@@ -189,6 +175,27 @@ public class ProductPage extends Page {
 		for (int i = 0; i < topList.size(); i++) {
 			TopCategory topcategory = topList.get(i);
 			cb_topcategory.addItem(topcategory);
+		}
+	}
+	
+	public void getSubCategory(TopCategory topCategory) {
+		
+
+		// 하위 카테고리 목록 가져오기
+		List<SubCategory> subList = subCategoryDAO.selectByTop(topCategory);
+		
+		//모든 하위 카테고리 콤보아이템 지우기
+		cb_subcategory.removeAllItems();
+		
+		SubCategory dummy = new SubCategory();
+		dummy.setSub_name("하위 카테고리를 선택하세요");
+		dummy.setSubcategory_id(0);
+		cb_subcategory.addItem(dummy);
+		
+		//서브 카테고리 수만큼 반복하면서 , 두번째 콤보박스에 SubCategory 모델을 채워넣기.
+		for (int i = 0; i < subList.size(); i++) {
+			SubCategory subCategory = subList.get(i); //i번째 요소 꺼내기
+			cb_subcategory.addItem(subCategory);
 		}
 	}
 
