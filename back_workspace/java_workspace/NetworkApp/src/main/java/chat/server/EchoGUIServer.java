@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class EchoGUIServer extends JFrame{
+public class EchoGUIServer extends JFrame implements Runnable{
 	JPanel p_north;
 	JTextField t_port;
 	JButton bt;
@@ -21,7 +21,10 @@ public class EchoGUIServer extends JFrame{
 	JScrollPane scroll;
 	
 	ServerSocket server;
-	Thread thread;
+	
+	//Runnable은 쓰레드가 아니므로 , Runnable을 구현한다고 하여 , 이 객체가 쓰레드형이라고 오해하면 안됨.
+	//따라서 별도의 Thread 객체를 사용해야함... 단지 해당 Thread의 run메서드를 내가 가진 것 뿐임.
+	Thread thread; 
 	
 	public EchoGUIServer() {
 		p_north = new JPanel();
@@ -40,11 +43,7 @@ public class EchoGUIServer extends JFrame{
 		add(scroll);
 		
 		bt.addActionListener(e->{
-			thread = new Thread() {
-				public void run() {
-					runServer();
-				}
-			};
+			thread = new Thread(EchoGUIServer.this);
 			thread.start();
 		});
 		
@@ -70,6 +69,10 @@ public class EchoGUIServer extends JFrame{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void run() {
+		runServer();
 	}
 	
 	//우리가 실행부라고 알고 있었던 존재가 사실 메인 쓰레드라 불리는 프로그램 운영 쓰레드이다.

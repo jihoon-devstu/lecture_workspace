@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class EchoClient extends JFrame{
+public class EchoClient extends JFrame implements Runnable{
 
 	JPanel p_north;
 	
@@ -38,6 +38,8 @@ public class EchoClient extends JFrame{
 	BufferedWriter buffw;
 	
 	BufferedReader buffr;
+	
+	Thread thread;
 	
 	/*대화용 소켓.. 이 객체를 메모리에 올릴 때 접속이 발생함
 	  또한 접속이 성공되면 , 그 시점부터 연결이 이루어진 것이므로 스트림을 통해 
@@ -77,7 +79,8 @@ public class EchoClient extends JFrame{
 		
 		//접속 버튼과 리스너 연결
 		bt.addActionListener(e->{
-			connect();
+			thread = new Thread(EchoClient.this);
+			thread.start();
 		});
 		
 		t_input.addKeyListener(new KeyAdapter() {
@@ -135,8 +138,14 @@ public class EchoClient extends JFrame{
 		} 
 	}
 	
+	@Override
+	public void run() {
+		
+		connect();
+	}
+	
 	public void createIp() {
-		for(int i=25;i<=47;i++) {
+		for(int i=15;i<=47;i++) {
 			box_ip.addItem("192.168.60."+i);
 		}
 	}
