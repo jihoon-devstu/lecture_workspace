@@ -24,6 +24,19 @@ public class Test {
 		int index = path.lastIndexOf(".");
 		String ext = path.substring(index+1,path.length());
 		System.out.println(ext);
+		
+		String v = "a100";
+		
+		String v2 = "100";
+		
+		try {
+			Integer.parseInt(v2);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			System.out.println("올바른 정수값이 아니네요");
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

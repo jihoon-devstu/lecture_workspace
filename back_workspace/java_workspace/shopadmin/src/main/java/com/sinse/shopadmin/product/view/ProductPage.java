@@ -68,8 +68,8 @@ public class ProductPage extends Page {
 	SizeDAO sizeDAO;
 
 	JFileChooser chooser;
-	Image[] imgArray; //유저가 선택한 파일로부터 생성된 이미지 배열
-	File[] files; //파일 복사 즉 업로드를 진행하려면 , 이미지가 아닌 파일을 대상으로 할 수 있다.
+	Image[] imgArray; // 유저가 선택한 파일로부터 생성된 이미지 배열
+	File[] files; // 파일 복사 즉 업로드를 진행하려면 , 이미지가 아닌 파일을 대상으로 할 수 있다.
 
 	public ProductPage(AppMain appMain) {
 		super(appMain);
@@ -214,13 +214,13 @@ public class ProductPage extends Page {
 			}
 
 		});
-		
-		//등록 버튼과 리스너 연결
-		
-		bt_regist.addActionListener(e->{
+
+		// 등록 버튼과 리스너 연결
+
+		bt_regist.addActionListener(e -> {
 			regist();
 		});
-		
+
 	}
 
 	public void preview() {
@@ -292,15 +292,51 @@ public class ProductPage extends Page {
 	public void getSizeList() {
 		t_size.setListData(new Vector(sizeDAO.selectAllSize()));
 	}
-	
+
 	public void upload() {
-		//시각적 효과를 위해 각, 이미지의 업로드 진행율을 보여주자 , 새창으로...
+		// 시각적 효과를 위해 각, 이미지의 업로드 진행율을 보여주자 , 새창으로...
 		UploadDialog dialog = new UploadDialog(this);
 	}
 	
-	//이미지 업로드 및 DB insert
+	//Mysql에 상품 등록 관련 쿼리 수행
+	public void insert() {
+		
+		
+		
+	}
+
+	// 이미지 업로드 및 DB insert
 	public void regist() {
-		upload();
+		// 양식을 제대로 입력했을 때 풀어주자
+		// 상위 카테고리 유효성 체크
+		if (cb_topcategory.getSelectedIndex() == 0) {
+			JOptionPane.showMessageDialog(this, "상위 카테고리를 선택하세요");
+		} else if (cb_subcategory.getSelectedIndex() == 0) {
+			JOptionPane.showMessageDialog(this, "하위 카테고리를 선택하세요");
+		} else if (t_product_name.getText().length() < 1) {
+			JOptionPane.showMessageDialog(this, "상품명을 입력하세요");
+		} else if (t_brand.getText().length() < 1) {
+			JOptionPane.showMessageDialog(this, "브랜드을 입력하세요");
+		} else if (t_price.getText().length() < 1) {
+			JOptionPane.showMessageDialog(this, "가격을 입력하세요");
+		} else if (t_discount.getText().length() < 1) {
+			JOptionPane.showMessageDialog(this, "할인가을 입력하세요");
+		} else if (t_color.getMinSelectionIndex() == -1) {
+			JOptionPane.showMessageDialog(this, "적어도 1개 이상의 색상을 선택하세요");
+		} else if (t_size.getMinSelectionIndex() == -1) {
+			JOptionPane.showMessageDialog(this, "적어도 1개 이상의 사이즈를 선택하세요");
+		} else if (files.length < 1) {
+			JOptionPane.showMessageDialog(this, "상품 이미지를 입력하세요");
+		} else if (t_introduce.getText().length() < 1) {
+			JOptionPane.showMessageDialog(this, "상품 소개를 입력하세요");
+		} else if (t_detail.getText().length() < 1) {
+			JOptionPane.showMessageDialog(this, "상세내용 입력하세요");
+		} else {
+			upload();
+			
+			insert();
+		}
+
 	}
 
 }
