@@ -103,9 +103,9 @@ public class StreamStudy {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			if(fis !=null) {
+			if(buffr !=null) {
 				try {
-					fis.close();
+					buffr.close();
 				}catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.sinse.NetworkApp.echo;
+package chat.server;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

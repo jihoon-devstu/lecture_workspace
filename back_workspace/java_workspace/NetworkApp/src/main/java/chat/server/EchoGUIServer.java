@@ -1,4 +1,4 @@
-package com.sinse.NetworkApp.echo;
+package chat.server;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -56,10 +56,9 @@ public class EchoGUIServer extends JFrame{
 	}
 	
 	public void runServer() {
-		String port = t_port.getText();
 		
 		try {
-			server = new ServerSocket(Integer.parseInt(port));
+			server = new ServerSocket(Integer.parseInt(t_port.getText()));
 			area.append("서버 생성 및 접속자 청취중..\n");
 			
 			Socket socket = server.accept();
