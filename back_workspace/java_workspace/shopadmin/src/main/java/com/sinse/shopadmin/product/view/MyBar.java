@@ -46,9 +46,9 @@ public class MyBar extends JProgressBar implements Runnable {
 	}
 
 	// 진행율을 표시하는 메서드
-	public void showRate(int n) {
+	public void showRate(int v) {
 		// 프로그래스 바의 진행율을 표시 -> 내가 읽어들인 량*100 / 총 파일의 용량
-
+		n+=v;
 		this.setValue((int) (n * 100 / origin.length()));
 	}
 
@@ -90,7 +90,15 @@ public class MyBar extends JProgressBar implements Runnable {
 				read = fis.read(buff);
 				if(read==-1)break;
 				fos.write(buff, 0, read);
+				
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
 				showRate(read);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
