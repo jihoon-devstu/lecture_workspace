@@ -26,6 +26,9 @@ public class UploadDialog extends JDialog{
 			File dest = FileUtil.createFile(Config.PRODUCT_IMAGE_PATH, FileUtil.getExt(productPage.files[i].getName()));
 			
 			MyBar bar = new MyBar(productPage.files[i],dest);
+			Thread thread = new Thread(bar);
+			thread.start();
+			
 			dialog.add(bar);
 		}
 		
