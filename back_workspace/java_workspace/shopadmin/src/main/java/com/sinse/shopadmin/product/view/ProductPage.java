@@ -1,6 +1,5 @@
 package com.sinse.shopadmin.product.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -26,9 +25,14 @@ import javax.swing.JTextField;
 
 import com.sinse.shopadmin.AppMain;
 import com.sinse.shopadmin.common.view.Page;
+import com.sinse.shopadmin.product.model.Color;
+import com.sinse.shopadmin.product.model.Product;
+import com.sinse.shopadmin.product.model.ProductColor;
 import com.sinse.shopadmin.product.model.SubCategory;
 import com.sinse.shopadmin.product.model.TopCategory;
 import com.sinse.shopadmin.product.repository.ColorDAO;
+import com.sinse.shopadmin.product.repository.ProductColorDAO;
+import com.sinse.shopadmin.product.repository.ProductDAO;
 import com.sinse.shopadmin.product.repository.SizeDAO;
 import com.sinse.shopadmin.product.repository.SubCategoryDAO;
 import com.sinse.shopadmin.product.repository.TopCategoryDAO;
@@ -66,6 +70,8 @@ public class ProductPage extends Page {
 	SubCategoryDAO subCategoryDAO;
 	ColorDAO colorDAO;
 	SizeDAO sizeDAO;
+	ProductDAO productDAO;
+	ProductColorDAO productColorDAO;
 
 	JFileChooser chooser;
 	Image[] imgArray; // 유저가 선택한 파일로부터 생성된 이미지 배열
@@ -73,7 +79,7 @@ public class ProductPage extends Page {
 
 	public ProductPage(AppMain appMain) {
 		super(appMain);
-		setBackground(Color.ORANGE);
+		setBackground(java.awt.Color.ORANGE);
 
 		// 생성
 		la_topcategory = new JLabel("최상위 카테고리");
@@ -120,6 +126,8 @@ public class ProductPage extends Page {
 		subCategoryDAO = new SubCategoryDAO();
 		colorDAO = new ColorDAO();
 		sizeDAO = new SizeDAO();
+		productDAO = new ProductDAO();
+		productColorDAO = new ProductColorDAO();
 
 		chooser = new JFileChooser("C:/lecture_workspace/frontend_workspace/images");
 		chooser.setMultiSelectionEnabled(true); // 다중 선택 가능하도록 설정..
@@ -300,8 +308,40 @@ public class ProductPage extends Page {
 	
 	//Mysql에 상품 등록 관련 쿼리 수행
 	public void insert() {
+		//productDAO 에게 일 시키기 !!
+		
+		//product 모델 인스턴스 1개를 만들어 , 안에다가 상품 등록폼의 데이터를 채워넣자 !!
+		Product product = new Product();
+		
+		product.setSubCategory((SubCategory)cb_subcategory.getSelectedItem());
+		product.setProduct_name(t_product_name.getText());
+		product.setBrand(t_brand.getText());
+		product.setPrice(Integer.parseInt(t_price.getText()));
+		product.setDiscount(Integer.parseInt(t_discount.getText()));
+		product.setIntroduce(t_introduce.getText());
+		product.setDetail(t_detail.getText());
+		//productDAO.insert
+		
+		int result = productDAO.insert(product);
 		
 		
+		int product_id = productDAO.selectRecentPk();
+		product.setProduct_id(product_id);
+		System.out.println("porduct_id" + product_id);
+		
+		//상품에 딸려있는 색상들 등록하기
+		List<Color> colorList = t_color.getSelectedValuesList();
+		
+		for (Color color:colorList){
+			
+			//ProductColor 에 어떤 상품이 어떤 색상을....
+			ProductColor productColor = new ProductColor();
+			//어떤 상품이?
+			//어떤 색상을?
+			productColor.setProduct(product);
+			productColor.setColor(color);
+			productColorDAO.insert(productColor);
+		}
 		
 	}
 

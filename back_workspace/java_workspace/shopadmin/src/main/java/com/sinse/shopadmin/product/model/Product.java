@@ -12,6 +12,7 @@ public class Product {
 	private int discount;
 	private String introduce;
 	private String detail;
+	private SubCategory subCategory; //ERD상에서는 자식이 부모의 pk숫자를 보유하지만 , java에서는 부모를 객체형으로 보유해야함.
 	private List<Color> colorList; //보유색상
 	private List<Size> sizeList; //보유사이즈
 	
@@ -57,6 +58,12 @@ public class Product {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+	public SubCategory getSubCategory() {
+		return subCategory;
+	}
+	public void setSubCategory(SubCategory subCategory) {
+		this.subCategory = subCategory;
+	}
 	public List<Color> getColorList() {
 		return colorList;
 	}
@@ -69,5 +76,8 @@ public class Product {
 	public void setSizeList(List<Size> sizeList) {
 		this.sizeList = sizeList;
 	}
+
+	
+	
 
 }
