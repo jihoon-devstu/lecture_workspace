@@ -28,11 +28,16 @@ import com.sinse.shopadmin.common.view.Page;
 import com.sinse.shopadmin.product.model.Color;
 import com.sinse.shopadmin.product.model.Product;
 import com.sinse.shopadmin.product.model.ProductColor;
+import com.sinse.shopadmin.product.model.ProductImg;
+import com.sinse.shopadmin.product.model.ProductSize;
+import com.sinse.shopadmin.product.model.Size;
 import com.sinse.shopadmin.product.model.SubCategory;
 import com.sinse.shopadmin.product.model.TopCategory;
 import com.sinse.shopadmin.product.repository.ColorDAO;
 import com.sinse.shopadmin.product.repository.ProductColorDAO;
 import com.sinse.shopadmin.product.repository.ProductDAO;
+import com.sinse.shopadmin.product.repository.ProductImgDAO;
+import com.sinse.shopadmin.product.repository.ProductSizeDAO;
 import com.sinse.shopadmin.product.repository.SizeDAO;
 import com.sinse.shopadmin.product.repository.SubCategoryDAO;
 import com.sinse.shopadmin.product.repository.TopCategoryDAO;
@@ -72,10 +77,13 @@ public class ProductPage extends Page {
 	SizeDAO sizeDAO;
 	ProductDAO productDAO;
 	ProductColorDAO productColorDAO;
+	ProductSizeDAO productSizeDAO;
+	ProductImgDAO productImgDAO;
 
 	JFileChooser chooser;
 	Image[] imgArray; // 유저가 선택한 파일로부터 생성된 이미지 배열
 	File[] files; // 파일 복사 즉 업로드를 진행하려면 , 이미지가 아닌 파일을 대상으로 할 수 있다.
+	File[] newFiles;
 
 	public ProductPage(AppMain appMain) {
 		super(appMain);
@@ -128,6 +136,8 @@ public class ProductPage extends Page {
 		sizeDAO = new SizeDAO();
 		productDAO = new ProductDAO();
 		productColorDAO = new ProductColorDAO();
+		productSizeDAO = new ProductSizeDAO();
+		productImgDAO = new ProductImgDAO();
 
 		chooser = new JFileChooser("C:/lecture_workspace/frontend_workspace/images");
 		chooser.setMultiSelectionEnabled(true); // 다중 선택 가능하도록 설정..
@@ -305,43 +315,63 @@ public class ProductPage extends Page {
 		// 시각적 효과를 위해 각, 이미지의 업로드 진행율을 보여주자 , 새창으로...
 		UploadDialog dialog = new UploadDialog(this);
 	}
-	
-	//Mysql에 상품 등록 관련 쿼리 수행
+
+	// Mysql에 상품 등록 관련 쿼리 수행
 	public void insert() {
-		//productDAO 에게 일 시키기 !!
-		
-		//product 모델 인스턴스 1개를 만들어 , 안에다가 상품 등록폼의 데이터를 채워넣자 !!
+		// productDAO 에게 일 시키기 !!
+
+		// product 모델 인스턴스 1개를 만들어 , 안에다가 상품 등록폼의 데이터를 채워넣자 !!
 		Product product = new Product();
-		
-		product.setSubCategory((SubCategory)cb_subcategory.getSelectedItem());
+
+		product.setSubCategory((SubCategory) cb_subcategory.getSelectedItem());
 		product.setProduct_name(t_product_name.getText());
 		product.setBrand(t_brand.getText());
 		product.setPrice(Integer.parseInt(t_price.getText()));
 		product.setDiscount(Integer.parseInt(t_discount.getText()));
 		product.setIntroduce(t_introduce.getText());
 		product.setDetail(t_detail.getText());
-		//productDAO.insert
-		
+		// productDAO.insert
+
 		int result = productDAO.insert(product);
-		
-		
+
 		int product_id = productDAO.selectRecentPk();
 		product.setProduct_id(product_id);
 		System.out.println("porduct_id" + product_id);
-		
-		//상품에 딸려있는 색상들 등록하기
+
+		// 상품에 딸려있는 색상들 등록하기
 		List<Color> colorList = t_color.getSelectedValuesList();
-		
-		for (Color color:colorList){
-			
-			//ProductColor 에 어떤 상품이 어떤 색상을....
+
+		for (Color color : colorList) {
+
+			// ProductColor 에 어떤 상품이 어떤 색상을....
 			ProductColor productColor = new ProductColor();
-			//어떤 상품이?
-			//어떤 색상을?
+			// 어떤 상품이?
+			// 어떤 색상을?
 			productColor.setProduct(product);
 			productColor.setColor(color);
 			productColorDAO.insert(productColor);
 		}
+
+		List<Size> sizeList = t_size.getSelectedValuesList();
+		
+		for (Size size : sizeList) {
+			ProductSize productSize = new ProductSize(); // empty;
+			// 어떤 상품에
+			// 어떤 사이즈를
+			productSize.setProduct(product);
+			productSize.setSize(size);
+			productSizeDAO.insert(productSize);
+		}
+		
+		//상품에 딸려있는 이미지 등록
+		for (int i =0; i<newFiles.length;i++) {
+			File file = newFiles[i]; //업로드된 파일 객체를 꺼내보자
+			ProductImg productImg = new ProductImg();
+			productImg.setProduct(product);
+			productImg.setFilename(file.getName());
+			productImgDAO.insert(productImg);
+		}
+		
 		
 	}
 
@@ -373,7 +403,7 @@ public class ProductPage extends Page {
 			JOptionPane.showMessageDialog(this, "상세내용 입력하세요");
 		} else {
 			upload();
-			
+
 			insert();
 		}
 

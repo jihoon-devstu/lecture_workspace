@@ -92,7 +92,7 @@ public class MyBar extends JProgressBar implements Runnable {
 				fos.write(buff, 0, read);
 				
 				try {
-					Thread.sleep(100);
+					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
