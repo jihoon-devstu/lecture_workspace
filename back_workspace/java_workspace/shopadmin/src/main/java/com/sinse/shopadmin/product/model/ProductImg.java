@@ -6,7 +6,6 @@ public class ProductImg {
 	private String filename;
 	private Product product;
 	
-	
 	public int getProduct_img_id() {
 		return product_img_id;
 	}
@@ -25,5 +24,4 @@ public class ProductImg {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
-	
 }
