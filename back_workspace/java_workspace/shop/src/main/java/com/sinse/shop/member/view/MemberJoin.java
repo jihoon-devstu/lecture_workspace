@@ -4,13 +4,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.sinse.shop.AppMain;
 import com.sinse.shop.common.config.Config;
+import com.sinse.shop.common.exception.EmailException;
+import com.sinse.shop.common.exception.MemberException;
+import com.sinse.shop.common.util.MailSender;
 import com.sinse.shop.common.view.Page;
+import com.sinse.shop.member.model.Member;
+import com.sinse.shop.member.repository.MemberDAO;
 
 public class MemberJoin extends Page{
 	
@@ -20,6 +26,8 @@ public class MemberJoin extends Page{
 	JTextField t_name;
 	JTextField t_email;
 	JButton bt;
+	MemberDAO memberDAO;
+	MailSender mailSender;
 	
 	public MemberJoin(AppMain appMain) {
 		super(appMain);
@@ -32,10 +40,12 @@ public class MemberJoin extends Page{
 		t_name = new JTextField();
 		t_email = new JTextField();
 		bt = new JButton("JOIN");
+		memberDAO=new MemberDAO();
 		
 		//스타일
 		p_container.setPreferredSize(new Dimension(300, 200));
 		Dimension d = new Dimension(220,28);
+		mailSender = new MailSender();
 		
 		t_id.setPreferredSize(d);
 		t_pwd.setPreferredSize(d);
@@ -52,6 +62,10 @@ public class MemberJoin extends Page{
 		
 		add(p_container);
 		
+		bt.addActionListener(e->{
+			join();
+		});
+		
 		setBackground(Color.PINK);
 		setPreferredSize(new Dimension(Config.SHOPMAIN_WIDTH, Config.SHOPMAIN_HEIGHT- Config.NAVI_HEIGHT-Config.UTIL_HEIGHT));
 		setVisible(true);
@@ -59,7 +73,20 @@ public class MemberJoin extends Page{
 	
 	
 	public void join() {
+		Member member = new Member();
+		member.setId(t_id.getText());
+		member.setPwd(new String(t_pwd.getPassword()));
+		member.setName(t_name.getText());
+		member.setEmail(t_email.getText());//실제 사용할 이메일 
 		
+		try {
+			memberDAO.insert(member);
+			//이메일 전송
+			mailSender.sendHtml(member.getEmail(), "회원가입 축하드립니다", "저희 회원이 되어 주셔서 감사합니다");
+			JOptionPane.showMessageDialog(this, "회원가입 완료");	
+		} catch (MemberException | EmailException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+			e.printStackTrace();
+		}
 	}
-	
-}
+}	
