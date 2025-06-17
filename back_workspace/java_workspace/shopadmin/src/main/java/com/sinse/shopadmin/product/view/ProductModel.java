@@ -11,7 +11,7 @@ import com.sinse.shopadmin.product.repository.ProductDAO;
 public class ProductModel extends AbstractTableModel {
 	ProductDAO productDAO;
 	List<Product> list;
-	String[] column = { "topcategory_id", "top_name", "subcategory_id", "sub_name", "product_id", "product_name",
+	String[] column = { "top_category_id", "top_name", "subcategory_id", "sub_name", "product_id", "product_name",
 			"brand", "price", "discount", "introduce", "detail" };
 
 	public ProductModel() {

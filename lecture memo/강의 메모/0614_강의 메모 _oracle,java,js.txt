@@ -3,21 +3,35 @@
 
 수업 시작.
 
+내가 만든 자바 파일을 유저 PC에 두는게 아니라 , 서버에 두어야 함.
+
+
+--------------------------------------------------------------------------------------------------------
+
+http://192.168.60.46:8282/index.html 
+
+--> 내 서버 가동 후 (톰캣 , bin 에서 cmd 키고 startup)
+--> backend - javaee - mysite 에 있는 파일 열기.
+
+	mysite --> WEB-INF/classes/src
 
 
 
 --------------------------------------------------------------------------------------------------------
 
 
+서블릿은 클래스이므로 , 웹브라우저에서 직접 클래스명을 명시하여 접속할 수 없다.
+따라서 , 브라우저에서 클래스에 접근할 수 있도록 , 간접 맵핑을 시도한다.
 
+<servlet>
+	<servlet-name>MyServlet</servlet-name>
+	<servlet-class>com.sinse.mysite.test.MyName</servlet-class>
+</servlet>
 
-
-
-
---------------------------------------------------------------------------------------------------------
-
-
-
+<servlet-mapping>
+	<servlet-name>MyServlet</servlet-name>
+	<url-pattern>/test</url-pattern>
+</servlet-mapping>
 
 
 

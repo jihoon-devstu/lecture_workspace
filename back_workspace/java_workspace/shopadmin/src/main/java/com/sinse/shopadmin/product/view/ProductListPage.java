@@ -29,11 +29,6 @@ public class ProductListPage extends Page{
 		add(scroll);
 		
 		
-		
-		
 	}
-	
-	
-	
 	
 }
