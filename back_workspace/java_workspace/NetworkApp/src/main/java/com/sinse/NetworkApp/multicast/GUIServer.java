@@ -31,7 +31,8 @@ public class GUIServer extends JFrame implements Runnable {
 	//ArrayLish도 가능은 하지만 , 다중 쓰레드 환경에서 쓰레드들간의 동기화를 지원하지 않으므로,
 	//운이 없 다면 , ArrayList[] 특정 인덱스에 동시에 쓰레드가 접근하게 되는 상황이 발생할수도있음.
 	//이 경우 , 개발자가 syncronized {} 블럭으로 코드를 감싸면 , 특정 쓰레드가 해당 블럭을 실행하는 동안
-	// 다른 쓰레드는 대기에 빠진다.
+	// 다른 쓰레드는 대기에 빠지며 , 동기로 안전하게 실행할 수 있다.
+	//Vector는 이미 동기화 처리가 되어있다.
 	
 	Vector<ServerThread> vec = new Vector<>();
 

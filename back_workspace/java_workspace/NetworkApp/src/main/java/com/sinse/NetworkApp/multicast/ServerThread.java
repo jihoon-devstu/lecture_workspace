@@ -11,7 +11,7 @@ import java.net.Socket;
 //대화가 가능 하려면 , 입력 , 출력 스트림이 필요함
 public class ServerThread extends Thread {
 	GUIServer guiServer;
-	Socket socket; //서버로부터 넘겨받을 소켓 , 스트림을 뽑을 수 있으므로...
+	Socket socket; // 서버로부터 넘겨받을 소켓 , 스트림을 뽑을 수 있으므로...
 	BufferedReader buffr;
 	BufferedWriter buffw;
 
@@ -29,6 +29,12 @@ public class ServerThread extends Thread {
 		}
 
 	}
+	
+	public void run() {
+		while (true) {
+			listen();
+		}
+	}
 
 	public void listen() {
 		String msg = null;
@@ -36,10 +42,20 @@ public class ServerThread extends Thread {
 		try {
 			msg = buffr.readLine();
 			guiServer.area.append(msg + "\n");
-			send(msg);
+
+			//서버에 접속한 모든 유저와 1:1 대응하는 ServerChatThread 수만큼 반복하면서 메시지를 보내자
+			for (int i = 0; i < guiServer.vec.size(); i++) {
+				ServerThread st = guiServer.vec.get(i);
+				
+				st.send(msg);
+			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			guiServer.vec.remove(this);
+			//상대방 클라이언트가 나가버리면 (즉 소켓을 끊어버리면)
+			//나는 더이상 접속자 명단에 들어있으면 안되므로 , 
+			guiServer.area.append("현재 접속자" + guiServer.vec.size() + "\n");
 		}
 	}
 
@@ -53,10 +69,6 @@ public class ServerThread extends Thread {
 		}
 	}
 
-	public void run() {
-		while(true) {
-			listen();
-		}
-	}
+
 
 }

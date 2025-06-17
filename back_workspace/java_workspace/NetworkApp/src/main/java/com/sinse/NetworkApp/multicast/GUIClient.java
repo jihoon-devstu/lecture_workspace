@@ -30,11 +30,9 @@ public class GUIClient extends JFrame implements Runnable {
 	JTextField t_input;
 
 	Thread thread; // 접속 지연 시, 실행부가 대기 상태에 빠질 수 있으므로 ,메인쓰레드로 시도하지 말고,
-					// 별도의 쓰레드로 진행
-
-	Socket socket;
-	BufferedReader buffr;
-	BufferedWriter buffw;
+					// 별도의 쓰레드로 진행 --> 접속 쓰레드
+	
+	ClientChatThread chatThread; //채팅용 쓰레드
 
 	public GUIClient() {
 		p_north = new JPanel();
@@ -69,10 +67,9 @@ public class GUIClient extends JFrame implements Runnable {
 
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					// 보내고
-					send();
+					chatThread.send(t_input.getText());
 					t_input.setText("");
 					// 듣자
-					listen();
 				}
 			}
 		});
@@ -82,37 +79,14 @@ public class GUIClient extends JFrame implements Runnable {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
-	// 서버에 메세지 보내기
-	public void send() {
-		String msg = t_input.getText();
-
-		try {
-			buffw.write(msg + "\n");
-			buffw.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void listen() {
-		String msg = null;
-
-		try {
-			msg = buffr.readLine();
-			area.append(msg + "\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	public void connectServer() {
 
 		try {
-			socket = new Socket((String) box_ip.getSelectedItem(), Integer.parseInt(t_port.getText()));
-			buffr = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			buffw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
+			Socket socket = new Socket((String) box_ip.getSelectedItem(), Integer.parseInt(t_port.getText()));
+			
+			chatThread = new ClientChatThread(this,socket);
+			
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
