@@ -90,7 +90,6 @@ public class GUIClient extends JFrame implements Runnable {
 			buffw.write(msg + "\n");
 			buffw.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -102,7 +101,6 @@ public class GUIClient extends JFrame implements Runnable {
 			msg = buffr.readLine();
 			area.append(msg + "\n");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

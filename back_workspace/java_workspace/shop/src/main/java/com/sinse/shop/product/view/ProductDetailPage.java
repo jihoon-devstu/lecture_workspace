@@ -3,12 +3,17 @@ package com.sinse.shop.product.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import com.sinse.shop.AppMain;
 import com.sinse.shop.common.config.Config;
 import com.sinse.shop.common.view.Page;
+import com.sinse.shop.home.MainPage;
 
 public class ProductDetailPage extends Page{
 	
@@ -17,8 +22,12 @@ public class ProductDetailPage extends Page{
 	JPanel p_content; //상품 정보 감쌀 패널
 	JPanel p_big; //큰 이미지
 	
+	MainPage mainPage;
+	
 	public ProductDetailPage(AppMain appMain) {
 		super(appMain);
+		
+		mainPage = (MainPage)appMain.pages[Config.MAIN_PAGE];
 		
 		//생성
 		p_wrapper = new JPanel();
@@ -28,8 +37,16 @@ public class ProductDetailPage extends Page{
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.setColor(Color.RED);
-				g.fillRect(0, 0, this.getPreferredSize().getSize().width, this.getPreferredSize().getSize().height);
+				//g.setColor(Color.RED);
+				//g.fillRect(0, 0, this.getPreferredSize().getSize().width, this.getPreferredSize().getSize().height);
+				Image image = null;
+				try {
+					image = ImageIO.read(new File("c:/public/"+mainPage.product.getFilenameList().get(0)));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				g.drawImage(image, 0, 0, this.getPreferredSize().getSize().width, this.getPreferredSize().getSize().height, this);
 			}
 		};
 		
