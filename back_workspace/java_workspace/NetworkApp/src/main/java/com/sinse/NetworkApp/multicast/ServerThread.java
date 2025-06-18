@@ -29,7 +29,7 @@ public class ServerThread extends Thread {
 		}
 
 	}
-	
+
 	public void run() {
 		while (true) {
 			listen();
@@ -43,18 +43,18 @@ public class ServerThread extends Thread {
 			msg = buffr.readLine();
 			guiServer.area.append(msg + "\n");
 
-			//서버에 접속한 모든 유저와 1:1 대응하는 ServerChatThread 수만큼 반복하면서 메시지를 보내자
+			// 서버에 접속한 모든 유저와 1:1 대응하는 ServerChatThread 수만큼 반복하면서 메시지를 보내자
 			for (int i = 0; i < guiServer.vec.size(); i++) {
 				ServerThread st = guiServer.vec.get(i);
-				
+
 				st.send(msg);
 			}
 
 		} catch (IOException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			guiServer.vec.remove(this);
-			//상대방 클라이언트가 나가버리면 (즉 소켓을 끊어버리면)
-			//나는 더이상 접속자 명단에 들어있으면 안되므로 , 
+			// 상대방 클라이언트가 나가버리면 (즉 소켓을 끊어버리면)
+			// 나는 더이상 접속자 명단에 들어있으면 안되므로 ,
 			guiServer.area.append("현재 접속자" + guiServer.vec.size() + "\n");
 		}
 	}
@@ -68,7 +68,5 @@ public class ServerThread extends Thread {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }

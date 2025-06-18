@@ -39,10 +39,23 @@ http://192.168.60.46:8282/index.html
 --------------------------------------------------------------------------------------------------------
 
 
+create table sub_category(
+	sub_category_id int primary key auto_increment
+	, name varchar(50)
+	, top_category_id int
+	, constraint fk_top_category_sub_category foreign key(top_category_id)
+	  references top_category(top_category_id) 
+);
 
 
 
-
+create table product_img(
+	product_img_id int primary key auto_increment
+	, filename varchar(255)
+	, product_id int
+	, constraint fk_product_product_img foreign key(product_id)
+	 references product(product_id)
+);
 
 
 --------------------------------------------------------------------------------------------------------
