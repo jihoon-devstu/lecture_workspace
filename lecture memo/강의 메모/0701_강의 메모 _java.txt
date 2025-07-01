@@ -81,9 +81,11 @@ String user = request.getParameter("user");
 	그 안에 쿼리문 작성
 
 ex)
-	<select id="selectAll">
+	<select id="selectAll" resultType="com.sinse.boardapp.model.Notice">
 		select * from notice order by notice_id desc
 	</select>
+
+컬럼이 여러건이면 ArrayList 를 명시 안해도 알아서 잘 담김. 생략가능.
 
 
 
