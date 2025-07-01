@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.protocol.Resultset;
 import com.sinse.boardapp.exception.NoticeException;
 import com.sinse.boardapp.model.Notice;
 import com.sinse.boardapp.pool.PoolManager;
@@ -57,6 +58,16 @@ public class NoticeDAO {
 	
 	//한건 가져오기
 	public Notice select() {
+		Connection con = poolManager.getConnection();
+		
+		PreparedStatement pstmt = null;
+		Resultset rs = null;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("");
+		
+		
+		
 		return null;
 	}
 	

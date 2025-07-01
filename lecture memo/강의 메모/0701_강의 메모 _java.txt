@@ -46,24 +46,44 @@ notice_id int primary key auto_increment
 
 --------------------------------------------------------------------------------------------------------
 
+쓰레드가 일하고 있을 때 , 쓰레드에 동시접속이 일어나지 않도록
+싱크로나이즈드가 필요함. (동기화)
 
-
-
-
-
-
-
---------------------------------------------------------------------------------------------------------
-
-
+-> A가 A메서드를 쓰고 있으면 , B는 A메서드를 쓰려면 A가 메서드 쓰는걸 기다렸다가 쓰게됨.
 
 
 
 
 --------------------------------------------------------------------------------------------------------
 
+파라미터는 "경로" 뒤에 붙이는 것이 HTTP의 규약 !!!
 
+[도메인] / [경로]?[파라미터]
+?엔 띄어쓰기도 안됨 !!! 
+파라미터는 여러개 &로 구분해서 넘길 수 있음.
 
+<a href = "/notice/content.jsp?notice_id=<%=notice.getNotice_id()%>&user=<%=notice.getWriter()%>">
+
+String notice_id = request.getParameter("notice_id");
+String user = request.getParameter("user");
+
+--------------------------------------------------------------------------------------------------------
+
+1. mybatis 받아와서 dependency 넣기.
+2. help 이클립스 마켓플레이스에서 mybatips 다운로드
+3. mybatis-3-config.dtd 파일 받기
+4. Mybatis-config.xml (xml 파일) 만들기
+5. mybatis-3-mapper.dtd 파일 받기
+6. ctrl + n 한 다음 mybatis 파일 생성
+7. xml파일 및 mybatis 파일에 링크 대신 SYSTEM "파일명 붙여넣기"
+
+8. mybatis 파일 안에 /mapper 아래로 내려놓고
+	그 안에 쿼리문 작성
+
+ex)
+	<select id="selectAll">
+		select * from notice order by notice_id desc
+	</select>
 
 
 

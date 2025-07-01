@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "mybatis-3-mapper.dtd">
+<mapper namespace="com.sinse.boardapp.mybatis.NoticeMapper">
+
+	<!-- 기존의 DAO의 업무였던 CRUD작업의 쿼리 작성을  -->
+
+	<select id="selectAll" resultType="com.sinse.boardapp.model.Notice">
+		select * from notice order by notice_id desc
+	</select>
+
+
+</mapper>
