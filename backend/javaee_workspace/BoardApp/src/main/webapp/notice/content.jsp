@@ -1,4 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+
+<%
+
+	String sql = "select * from notice where notice_id=?";
+	out.print(sql);
+
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
