@@ -2,7 +2,7 @@
 
 <%
 
-	int totalRecord= 521; //총 레코드 수
+	int totalRecord= 19; //총 레코드 수
 	int pageSize = 10; //한 페이지당 보여질 레코드 수
 	int totalPage = (int)Math.ceil((float)totalRecord/pageSize);
 	int blockSize = 10; //블럭당 보여질 페이지 수
@@ -10,14 +10,16 @@
 	if(request.getParameter("currentPage") !=null){ //페이지 파라미터가 넘어올때만...
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
-	int firstPage = (blockSize*((currentPage - 1) / blockSize))+1 ; //블럭당 시작 페이지78 = 71~80
+	int firstPage = (blockSize*((currentPage-1)/blockSize))+1 ; //블럭당 시작 페이지78 = 71~80
 			
-	int lastPage = firstPage+blockSize-1; //블럭당 마지막 페이지
+	int lastPage = firstPage+(blockSize-1); //블럭당 마지막 페이지
 %>
 <%="totalRecord="+totalRecord+"<br>" %>
 <%="pageSize="+pageSize+"<br>" %>
 <%="totalPage="+totalPage+"<br>" %>
 <%="blockSize="+blockSize+"<br>" %>
+<%="firstPage="+firstPage+"<br>" %>
+<%="lastPage="+lastPage+"<br>" %>
 
 
 <!DOCTYPE html>
@@ -41,6 +43,12 @@ th, td {
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+
+.pageNum{
+	font-size:27px;
+	font-weight : bold;
+	color:red;
+}
 </style>
 </head>
 <body>
@@ -61,11 +69,15 @@ tr:nth-child(even) {
   <tr>
   			
   	<td colspan="3" align="center">
-  			<a href="#">◀</a>
-			<%for(int i =1; i<=blockSize;i++){ %>
-			<a href="/board/list.jsp?currentPage=<%=i%>">[<%=i%>]</a>
+  		<% if(firstPage-1 > 0){%>
+  			<a href="/board/list.jsp?currentPage=<%=firstPage-1%>">◀</a>
+  			<%}else{ %>
+  				<a href="javascript:alert('이전 페이지가 없습니다')">◀</a>
+  			<%} %>
+			<%for(int i =firstPage; i<=lastPage;i++){ %>
+			<a <%if(i == currentPage){ %>class = "pageNum" <%} %> href="/board/list.jsp?currentPage=<%=i%>">[<%=i%>]</a>
 			<%} %>
-			<a href="#">▶</a>
+			<a href="/board/list.jsp?currentPage=<%=lastPage+1%>">▶</a>
 	</td>
   </tr>
   
