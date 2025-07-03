@@ -2,7 +2,7 @@
 
 <%
 
-	int totalRecord= 278; //총 레코드 수
+	int totalRecord= 158; //총 레코드 수
 	int pageSize = 10; //한 페이지당 보여질 레코드 수
 	int totalPage = (int)Math.ceil((float)totalRecord/pageSize);
 	int blockSize = 10; //블럭당 보여질 페이지 수

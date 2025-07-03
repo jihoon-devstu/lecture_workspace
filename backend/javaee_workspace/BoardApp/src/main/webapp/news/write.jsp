@@ -39,25 +39,30 @@ input[type=submit]:hover {
 }
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<!-- include libraries(jQuery, bootstrap) -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<!-- include summernote css/js -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+<%@ include file = "/inc/head_link.jsp" %>
 
 <script type="text/javascript">
+
+
 	$(()=>{
-		//ìë¨¸ë¸í¸ ì°ë
+		//서머노트 연동
 		$("#content").summernote({
 			height : 250
 		});
+		
+		$("input[type='button']").click(()=>{
+			$("form").attr({
+				action:"/news/regist",
+				method : "POST"
+				//머리에 데이터를 실어 나르게 됨, 따라서 편지 봉투에 나르는 격. 문제1) 노출됨 / 문제2) 잘린다.
+				//body인 POST로 보내자. 
+				
+			});
+			$("form").submit();
+		})
+		
+		
 	});
-
 
 </script>
 
@@ -69,17 +74,17 @@ input[type=submit]:hover {
 <h3>Contact Form</h3>
 
 <div class="container">
-  <form action="/action_page.php">
+  <form>
     <label for="fname">Title</label>
-    <input type="text" id="fname" name="firstname" placeholder="ì ëª© ìë ¥..">
+    <input type="text" id="fname" name="title" placeholder="제목 입력..">
 
     <label for="lname">Writer</label>
-    <input type="text" id="lname" name="lastname" placeholder="ìì±ì ìë ¥..">
+    <input type="text" id="lname" name="writer" placeholder="작성자 입력..">
 
     <label for="subject">Content</label>
-    <textarea id="content" name="subject" placeholder="ë´ì© ìë ¥.." style="height:200px"></textarea>
+    <textarea id="content" name="content" placeholder="내용 입력.." style="height:200px"></textarea>
 
-    <input type="submit" value="Submit">
+    <input type="button" value="Submit">
   </form>
 </div>
 

@@ -5,7 +5,7 @@
 	<typeAliases>
 		<typeAlias type="com.sinse.boardapp.model.Notice" alias="Notice"/>
 		<typeAlias type="com.sinse.boardapp.model.News" alias="News"/>
-		<typeAlias type="com.sinse.boardapp.model.Commnet" alias="Comment"/>
+		<typeAlias type="com.sinse.boardapp.model.Comment" alias="Comment"/>
 	</typeAliases>
   <environments default="development">
     <environment id="development">
