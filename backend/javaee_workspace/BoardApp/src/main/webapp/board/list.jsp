@@ -2,7 +2,7 @@
 
 <%
 
-	int totalRecord= 19; //총 레코드 수
+	int totalRecord= 278; //총 레코드 수
 	int pageSize = 10; //한 페이지당 보여질 레코드 수
 	int totalPage = (int)Math.ceil((float)totalRecord/pageSize);
 	int blockSize = 10; //블럭당 보여질 페이지 수
@@ -13,6 +13,9 @@
 	int firstPage = (blockSize*((currentPage-1)/blockSize))+1 ; //블럭당 시작 페이지78 = 71~80
 			
 	int lastPage = firstPage+(blockSize-1); //블럭당 마지막 페이지
+	if(totalPage<lastPage){
+		lastPage = totalPage;
+	};
 %>
 <%="totalRecord="+totalRecord+"<br>" %>
 <%="pageSize="+pageSize+"<br>" %>
@@ -77,7 +80,9 @@ tr:nth-child(even) {
 			<%for(int i =firstPage; i<=lastPage;i++){ %>
 			<a <%if(i == currentPage){ %>class = "pageNum" <%} %> href="/board/list.jsp?currentPage=<%=i%>">[<%=i%>]</a>
 			<%} %>
+			<%if(lastPage<totalPage){ %>
 			<a href="/board/list.jsp?currentPage=<%=lastPage+1%>">▶</a>
+			<%} %>
 	</td>
   </tr>
   
