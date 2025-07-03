@@ -14,12 +14,19 @@ public class NewsDAO {
 	MybatisConfig config = MybatisConfig.getInstance();
 	//모든 레코드 가져오기
 	public List selectAll() {
-		return null;
+		SqlSession sqlSession = config.getSqlSession();
+		List list = sqlSession.selectList("News.selectAll");
+		sqlSession.close();
+		return list;
 	}
 	
 	//레코드 1건 가져오기
 	public News select(int news_id) {
-		return null;
+		SqlSession sqlSession = config.getSqlSession();
+		News news = sqlSession.selectOne("News.select", news_id);
+		sqlSession.close();
+		return news;
+	
 	}
 	
 	//레코드 1건 입력하기
@@ -31,6 +38,7 @@ public class NewsDAO {
 			throw new NewsException("등록 실패");
 		}
 		sqlSession.commit();
+		sqlSession.close();
 	}
 	
 	//레코드 1건 수정하기

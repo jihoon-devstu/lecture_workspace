@@ -1,21 +1,19 @@
+<%@page import="com.sinse.boardapp.util.Paging"%>
+<%@page import="com.sinse.boardapp.model.News"%>
+<%@page import="java.util.List"%>
+<%@page import="com.sinse.boardapp.repository.NewsDAO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%
-	int totalRecord=278; //총 레코드 수
-	int pageSize =10; //페이지당 보여질 레코드 수
-	int totalPage = (int)Math.ceil((float)totalRecord/pageSize); //총 페이지수
-	int blockSize = 10; //블럭당 보여질 페이지 수
-	int currentPage =1; //현재 보고있는 페이지
-	if(request.getParameter("currentPage")!=null){ //페이지가 넘어올때만
-	currentPage = Integer.parseInt(request.getParameter("currentPage"));
-	}
-	
-	int firstPage = currentPage - (currentPage-1)%blockSize; //블럭당 시작 페이지
-	int lastPage = firstPage+(blockSize-1); //블럭당 마지막 페이지
-	
-	int num = totalRecord-((currentPage-1)*pageSize);
 
+<%! 
+	NewsDAO newsDAO = new NewsDAO(); 
+	Paging paging = new Paging();
 %>
-<%="currentPage =" +currentPage %>
+<%
+
+	List<News> newsList = newsDAO.selectAll();
+	//페이징 객체에게 계산을 맡긴다.
+	paging.init(newsList, request);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -49,8 +47,7 @@ tr:nth-child(even) {
 a{text-decoration: none}
 </style>
 
-<%@ include file = "/inc/head_link.jsp" %>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
 
 	$(()=>{
@@ -72,24 +69,35 @@ a{text-decoration: none}
 			<th>작성일</th>
 			<th>조회수</th>
 		</tr>
-		<%for(int i=1; i<=pageSize;i++) {%>
-		<%if(num<1) break; %>
+		<%
+		int curPos = paging.getCurPos();
+		int num = paging.getNum();
+		%>
+		<%for(int i=1;i<=paging.getPageSize();i++) {%>
+		<%if (curPos >= newsList.size() || num < 1) break; %>
+		<%News news = newsList.get(curPos++);%>
 		<tr>
-			<td><%=num-- %></td>
-			<td>Smith</td>
-			<td>50</td>
-			<td>50</td>
-			<td>50</td>
+			<td><%=num--%></td>
+			<td><a href = "/news/content.jsp?news_id=<%=news.getNews_id()%>"><%=news.getTitle()%></a>[<%=news.getCommentList().size() %>]</td>
+			<td><%=news.getWriter()%></td>
+			<td><%=news.getRegdate()%></td>
+			<td><%=news.getHit()%></td>
 		</tr>
 		<%} %>
 		<tr>
 			<td colspan="5">
-				<a href = "#">◀</a>
-				<%for(int i =firstPage; i<=lastPage;i++){ %> 
-				<%if(i>totalPage) break; %>
-					<a <%if(currentPage ==i) {%>class = "pageNum" <%} %>href = "/news/list.jsp?currentPage=<%=i%>">[<%=i %>]</a>
+  		<% if(paging.getFirstPage()-1 > 0){%>
+  			<a href="/news/list.jsp?currentPage=<%=paging.getFirstPage()-1%>">◀</a>
+  			<%}else{ %>
+  				<a href="javascript:alert('이전 페이지가 없습니다')">◀</a>
+  			<%} %>
+				<%for(int i =paging.getFirstPage(); i<=paging.getLastPage();i++){ %> 
+				<%if(i>paging.getTotalPage()) break; %>
+					<a <%if(paging.getCurrentPage() ==i) {%>class = "pageNum" <%} %>href = "/news/list.jsp?currentPage=<%=i%>">[<%=i %>]</a>
 				<%} %>
-				<a href = "#">▶</a>
+			<%if(paging.getLastPage()<paging.getTotalPage()){ %>
+			<a href="/news/list.jsp?currentPage=<%=paging.getLastPage()+1%>">▶</a>
+			<%} %>
 			</td>
 		</tr>
 		
