@@ -10,7 +10,6 @@ public class Emp {
 	private int mgr;
 	private String hiredate;
 	private int sal;
-	private int comm;
-	private int deptno;
-	
+	private int comm;	
+	private Dept dept;
 }

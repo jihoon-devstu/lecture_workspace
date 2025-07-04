@@ -22,7 +22,6 @@
 			<th>loc</th>
 			<th>근무자수</th>
 		</tr>
-		
 		<%for(Dept dept : list){ %>
 		<tr>
 			<td><%=dept.getDeptno() %></td>
