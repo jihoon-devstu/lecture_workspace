@@ -118,20 +118,34 @@ select e.deptno , dname , loc , empno, ename, job, mgr, hiredate, sal, comm
 from dept d , emp e
 where d.deptno = e.deptno
 
-SELECT d.deptno, d.dname, d.loc,
-       e.empno, e.ename, e.job, e.mgr, e.hiredate, e.sal, e.comm
-FROM dept d
-LEFT OUTER JOIN emp e ON d.deptno = e.deptno;
---------------------------------------------------------------------------------------------------------
-
-
-
-
-
+select d.deptno, d.dname, d.loc, count(ename)
+from dept d LEFT OUTER JOIN emp e 
+ON d.deptno = e.deptno
+group by d.deptno, d.dname, d.loc;
 
 --------------------------------------------------------------------------------------------------------
 
 
+자바의 로그의 레벨 : trace < debug < info < warn < error < fatal
+
+	trace : 너무나 많은 사소한 정보까지 출력됨 (운영 환경에서는 꺼놓기)
+			for()문에서 i값 출력
+			
+	debug : trace 다음으로 많은 정보가 출력 , 파라미터 값 출력 , 변수값 출력 (운영 환경에서는 꺼놓기)
+	
+	info : 프로그램의 흐름을 체크, 예) 실행부가 어떤 메서드에 도달했고 , 수행하는지...(운영 환경에서는 꺼놓기)
+	
+	warn : 경고 상황 (당장은 에러가 없으나 , 주의를 요하는 것들) - 운영환경 에선 On
+	
+	error : 오류 발생 (예외 처리 시) - - 운영환경 에선 On
+
+--------------------------------------------------------------------------------------------------------
+
+이 서블릿의 요청을 시도할 때, 웹 컨테이너에선 세션 객체를 생성하면서 , 동시에 세션 ID가 할당됨.
+그리고 이 세션 아이디는 톰켓이 보내는 응답 정보에 쿠키 형태로 존재하게 됨...
+단 , 세션과 세션아이디는 매 요청마다 만들어지는것이 아니라 , 클라이언트가 요청 시 톰 켓이 발급한 쿠키가 
+존재하지 않을 때는 새로 만들고, 요청 후,일정 시간동안 아무런 재요청이 없을때는 사용하지 않는 것으로 판단하여
+새롭게 세션을 할당함.
 
 
 
