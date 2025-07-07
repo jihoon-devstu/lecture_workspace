@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.sinse.hiberasync.exception.FoodTypeException;
 import com.sinse.hiberasync.hibernate.HibernateConfig;
 import com.sinse.hiberasync.model.FoodType;
 
@@ -15,7 +16,7 @@ public class FoodTypeDAO {
 
 	
 	//모든 업종 유형 가져오기
-	public List selectAll() {
+	public List selectAll() throws FoodTypeException{
 		Transaction tx = null;
 		List list = null;
 		
@@ -33,8 +34,10 @@ public class FoodTypeDAO {
 		list = query.getResultList();
 		tx.commit();
 		
-		}catch() {
-			
+		}catch(FoodTypeException e) {
+			e.printStackTrace();
+			if(tx!=null)tx.rollback();
+			throw new FoodTypeException("데이터 조회 실패",e);
 		}
 		return list;
 	}
