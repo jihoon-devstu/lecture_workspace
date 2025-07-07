@@ -42,6 +42,7 @@ public class FoodTypeList extends HttpServlet{
 		String result = gson.toJson(list); //java.util.List를 json 문자열로 변환 , 문자열이기 때문에 전송 가능.
 		
 		logger.debug("문자열로 변환 후 데이터" + result);
+		out.print(result); //저장해놓으면 , Tomcat이 응답컨텐츠로 만들어서 보낸다...
 	}
 	
 }
