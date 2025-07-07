@@ -39,18 +39,7 @@
     <Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
   
   	<!-- 톰켓이 지원하는 커넥션 풀 -->
-  	<Resource 
-  		name="jndi/mysql"
-  		auth="Container"
-  		type="javax.sql.DataSource"
-  		driverClassName="com.mysql.cj.jdbc.Driver"
-  		url="jdbc:mysql://localhost:3306/spring4"
-  		username="spring4"
-  		password="1234"
-  		maxTotal="20"
-  		maxIdle="10"
-  		maxWaitMillis="-1"
-  		/>
+  	<Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="10" maxTotal="20" maxWaitMillis="-1" name="jndi/mysql" password="1234" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/spring4" username="spring4"/>
   </GlobalNamingResources>
 
   <!-- A "Service" is a collection of one or more "Connectors" that share
@@ -176,18 +165,14 @@
 
       <Context docBase="BoardApp" path="/BoardApp" reloadable="true" source="org.eclipse.jst.jee.server:BoardApp"/>
       
-      <Context docBase="memberapp" path="/" reloadable="true" source="org.eclipse.jst.jee.server:memberapp">
+      <Context docBase="memberapp" path="/memberapp" reloadable="true" source="org.eclipse.jst.jee.server:memberapp">
       
       <!-- 이클립스 내부 톰켓(테스트 및 개발용 일 때) -->
-      <ResourceLink 
-      	name="jndi/mysql"
-      	global="jndi/mysql"
-      	type="javax.sql.DataSource"
-      />
+      <ResourceLink global="jndi/mysql" name="jndi/mysql" type="javax.sql.DataSource"/>
       
-      </Context>>
+      </Context>&gt;
       
-      </Host>
+      <Context docBase="hiberasync" path="/" reloadable="true" source="org.eclipse.jst.jee.server:hiberasync"/></Host>
     </Engine>
   </Service>
 </Server>
