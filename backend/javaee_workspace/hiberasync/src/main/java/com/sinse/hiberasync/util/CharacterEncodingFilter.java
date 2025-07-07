@@ -26,6 +26,7 @@ public class CharacterEncodingFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		request.setCharacterEncoding(encoding);
+		response.setCharacterEncoding(encoding);
 		//이 요청의 흐름을 그대로 흐르게 처리... (안해주면 요청은 여기서 막힘)
 		
 		//chain.doFilter()를 기준으로 이전에 코드를 작성하면, 요청이 들어올 때 하고싶은 작업을 처리....
