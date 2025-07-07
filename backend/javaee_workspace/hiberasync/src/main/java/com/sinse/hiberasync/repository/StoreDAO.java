@@ -49,4 +49,23 @@ public class StoreDAO {
 		return list;
 	}
 	
+	//레코드 1건 조회하기
+	
+	public Store select(int store_id) throws StoreException{
+		Transaction tx = null;
+		Store store = null;
+		try(Session session = config.getSession()){
+			tx = session.beginTransaction();
+			store = session.get(Store.class, store_id);
+			tx.commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+			if(tx!=null)tx.rollback();
+			throw new StoreException("가게 조회 실패", e);
+		}
+		
+		
+		return store;
+	}
+	
 }
