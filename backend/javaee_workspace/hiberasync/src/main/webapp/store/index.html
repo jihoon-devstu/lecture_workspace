@@ -65,7 +65,7 @@ tr:nth-child(even) {
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
-	function getFoodList(){
+	function getFoodList(target){
 		//화면 전체 X가 아니라 , 화면의 일부 영역을 바꾸기 원함... 따라서 서버로 부터 가져올 대상은 html이 아닌 데이터이다.
 		//js의 실행부는 서버에 데이터를 전송하고 , 받는 능력이 없다 !! 
 		//크롬과 같은 브라우저로 하여금 , 데이터를 서버에 전송하고, 서버가 응답을 할 때 데이터를 받아올 수 있도록 
@@ -91,7 +91,7 @@ tr:nth-child(even) {
 			for(let i = 0; i<list.length;i++){
 				tag+="<option value ='"+list[i].food_type_id+"'>"+list[i].title+"</option>"
 			}
-			$("#aside_regist select").html(tag); //innerHTML
+			$(target).html(tag); //innerHTML
 		}
 		
 		xhttp.send(); //전송이 발생하는 시점.
@@ -102,11 +102,17 @@ tr:nth-child(even) {
 	
 		console.log(store_id);
 		let xhttp = new XMLHttpRequest();
+
 		
 		xhttp.open("GET", "/store/detail?store_id="+store_id);
+
 		xhttp.onload=function(){
-			
-		
+			let detail = JSON.parse(this.responseText);
+			 
+			$("#aside_detail input[name='store_id']").val(detail.store_id);
+			$("#aside_detail input[name='store_name']").val(detail.store_name);
+			$("#aside_detail input[name='tel']").val(detail.tel);
+			$("#aside_detail select").val(detail.foodType.food_type_id);
 		
 		};
 		xhttp.send();
@@ -175,12 +181,52 @@ tr:nth-child(even) {
 		
 	}
 	
+	function edit(){
+		let xhttp = new XMLHttpRequest();
+		xhttp.open("POST","/store/edit");
+		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		
+		xhttp.onload=function(){
+			if(this.status ==204){
+				//새롭게 갱신될 목록을 요청
+				getStoreList(); 
+			}else{
+				let json = JSON.parse(this.responseText);
+				alert(json.msg);
+			}
+		
+		}
+		//우측 영역의 입력 컴포넌트로부터 값을 대입하자 ! 
+		let param="store_id="+$("#aside_detail input[name='store_id']").val();
+		param+="&store_name="+$("#aside_detail input[name='store_name']").val();
+		param+="&tel="+$("#aside_detail input[name='tel']").val();
+		param+="&food_type_id="+$("#aside_detail select").val();
+		
+		xhttp.send(param);
+	}
+	
+	function del(){
+
+	
+	}
 	$(()=>{
-		getFoodList();
+		getFoodList("#aside_regist select");
+		getFoodList("#aside_detail select")
 		getStoreList();
+		
+		
 		$("#aside_regist button").click(()=>{
 			regist();
 		});
+		
+		$("#bt_edit").click(()=>{
+			edit();
+		});
+		
+		$("#bt_del").click(()=>{
+			del();
+		});
+		
 	});
 </script>
 
@@ -209,10 +255,11 @@ tr:nth-child(even) {
         </div>
         <div id="aside_detail">
         	<select></select>
-            <input type="text" placeholder = "맛집 상호명">
-        	<input type="text" placeholder = "연락처">
-        	<button>수정</button>
-        	<button>삭제</button>
+        	<input type = "hidden" name = "store_id">
+            <input type="text" name = "store_name" placeholder = "맛집 상호명">
+        	<input type="text" name = "tel" placeholder = "연락처">
+        	<button id = "bt_edit">수정</button>
+        	<button id = "bt_del">삭제</button>
         </div>
     </div>
 
