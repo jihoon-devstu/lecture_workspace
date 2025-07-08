@@ -68,5 +68,15 @@
 		<url-pattern>/store/edit</url-pattern>
 	</servlet-mapping>
 	
+				<servlet>
+		<servlet-name>storeDel</servlet-name>
+		<servlet-class>com.sinse.hiberasync.servlet.StoreDel</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>storeDel</servlet-name>
+		<url-pattern>/store/del</url-pattern>
+	</servlet-mapping>
+	
 	
 </web-app>

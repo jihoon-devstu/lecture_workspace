@@ -206,7 +206,21 @@ tr:nth-child(even) {
 	}
 	
 	function del(){
-
+		let xhttp = new XMLHttpRequest();
+		xhttp.open("POST","/store/del");
+		xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		
+		xhttp.onload=function(){
+			if(this.status ==204){
+				//새롭게 갱신될 목록을 요청
+				getStoreList(); 
+			}else{
+				let json = JSON.parse(this.responseText);
+				alert(json.msg);
+			}
+		
+		}
+		xhttp.send("store_id="+$("#aside_detail input[name='store_id']").val());
 	
 	}
 	$(()=>{
@@ -220,11 +234,16 @@ tr:nth-child(even) {
 		});
 		
 		$("#bt_edit").click(()=>{
-			edit();
+			if(confirm("수정하시겠습니까?")){
+				edit();
+			}
+			
 		});
 		
 		$("#bt_del").click(()=>{
-			del();
+			if(confirm("삭제하시겠습니까?")){
+				del();
+			}
 		});
 		
 	});

@@ -85,4 +85,20 @@ public class StoreDAO {
 		
 	}
 	
+	//한건 삭제하기
+	
+	public void delete(Store store) {
+		Transaction tx = null;
+		
+		try(Session session =config.getSession()){
+			tx=session.beginTransaction();
+			session.delete(store);
+			tx.commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+			if(tx!=null)tx.rollback();
+			throw new StoreException("삭제 실패", e);
+		}
+	}
+	
 }
