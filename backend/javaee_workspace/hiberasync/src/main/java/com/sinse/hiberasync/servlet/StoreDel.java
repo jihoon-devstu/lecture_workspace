@@ -35,12 +35,14 @@ public class StoreDel extends HttpServlet{
 		try {
 			storeDAO.delete(store);
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			message.setResult("success");
+			message.setMsg("삭제 성공");
 		} catch (Exception e) {
 			e.printStackTrace();
 			message.setResult("fail");
 			message.setMsg(e.getMessage()); // 에러 메시지
-			out.print(gson.toJson(message)); // 메시지가 json 문자열로 변환된어 전송
 		}
+		out.print(gson.toJson(message)); // 메시지가 json 문자열로 변환된어 전송
 		
 	}
 }

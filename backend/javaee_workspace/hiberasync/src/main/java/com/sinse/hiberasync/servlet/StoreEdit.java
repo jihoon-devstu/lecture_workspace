@@ -47,11 +47,13 @@ public class StoreEdit extends HttpServlet{
 		try {
 			storeDAO.update(store);
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			message.setResult("success");
+			message.setMsg("수정 성공");
 		} catch (StoreException e) {
 			e.printStackTrace();
 			message.setResult("fail");
 			message.setMsg(e.getMessage()); // 에러 메시지
-			out.print(gson.toJson(message)); // 메시지가 json 문자열로 변환된어 전송
 		}
+		out.print(gson.toJson(message)); // 메시지가 json 문자열로 변환된어 전송
 	}
 }

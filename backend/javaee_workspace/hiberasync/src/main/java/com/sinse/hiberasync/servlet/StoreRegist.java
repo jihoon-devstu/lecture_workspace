@@ -29,10 +29,6 @@ public class StoreRegist extends HttpServlet{
 		String food_type_id = request.getParameter("food_type_id");
 		String store_name = request.getParameter("store_name");
 		String tel = request.getParameter("tel");
-		
-		logger.debug("food_type_id = "+food_type_id);
-		logger.debug("store_name = "+store_name);
-		logger.debug("tel = "+tel);
 
 		FoodType foodType = new FoodType();
 		foodType.setFood_type_id(Integer.parseInt(food_type_id));
@@ -55,11 +51,14 @@ public class StoreRegist extends HttpServlet{
 			//200,500 -> Http Status 코드 : 서버가 클라이언트에게 응답 시 보내는 코드 , (성공,실패...)
 			//IETF (Internet Engineering Task Force) - 인터넷 표준 프로토콜을 정의하는 국제 조직이 정함.
 			response.setStatus(HttpServletResponse.SC_CREATED); //201
+			message.setResult("success");
+			message.setMsg("등록 성공");
+			
 		} catch (StoreException e) {
 			e.printStackTrace();
 			message.setResult("fail");
 			message.setMsg(e.getMessage()); // 에러 메시지
-			out.print(gson.toJson(message)); // 메시지가 json 문자열로 변환된어 전송
 		}
+		out.print(gson.toJson(message)); // 메시지가 json 문자열로 변환된어 전송
 	}
 }
