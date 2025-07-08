@@ -87,12 +87,14 @@ public class StoreDAO {
 	
 	//한건 삭제하기
 	
-	public void delete(Store store) {
+	public void delete(Store store) throws StoreException{
 		Transaction tx = null;
 		
 		try(Session session =config.getSession()){
 			tx=session.beginTransaction();
-			session.delete(store);
+			if(store !=null) {
+				session.delete(store);
+			}
 			tx.commit();
 		}catch(Exception e) {
 			e.printStackTrace();
