@@ -10,10 +10,10 @@ import javax.servlet.http.HttpSession;
 
 import com.sinse.mvcapp.color.model.BloodManager;
 
-public class BloodController extends HttpServlet{
+public class BloodController implements Controller{
 	BloodManager bloodManager = new BloodManager();
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1) 요청을 받는다
 		String blood = request.getParameter("blood");
 		
