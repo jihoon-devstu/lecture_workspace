@@ -32,7 +32,11 @@ public class ColorController implements Controller{
 		session.setAttribute("msg",result);
 		
 		//result.jsp를 클라이언트가 보도록 처리
-		response.sendRedirect("/color/result.jsp"); //클라이언트로 하여금 지정된 url로 다시 요청을 해야함.
+		//클라이언트로 하여금 지정된 url로 다시 요청을 해야함.
 		//위 코드는 <script>location.href='/color/result.jsp'</script> 와 동일한 효과를 냄.
+	}
+	
+	public String getViewPage() {
+		return "/color/result/view";
 	}
 }

@@ -1,6 +1,6 @@
-<%@page import="com.sinse.boardapp.model.Notice"%>
+<%@page import="com.sinse.mvcapp.model.Notice"%>
 <%@page import="java.util.List"%>
-<%@page import="com.sinse.boardapp.repository.NoticeDAO"%>
+<%@page import="com.sinse.mvcapp.repository.NoticeDAO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%!//list.jsp가 톰켓에 의해 , 서블릿으로 작성될 때 멤버 영역 (선언부)
 	NoticeDAO noticeDAO;%>

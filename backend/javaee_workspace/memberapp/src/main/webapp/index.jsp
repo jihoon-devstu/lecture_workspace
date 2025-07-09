@@ -1,4 +1,4 @@
-<%@page import="com.sinse.memberapp.model.Member"%>
+<%@page import="com.sinse.mvcapp.model.Member"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 	<%
 		//이 서블릿의 요청을 시도할 때, 웹 컨테이너에선 세션 객체를 생성하면서 , 동시에 세션 ID가 할당됨.

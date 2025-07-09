@@ -1,4 +1,4 @@
-<%@page import="com.sinse.notice.model.Notice"%>
+<%@page import="com.sinse.mvcapp.model.Notice"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.ResultSet"%>

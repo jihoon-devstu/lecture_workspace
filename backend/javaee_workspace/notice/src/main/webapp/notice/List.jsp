@@ -1,4 +1,4 @@
-<%@page import="com.sinse.notice.model.Notice"%>
+<%@page import="com.sinse.mvcapp.model.Notice"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>

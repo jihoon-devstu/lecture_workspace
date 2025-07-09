@@ -1,6 +1,6 @@
-<%@page import="com.sinse.memberapp.model.Dept"%>
+<%@page import="com.sinse.mvcapp.model.Dept"%>
 <%@page import="java.util.List"%>
-<%@page import="com.sinse.memberapp.repository.DeptDAO"%>
+<%@page import="com.sinse.mvcapp.repository.DeptDAO"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%! DeptDAO deptDAO = new DeptDAO(); 

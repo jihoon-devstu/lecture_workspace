@@ -1,5 +1,5 @@
-<%@page import="com.sinse.memberapp.repository.EmpDAO"%>
-<%@page import="com.sinse.memberapp.model.Emp"%>
+<%@page import="com.sinse.mvcapp.repository.EmpDAO"%>
+<%@page import="com.sinse.mvcapp.model.Emp"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%!
