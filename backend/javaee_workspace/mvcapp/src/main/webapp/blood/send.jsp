@@ -7,7 +7,7 @@
 </head>
 <body>
 	
-	<form action="/blood/advice" method="get">
+	<form action="/blood.do" method="get">
 		<select name="blood">
 			<option value="">혈액형 선택</option>
 			<option value="A">A형</option>

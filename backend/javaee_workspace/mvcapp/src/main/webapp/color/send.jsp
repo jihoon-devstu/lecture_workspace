@@ -7,7 +7,7 @@
 </head>
 <body>
 	
-	<form action="/color/advice" method="get">
+	<form action="/color.do" method="get">
 		<select name="color">
 			<option value="">색상 선택</option>
 			<option value="red">Red</option>
