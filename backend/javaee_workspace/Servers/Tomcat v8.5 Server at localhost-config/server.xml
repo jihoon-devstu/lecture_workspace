@@ -172,7 +172,7 @@
       
       </Context>&gt;
       
-      <Context docBase="hiberasync" path="/" reloadable="true" source="org.eclipse.jst.jee.server:hiberasync"/></Host>
+      <Context docBase="hiberasync" path="/hiberasync" reloadable="true" source="org.eclipse.jst.jee.server:hiberasync"/><Context docBase="mvcapp" path="/" reloadable="true" source="org.eclipse.jst.jee.server:mvcapp"/></Host>
     </Engine>
   </Service>
 </Server>
