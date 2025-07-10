@@ -10,31 +10,36 @@ import mvcproject.notice.domain.Notice;
 import mvcproject.notice.repository.NoticeDAO;
 import mvcproject.web.servlet.Controller;
 
-public class DetailController implements Controller{
-
-	NoticeDAO noticeDAO = new NoticeDAO();
+public class EditController implements Controller{
 	
+	NoticeDAO noticeDAO = new NoticeDAO();
+	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//3단계 일 시키기
-		Notice notice = noticeDAO.select(Integer.parseInt(request.getParameter("notice_id")));
 		
-		//4단계 결과 저장
-		request.setAttribute("notice", notice);
+		String notice_id = request.getParameter("notice_id");
+		String title = request.getParameter("title");
+		String writer = request.getParameter("writer");
+		String content = request.getParameter("content");
 		
+		Notice notice = new Notice();
 		
+		notice.setNotice_id(Integer.parseInt(notice_id));
+		notice.setTitle(title);
+		notice.setWriter(writer);
+		notice.setContent(content);
+		
+		noticeDAO.update(notice);
 	}
 	
+	@Override
 	public String getViewName() {
-		
-		return "/notice/detail/view";
+		return "/notice/edit/view";
 	}
 	
 	@Override
 	public boolean isForward() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 	
-	
-	
+
 }
