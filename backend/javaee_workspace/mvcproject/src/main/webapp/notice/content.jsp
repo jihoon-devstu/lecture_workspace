@@ -1,7 +1,7 @@
 <%@page import="mvcproject.notice.domain.Notice"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
-	Notice notice=(Notice)session.getAttribute("notice");
+	Notice notice=(Notice)request.getAttribute("notice");
 %>
 
 <!DOCTYPE html>
@@ -82,7 +82,7 @@ input[type=button]:hover {
 		
 		//2번째-목록
 		$("#bt_list").click(()=>{
-			location.href="/notice/list.jsp";
+			location.href="/notice/list.do";
 		});
 		
 	});
