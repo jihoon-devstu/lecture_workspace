@@ -163,16 +163,11 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="BoardApp" path="/BoardApp" reloadable="true" source="org.eclipse.jst.jee.server:BoardApp"/>
       
-      <Context docBase="memberapp" path="/memberapp" reloadable="true" source="org.eclipse.jst.jee.server:memberapp">
       
-      <!-- 이클립스 내부 톰켓(테스트 및 개발용 일 때) -->
-      <ResourceLink global="jndi/mysql" name="jndi/mysql" type="javax.sql.DataSource"/>
+      &gt;
       
-      </Context>&gt;
-      
-      <Context docBase="hiberasync" path="/hiberasync" reloadable="true" source="org.eclipse.jst.jee.server:hiberasync"/><Context docBase="mvcapp" path="/" reloadable="true" source="org.eclipse.jst.jee.server:mvcapp"/></Host>
+      <Context docBase="mvcproject" path="/" reloadable="true" source="org.eclipse.jst.jee.server:mvcproject"/></Host>
     </Engine>
   </Service>
 </Server>
