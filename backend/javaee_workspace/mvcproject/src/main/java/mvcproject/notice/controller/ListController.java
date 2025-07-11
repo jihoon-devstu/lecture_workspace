@@ -29,4 +29,9 @@ public class ListController implements Controller{
 		return "/notice/list/view";
 	}
 
+	@Override
+	public boolean isForward() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

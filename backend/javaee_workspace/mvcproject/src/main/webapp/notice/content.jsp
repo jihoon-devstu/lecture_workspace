@@ -66,7 +66,7 @@ input[type=button]:hover {
 				//서버로 입력폼의 내용을 모두 가져가야 하므로, Post 방식으로 보내야 함 
 				$("form").attr({
 					method:"POST", 
-					action:"/notice/update"
+					action:"/notice/edit.do"
 				});
 				$("form").submit();
 			}
@@ -76,7 +76,7 @@ input[type=button]:hover {
 		$("#bt_del").click(()=>{
 			if(confirm("삭제하시겠어요?")){
 				//Get방식 요청(링크)
-				location.href="/notice/del?notice_id=<%=notice.getNotice_id()%>";
+				location.href="/notice/del.do?notice_id=<%=notice.getNotice_id()%>";
 			}
 		});
 		

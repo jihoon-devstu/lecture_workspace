@@ -33,4 +33,8 @@ public class BloodController implements Controller{
 		return "/blood/view";
 	}
 
+	@Override
+	public boolean isForward() {
+		return true;
+	}
 }
