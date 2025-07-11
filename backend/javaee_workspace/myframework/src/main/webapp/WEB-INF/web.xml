@@ -19,7 +19,7 @@
 
 	<!--웹사이트의 요청을 관리자와 일반유저의 요청으로 분기 따라서 DispatcherServlet이 두개로 구분 -->
 
-<!-- 	<servlet>
+ 	<servlet>
 		<servlet-name>userDispatcher</servlet-name>
 		<servlet-class>myframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
@@ -30,7 +30,7 @@
 	<servlet-mapping>
 		<servlet-name>userDispatcher</servlet-name>
 		<url-pattern>/shop/*</url-pattern>
-	</servlet-mapping> -->
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>adminDispatcher</servlet-name>
@@ -42,7 +42,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>adminDispatcher</servlet-name>
-		<url-pattern>/secure/*</url-pattern>
+		<url-pattern>/admin/*</url-pattern>
 	</servlet-mapping>
 
 

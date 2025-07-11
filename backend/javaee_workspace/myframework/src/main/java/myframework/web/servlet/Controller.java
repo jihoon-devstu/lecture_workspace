@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface Controller {
 	
-	public void execute(HttpServletRequest requst, HttpServletResponse response) throws ServletException,IOException;
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException;
 	
 	public String getViewName();
 	public boolean isForward();
