@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	margin-top: 6px;
+	margin-bottom: 16px;
+	resize: vertical;
+}
+
+input[type=submit] {
+	background-color: #04AA6D;
+	color: white;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+input[type=submit]:hover {
+	background-color: #45A049;
+}
+
+.container {
+	border-radius: 5px;
+	background-color: #F2F2F2;
+	padding: 20px;
+}
+</style>
+<script type="text/javascript">
+		window.addEventListener("load", ()=>{
+			//버튼에 이벤트 연결
+			let bt=document.querySelector("input[type='button']");
+			
+			bt.addEventListener("click", ()=>{
+				//유저가 작성한 폼 양식을, java기반의 서버로 전송하자 !! 
+				//왜 js는 직접 mysql에 대해 insert 하지 않나??
+				//보안 상 js의 코드는 html과 함께 작성되므로 , 보안이란게 없다 !!
+				//따라서 직접 하지 못하므로 , 간접적으로 부탁만 할 수 있다.
+				
+				let form = document.querySelector("form");
+				form.submit(); //폼 양식을 전송 !! 이 시점에 드디어 전송 발생.
+				
+		});
+	});
+	</script>
+</head>
+<body>
+
+	<h3>Contact Form</h3>
+	
+	<div class="container">
+			<!-- form의 역할 : 서버로 전송할 전송 변수(파라미터)의 범위를 설정하는 태그
+					즉 html의 입력양식을 이루는 컴포넌트를 대상으로 어디부터 , 어디까지를 전송할지를 결정.
+					action : 어느 서버에 전송할지 결정짓는 주소
+					id : css를 주기 위한 변수
+					name : 서버에 데이터를 전송할때 지칭하기위한 변수. (전송 파라미터)
+					action = "/" 의 의미는? /는 이 html을 배포한 원천 서버(origin)의 주소 루트를 의미한다.
+					우리의 경우는 http://localhost:8282/ 까지를 의미....
+					 -->
+		<form action="/member/regist" method = "post">
+			<label for="fname">First Name</label>
+			 <input type="text" id="fname"name="id" placeholder="Your name.."> 
+			 
+			 <label for="lname">Last Name</label> 
+			 <input type="text" id="lname"name="pwd" placeholder="Your last name..">
+			 
+			  <label for="subject">Subject</label> 
+			  <input type="text" id="subject"name="name" placeholder="Write something.."> 
+			  
+			  <input type="button" value="Submit">
+		</form>
+	</div>
+</body>
+</html>
