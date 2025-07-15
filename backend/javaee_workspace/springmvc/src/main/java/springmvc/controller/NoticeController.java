@@ -38,4 +38,24 @@ public class NoticeController {
 		//개발자가 redirect를 명시하지 않으면 스프링은 default가 foward임.
 		return "redirect:/shop/notice/list";
 	}
+	
+	@RequestMapping("/notice/detail")
+	public ModelAndView getDetail() {
+		
+		logger.debug("상세보기 요청 받음");
+		return null;
+	}
+	
+	@RequestMapping(value = "/notice/update" , method = RequestMethod.GET)
+	public String update() {
+		logger.debug("수정 요청 받음");
+		return "redirect:/shop/notice/detail?notice_id=6";
+	}
+	
+	@RequestMapping(value = "/notice/delete" , method = RequestMethod.GET)
+	public String delete() {
+		logger.debug("삭제 요청 받음");
+		return "redirect:/shop/notice/list";
+	}
+	
 }
