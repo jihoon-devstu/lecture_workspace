@@ -23,7 +23,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"mall.admin.controller"})
+@ComponentScan(basePackages = {"mall.admin.controller, mall.notice.model"})
 public class AdminWebConfig {
 	
 	/*하위 컨트롤러가 3,4단계를 수행한 후 DispatcherServlet에게 정확한 파일명을 알려주는것이 아니라
@@ -46,7 +46,7 @@ public class AdminWebConfig {
 	//어떤 데이터 베이스를 사용할지를 선택한다.
 	public DataSource dataSource() throws NamingException{
 		JndiTemplate jndi = new JndiTemplate();
-		return jndi.lookup("java:compo/env/jndi/mysql",DataSource.class);
+		return jndi.lookup("java:comp/env/jndi/mysql",DataSource.class);
 		
 	}
 	

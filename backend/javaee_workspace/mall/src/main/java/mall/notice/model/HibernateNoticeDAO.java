@@ -2,8 +2,11 @@ package mall.notice.model;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import mall.domain.Notice;
 
+@Repository
 public class HibernateNoticeDAO implements NoticeDAO{
 
 	@Override

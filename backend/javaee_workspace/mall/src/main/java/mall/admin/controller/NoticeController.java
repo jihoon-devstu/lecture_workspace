@@ -32,6 +32,8 @@ public class NoticeController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("notice/list");
 		log.debug("목록 요청 받음");
+		
+		noticeService.selectAll();
 		return mav;
 	}
 	//상세보기 요청
