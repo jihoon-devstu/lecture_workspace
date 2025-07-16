@@ -6,9 +6,20 @@
 	 -->
 	<!-- 기존의 DAO의 업무였던 CRUD작업의 쿼리 작성을 여기서 한다...
 		DAO는 여전히 존재하되 , DAO가 직접 쿼리를 작성하지 않는 것 뿐이다... -->
+		
+		<sql id="query">
+			select notice_id,title,writer,content,regdate,hit
+		</sql>
 
 	<select id="selectAll" resultType="Notice">
-		select * from notice order by notice_id desc
+		<include refid="query"/> from notice order by notice_id desc
+	</select>
+	
+		<!-- 글 한건 가져오기
+	Mybatis가 스스로 Notice 모델에 담는다... 따라서 담은 결과는 resultType으로 반환해야한다.
+	 -->
+	<select id="select" parameterType = "int" resultType="Notice">
+		<include refid="query"/> from notice where notice_id =#{notice_id}
 	</select>
 
 	<!-- 글 한건 넣기 -->
@@ -16,16 +27,9 @@
 		insert into notice(title, writer, content) values(#{title},#{writer},#{content})
 	</insert>
 	
-	<!-- 글 한건 가져오기
-	Mybatis가 스스로 Notice 모델에 담는다... 따라서 담은 결과는 resultType으로 반환해야한다.
-	 -->
-	<select id="select" parameterType = "int" resultType="Notice">
-		select *from notice where notice_id =#{notice_id}
-	</select>
-	
 	
 	<!-- 글 한건 지우기 -->
-	<delete id="delete" parameterType="Notice">
+	<delete id="delete" parameterType="int">
 		DELETE FROM notice WHERE notice_id = #{notice_id}
 	</delete>
 	

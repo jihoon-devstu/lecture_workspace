@@ -20,8 +20,7 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public List selectAll() {
 		log.debug("service의 selectAll() 도달");
-		noticeDAO.selectAll();
-		return null;
+		return noticeDAO.selectAll();
 	}
 
 	@Override

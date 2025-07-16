@@ -1,5 +1,7 @@
 package mall.admin.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +35,13 @@ public class NoticeController {
 		mav.setViewName("notice/list");
 		log.debug("목록 요청 받음");
 		
-		noticeService.selectAll();
+		//3단계 일 시키기
+		List noticeList = noticeService.selectAll();
+		
+		//4단계 : 결과 저장
+		mav.addObject("noticeList",noticeList);
+		mav.setViewName("notice/list"); //이거만 넘기면 DispatcherServlet이 viewResolver에게 해석을 맡긴다.
+		
 		return mav;
 	}
 	//상세보기 요청
