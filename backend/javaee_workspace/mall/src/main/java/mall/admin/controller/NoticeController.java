@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
-import mall.notice.model.NoticeDAO;
+import mall.notice.model.NoticeService;
 
 @Slf4j
 @Controller
@@ -18,7 +18,7 @@ public class NoticeController {
 	
 	//스프링 컨테이너로부터 인스턴스 받기.
 	@Autowired
-	NoticeDAO noticeDAO;
+	NoticeService noticeService;
 	
 	//목록 요청 , 특정 uri에 매핑되는 대상을 컨트롤러 클래스로 처리하는 것이 아니라
 	//메서드로 처리하기 위함.
