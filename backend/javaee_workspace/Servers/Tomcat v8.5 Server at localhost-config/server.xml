@@ -40,6 +40,8 @@
   
   	<!-- 톰켓이 지원하는 커넥션 풀 -->
   	<Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="10" maxTotal="20" maxWaitMillis="-1" name="jndi/mysql" password="1234" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/spring4" username="spring4"/>
+  	
+  	
   </GlobalNamingResources>
 
   <!-- A "Service" is a collection of one or more "Connectors" that share
@@ -167,7 +169,16 @@
       
       &gt;
       
-      <Context docBase="mvcproject" path="/" reloadable="true" source="org.eclipse.jst.jee.server:mvcproject"/></Host>
+      <Context docBase="mall" path="/" reloadable="true" source="org.eclipse.jst.jee.server:mall">
+      	      <ResourceLink 
+      	name="jndi/mysql"
+      	global="jndi/mysql"
+      	type="javax.sql.DataSource"
+      />
+      
+      
+      </Context>
+      </Host>
     </Engine>
   </Service>
 </Server>
