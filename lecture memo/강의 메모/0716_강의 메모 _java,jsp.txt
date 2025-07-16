@@ -34,7 +34,23 @@ JDBC 사용 시 데이터 소스가 결정됐다면(JNDI) 그 다음은 적절�
 
 2) 어떠한 기술을 사용하더라도 , 코드에 변함이 없음 (일관된 코드)
 --------------------------------------------------------------------------------------------------------
+@Configuration → 자바 기반 스프링 설정 클래스
 
+@EnableWebMvc → Spring MVC 활성화
+
+@EnableTransactionManagement → 선언적 트랜잭션 가능
+
+@ComponentScan → Controller, DAO 자동 등록
+
+InternalResourceViewResolver → JSP 뷰 해석
+
+dataSource() → JNDI로 DB 연결 관리
+
+PlatformTransactionManager → 트랜잭션 관리 (MyBatis 연동)
+
+SqlSessionFactory → MyBatis 핵심 설정
+
+SqlSessionTemplate → DAO에서 SQL 실행 담당
 
 
 
