@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import lombok.extern.slf4j.Slf4j;
 import mall.domain.Notice;
+import mall.exception.NoticeException;
 
 //애플리케이션 설계 분야에서 CRUD를 수행하는 역할을 가리켜 Repository라고 한다.
 //@EnableWebMvc 에의 @Controller , @Repository , @Service , @Component 등을 찾아 메모리에 올린다.
@@ -17,12 +18,12 @@ import mall.domain.Notice;
 public class MybatisNoticeDAO implements NoticeDAO{
 	
 	@Autowired //스프링 컨테이너로 하여금 , 자동으로 주입시켜달라 !! 
-	private SqlSessionTemplate sqlSessionTemplage;
+	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@Override
 	public List selectAll() {
 		log.debug("DAO의 selectAll() 도달");
-		return sqlSessionTemplage.selectList("Notice.selectAll");
+		return sqlSessionTemplate.selectList("Notice.selectAll");
 	}
 
 	@Override
@@ -31,8 +32,12 @@ public class MybatisNoticeDAO implements NoticeDAO{
 	}
 
 	@Override
-	public void insert(Notice notice) {
-		
+	public void insert(Notice notice) throws NoticeException{
+		int result = sqlSessionTemplate.insert("Notice.insert",notice);
+		if(result<1) {
+			log.error("글 등록 실패");
+			throw new NoticeException("글 등록 실패");
+		}
 	}
 
 	@Override

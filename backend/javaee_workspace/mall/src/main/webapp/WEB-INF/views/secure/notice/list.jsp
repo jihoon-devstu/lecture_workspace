@@ -30,7 +30,7 @@ tr:nth-child(even) {
 <script type="text/javascript">
 	$(()=>{
 		$("button").click(()=>{
-			location.href="/notice/write.jsp";
+			location.href="/admin/notice/registform";
 		});
 	});
 </script>
@@ -55,7 +55,7 @@ tr:nth-child(even) {
     <td>Jill</td>
     <td><a href="/notice/detail.do?notice_id=<%=notice.getNotice_id()%>"><%=notice.getTitle() %></a></td>
     <td><%=notice.getWriter() %></td>
-    <td><%=notice.getRegdate().substring(0,10)%></td>
+    <td><%//=notice.getRegdate().substring(0,10)%></td>
     <td><%=notice.getHit() %></td>
   </tr>
 	<%} %>

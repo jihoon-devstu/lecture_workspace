@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
+import mall.domain.Notice;
 import mall.notice.model.NoticeService;
 
 @Slf4j
@@ -40,13 +42,44 @@ public class NoticeController {
 		
 		//4단계 : 결과 저장
 		mav.addObject("noticeList",noticeList);
-		mav.setViewName("notice/list"); //이거만 넘기면 DispatcherServlet이 viewResolver에게 해석을 맡긴다.
+		mav.setViewName("secure/notice/list"); //이거만 넘기면 DispatcherServlet이 viewResolver에게 해석을 맡긴다.
 		
 		return mav;
 	}
 	//상세보기 요청
+	//글쓰기 폼 요청 처리 (write.jsp가 WEB-INF/ 안에 위치해 있기 때문에 , 하위 컨트롤러에 의해서만 접근 가능)
+	//외부 브라우저에서 주소값으로 직접 접근 불가능.
+	@RequestMapping(value="/notice/registform", method=RequestMethod.GET)
+	public String getRegistForm() {
+		return "secure/notice/write";
+	}
+	
 	//글 등록 요청
+	@RequestMapping(value="/notice/regist", method=RequestMethod.POST)
+	public ModelAndView regist(Notice notice) {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		try {
+			noticeService.regist(notice);
+			//성공 뷰 결과 페이지
+			mav.setViewName("redirect:/admin/notice/list");
+		} catch (Exception e) {
+			//e.printStackTrace();
+			//에러 페이지
+			mav.addObject("e",e);
+			mav.setViewName("secure/error/result");
+			log.error("글 등록 실패", e.getMessage(),e); //개발자를 위한 것임.
+			
+		}
+		return mav; //클라이언트로 하여금 지정된 url로 재접속하라는 명령어.
+	}
+	
 	//글 수정 요청
+	public String update() {
+		return null;
+	}
+	
 	//글 삭제 요청
 	
 }

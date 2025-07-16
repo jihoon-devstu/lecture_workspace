@@ -5,19 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 import mall.domain.Notice;
+import mall.exception.NoticeException;
 
 @Slf4j
 @Service
 public class NoticeServiceImpl implements NoticeService{
 
-	@Qualifier("mybatisNoticeDAO") //스프링 컨테이너가 보유한 여러 인스턴스중 원하는 아이디를 넣어야한다.
+	//@Qualifier("mybatisNoticeDAO") //스프링 컨테이너가 보유한 여러 인스턴스중 원하는 아이디를 넣어야한다.
+	@Qualifier("hibernateNoticeDAO")
 	@Autowired
 	private NoticeDAO noticeDAO;
 	
-	@Override
+	@Transactional
 	public List selectAll() {
 		log.debug("service의 selectAll() 도달");
 		return noticeDAO.selectAll();
@@ -29,9 +32,9 @@ public class NoticeServiceImpl implements NoticeService{
 		return null;
 	}
 
-	@Override
-	public void regist(Notice notice) {
-		// TODO Auto-generated method stub
+	@Transactional
+	public void regist(Notice notice) throws NoticeException{
+		noticeDAO.insert(notice); //다형성으로 동작 !!! 
 		
 	}
 
