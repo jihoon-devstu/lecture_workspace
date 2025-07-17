@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"mall.admin.controller"})
+@ComponentScan(basePackages = {"mall.shop.controller"})
 public class UserWebConfig {
 	
 	@Bean
