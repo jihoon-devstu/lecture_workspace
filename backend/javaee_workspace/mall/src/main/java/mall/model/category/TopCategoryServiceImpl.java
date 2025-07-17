@@ -2,22 +2,21 @@ package mall.model.category;
 
 import java.util.List;
 
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import mall.domain.TopCategory;
 
-@Repository
-public class MybatisTopCategoryDAO implements TopCategoryDAO{
+@Service
+public class TopCategoryServiceImpl implements TopCategoryService{
 
+	//DAO를 느슨하게 보유
 	@Autowired
-	private SqlSessionTemplate sqlSessionTemplate;
+	private TopCategoryDAO topCategoryDAO;
 	
 	@Override
 	public List selectAll() {
-		
-		return sqlSessionTemplate.selectList("TopCategory.selectAll");
+		return topCategoryDAO.selectAll();
 	}
 
 	@Override
