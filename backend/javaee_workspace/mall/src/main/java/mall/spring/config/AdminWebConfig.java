@@ -12,6 +12,7 @@ import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.Validator;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
@@ -58,6 +59,16 @@ public class AdminWebConfig extends WebMvcConfigurerAdapter{
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		//pom.xml에 추가한 jackson-bind 라이브러리의 객체 추가
 		converters.add(new MappingJackson2HttpMessageConverter());
+	}
+	
+	//파일 업로드를 위한 설정
+	//아파치 파일 업로드를 스프링에서 , 내부적으로 처리한 업로드 빈
+	//클라이언트가 파일을 전송할 때, 사용
+	@Bean 
+	public CommonsMultipartResolver multipartResolver() {
+		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+		resolver.setMaxUploadSize(10*1024*1024); //10M 
+		return resolver;
 	}
 	
 }

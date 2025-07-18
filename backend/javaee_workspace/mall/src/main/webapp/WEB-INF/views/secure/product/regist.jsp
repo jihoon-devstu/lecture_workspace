@@ -69,7 +69,6 @@
                       
                         <label>상위 카테고리</label>
                         <select class="form-control" id="topcategory">
-                        <option value="0">상위 카테고리 선택</option>
                         </select>
                         
                       </div>
@@ -77,8 +76,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>하위 카테고리</label>
-                        <select class="form-control" id="subcategory">
-                          <option>하위 카테고리 선택</option>
+                        <select class="form-control" name = "subcategory.subcategory_id" id="subcategory">
                         </select>
                       </div>
                     </div>
@@ -87,35 +85,33 @@
 					
 					           
                   <div class="form-group">
-                    <input type="email" class="form-control" name="product_name" placeholder="상품명 입력">
+                    <input type="text" class="form-control" name="product_name" placeholder="상품명 입력">
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control" name="brand" placeholder="브랜드 입력">
+                    <input type="text" class="form-control" name="brand" placeholder="브랜드 입력">
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control" name="price" placeholder="가격 입력">
+                    <input type="text" class="form-control" name="price" placeholder="가격 입력">
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control" name="discount" placeholder="할인가 입력">
+                    <input type="text" class="form-control" name="discount" placeholder="할인가 입력">
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control" name="introduce" placeholder="간단소개 100자이하입력">
+                    <input type="text" class="form-control" name="introduce" placeholder="간단소개 100자이하입력">
                   </div>
 					<div class="form-group">
-                        <select class="form-control">
-                          <option>색상 선택</option>
+                        <select class="form-control" id="color">
                         </select>
                       </div>
                       <div class="form-group">
-                        <select class="form-control">
-                          <option>사이즈 선택</option>
+                        <select class="form-control" id="size">
                         </select>
                       </div>
                       
+                      <div class="form-group" >
                            <!-- 편집기 시작 -->
-                            <!-- /.card-header -->
-							<div class="form-group" name="detail">
-								<textarea id="summernote"></textarea>
+							
+								<textarea id="summernote" name="detail"></textarea>
 							</div>
 					      <!-- 편집기 끝-->
 					      
@@ -123,8 +119,8 @@
                     <label for="exampleInputFile">File input</label>
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                        <input type="file" class="custom-file-input" name = "photo">
+                        <label class="custom-file-label" for="exampleInputFile">상품 이미지 선택</label>
                       </div>
                       <div class="input-group-append">
                         <span class="input-group-text">Upload</span>
@@ -139,7 +135,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="button" class="btn btn-primary">Submit</button>
+                  <button type="button" class="btn btn-primary" id = "bt_regist">Submit</button>
                 </div>
               </form>
             </div>
@@ -169,12 +165,15 @@
 				tag+="<option value='"+list[i].topcategory_id+"'>"+list[i].top_name+"</option>";
 			}else if(obj=="#subcategory"){
 				tag+="<option value='"+list[i].subcategory_id+"'>"+list[i].sub_name+"</option>";
+			}else if(obj=="#color"){
+				tag+="<option value='"+list[i].color_id+"'>"+list[i].color_name+"</option>";
+			}else if(obj=="#size"){
+				tag+="<option value='"+list[i].size_id+"'>"+list[i].size_name+"</option>";
 			}
 				
 		}
 		$(obj).html(tag);
 	}
-	
 	
 	//비동기 방식으로 서버에 요청을 시도하여 , 데이터 가져오기
 	function getTopCategory(){
@@ -202,6 +201,39 @@
 		});
 	
 	}
+	
+	function getColorList(){
+		$.ajax({
+			url:"/admin/admin/color/list",
+			type:"get",
+			success:function(result, status, xhr){ //200번대의 성공 응답 시, 이 함수 실행
+				printCategory("#color",result);
+			},
+			error:function(xhr,status,err){
+			}
+		});
+	}
+	
+	function getSizeList(){
+		$.ajax({
+			url:"/admin/admin/size/list",
+			type:"get",
+			success:function(result, status, xhr){ //200번대의 성공 응답 시, 이 함수 실행
+				printCategory("#size",result);
+			},
+			error:function(xhr,status,err){
+			}
+		});
+	}
+	
+	function regist(){
+		$("form").attr({
+			action:"/admin/admin/product/regist",
+			method:"post",
+			enctype:"multipart/form-data"
+		});
+		$("form").submit();
+	}
 	  $(()=>{
 		    $('#summernote').summernote({
 				height:200,
@@ -210,11 +242,19 @@
 		    
 		    //상위 카테고리 가져오기
 		    getTopCategory();
-		    
+		    //색상 목록 가져오기
+		    getColorList();
+		    //사이즈 목록 가져오기
+		    getSizeList();
 		    //상위 카테고리의 값을 변경시, 하위 카테고리 가져오기
 		    $("#topcategory").change(function(){
 				getSubCategory($(this).val());
 		    });
+		    
+		    //등록버튼 이벤트 연결
+		    $("#bt_regist").click(()=>{
+				regist();
+			});
 	  });
 </script>
 </body>
