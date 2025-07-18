@@ -87,19 +87,19 @@
 					
 					           
                   <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="상품명 입력">
+                    <input type="email" class="form-control" name="product_name" placeholder="상품명 입력">
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="브랜드 입력">
+                    <input type="email" class="form-control" name="brand" placeholder="브랜드 입력">
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="가격 입력">
+                    <input type="email" class="form-control" name="price" placeholder="가격 입력">
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="할인가 입력">
+                    <input type="email" class="form-control" name="discount" placeholder="할인가 입력">
                   </div>
                   <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="간단소개 입력">
+                    <input type="email" class="form-control" name="introduce" placeholder="간단소개 100자이하입력">
                   </div>
 					<div class="form-group">
                         <select class="form-control">
@@ -114,7 +114,7 @@
                       
                            <!-- 편집기 시작 -->
                             <!-- /.card-header -->
-							<div class="form-group">
+							<div class="form-group" name="detail">
 								<textarea id="summernote"></textarea>
 							</div>
 					      <!-- 편집기 끝-->
@@ -139,7 +139,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="button" class="btn btn-primary">Submit</button>
                 </div>
               </form>
             </div>
@@ -162,12 +162,17 @@
 
 	<%@ include file="../inc/footer_link.jsp" %>
 	<script>
-	function printCategory(list){
+	function printCategory(obj,list){
 		let tag="<option value='0'>카테고리 선택</option>"
 		for(let i=0; i<list.length;i++){
-			tag+="<option value='"+list[i].topcategory_id+"'>"+list[i].top_name+"</option>";
+			if(obj=="#topcategory"){
+				tag+="<option value='"+list[i].topcategory_id+"'>"+list[i].top_name+"</option>";
+			}else if(obj=="#subcategory"){
+				tag+="<option value='"+list[i].subcategory_id+"'>"+list[i].sub_name+"</option>";
+			}
+				
 		}
-		$('#topcategory').html(tag);
+		$(obj).html(tag);
 	}
 	
 	
@@ -177,11 +182,23 @@
 			url:"/admin/admin/topcategory/list",
 			type:"get",
 			success:function(result, status, xhr){ //200번대의 성공 응답 시, 이 함수 실행
-				console.log("서버로부터 받은 결과는 ", result);
-				printCategory(result);
+				printCategory("#topcategory",result);
 			},
 			error:function(xhr,status,err){
 			}
+		});
+	
+	}
+	
+	function getSubCategory(topcategory_id){
+
+		$.ajax({
+			url :"/admin/admin/subcategory/list?topcategory_id="+topcategory_id,
+			type:"GET",
+			success:function(result, status, xhr){
+				printCategory("#subcategory",result);
+			}
+		
 		});
 	
 	}
@@ -196,7 +213,7 @@
 		    
 		    //상위 카테고리의 값을 변경시, 하위 카테고리 가져오기
 		    $("#topcategory").change(function(){
-				alert("값 변경 했어?");
+				getSubCategory($(this).val());
 		    });
 	  });
 </script>
