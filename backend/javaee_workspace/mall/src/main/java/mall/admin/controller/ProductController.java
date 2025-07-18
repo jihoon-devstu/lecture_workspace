@@ -47,7 +47,7 @@ public class ProductController {
 		//log.debug("product = "+product);
 		//log.debug("photo = "+photo);
 		
-		ServletContext context=request.getServletContext(); //jsp applicatio 내장 객체 
+		ServletContext context=request.getServletContext(); //jsp application 내장 객체 
 		//애플리케이션과 생명을 같이함
 		
 		String realPath = context.getRealPath("/data");
