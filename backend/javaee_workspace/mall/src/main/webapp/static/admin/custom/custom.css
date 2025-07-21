@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+/* 사이드바 배경색 변경 */
+aside.main-sidebar.sidebar-dark-primary.elevation-4 {
+    background-color: #46b5a7 !important; /* 원하는 색상 */
+}

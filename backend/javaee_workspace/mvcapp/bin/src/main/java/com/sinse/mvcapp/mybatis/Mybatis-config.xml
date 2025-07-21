@@ -3,7 +3,7 @@
 <configuration>
 
 	<typeAliases>
-		<typeAlias type="com.sinse.mvcapp.model.Notice" alias="Notice"/>
+		<typeAlias type="mall.model.Notice" alias="Notice"/>
 
 	</typeAliases>
   <environments default="development">

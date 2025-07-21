@@ -1,8 +1,9 @@
 /*이미지 썸네일 클래스 정의 */
 class ProductImg{
 	
-	constructor(container,src,width,height){
+	constructor(container,file,src,width,height){
 		this.container = container;
+		this.file=file;
 		this.src = src;
 		this.width=width;
 		this.height=height;
@@ -43,8 +44,14 @@ class ProductImg{
 	}
 	//내가 현재 붙어있는 컨테이너로 부터 나를 삭제한다.
 	remove(){
-
+		//화면에서 제거
 		this.container.removeChild(this.wrapper);
+		
+		//배열에서도 제거
+		//현재 객체가 보유한 File이 selectedFile 배열의 몇번째 소속이 되어 있는지 조사하여
+		//사용자가 이 객체를 지우면 , 같은 위치에 있던 File 도 제거하자
+		let index = selectedFile.indexOf(this.file);
+		selectedFile.splice(index,1);
 	}
 	
 }

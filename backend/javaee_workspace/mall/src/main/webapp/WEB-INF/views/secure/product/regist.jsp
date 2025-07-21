@@ -237,6 +237,14 @@
 		});
 	}
 	
+	//크롬 브라우저에서 지원하는 e.target.files 유사 배열은 읽기전용 !
+	//개발자가 쓰기가 안되므로, 배열을 하나 선언하여 , 담아서 처리
+	//주의) 아래의 배열은 , 개발자가 정의한 배열일 뿐이지 , form 태그가 전송할 컴포넌트는 아니므로,
+	//submit 시, selectedFile에 들어있는 파일을 전송할 수 는 없다.
+	//해결책 ? form태그에 인식을 시켜야 한다... (javascript로 프로그래밍적 formData 객체를 사용해야 함.)
+	let selectedFile=[];
+	
+	
 	function regist(){
 		$("form").attr({
 			action:"/admin/admin/product/regist",
@@ -272,6 +280,7 @@
 		    	
 		    	//첨부된 파일 수 만큼 반복
 		    	for(let i=0;i<files.length;i++){
+					selectedFile[i] = files[i];
 					//파일을 읽기 위한 스트림 객체 생성
 					const reader = new FileReader();
 					
@@ -279,7 +288,7 @@
 						console.log("읽은 결과는 = ",e);
 						//e.target.result에 이미지 정보가 들어있음 !! img src에 속성에 대입할 예정
 						
-						let productImg = new ProductImg(document.getElementById("preview"),e.target.result,50,50);
+						let productImg = new ProductImg(document.getElementById("preview"),files[i],e.target.result,50,50);
 					}
 					
 					reader.readAsDataURL(files[i]); //지정한 파일을 읽기
