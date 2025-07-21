@@ -115,18 +115,28 @@
 							</div>
 					      <!-- 편집기 끝-->
 					      
-                  <div class="form-group">
-                    <label for="exampleInputFile">File input</label>
+                  <div class="form-group">                    
                     <div class="input-group">
+                    
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name = "photo">
+                        <input type="file" class="custom-file-input" name = "photo" id="photo" multiple="multiple">
                         <label class="custom-file-label" for="exampleInputFile">상품 이미지 선택</label>
                       </div>
+                      
                       <div class="input-group-append">
                         <span class="input-group-text">Upload</span>
                       </div>
                     </div>
+                    
+                    <div id="preview" style="widtrh:100%;background:yellow;">
+                    	미리보기
+                    </div>
+                    
+                    
                   </div>
+                  
+                  
+                  
                   <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Check me out</label>
@@ -157,6 +167,7 @@
 <!-- ./wrapper -->
 
 	<%@ include file="../inc/footer_link.jsp" %>
+	<script src="/static/admin/custom/ProductImg.js"></script>
 	<script>
 	function printCategory(obj,list){
 		let tag="<option value='0'>카테고리 선택</option>"
@@ -234,6 +245,8 @@
 		});
 		$("form").submit();
 	}
+	
+	
 	  $(()=>{
 		    $('#summernote').summernote({
 				height:200,
@@ -249,6 +262,31 @@
 		    //상위 카테고리의 값을 변경시, 하위 카테고리 가져오기
 		    $("#topcategory").change(function(){
 				getSubCategory($(this).val());
+		    });
+		    
+		    //파일 컴포넌트의 값 변경 시 이벤트 연결
+		    $("#photo").change(function(e){
+		    	console.log(e);
+		    	//e.target.files 안에는 브라우저가 읽어들인 , 파일의 정보가 배열 유사 객체인 FileList에 담겨져 있다.
+		    	let files = e.target.files; //배열 유사 객체 접근
+		    	
+		    	//첨부된 파일 수 만큼 반복
+		    	for(let i=0;i<files.length;i++){
+					//파일을 읽기 위한 스트림 객체 생성
+					const reader = new FileReader();
+					
+					reader.onload=function(e){ //파일을 스트림으로 읽어들인 정보가 e에 들어있음.
+						console.log("읽은 결과는 = ",e);
+						//e.target.result에 이미지 정보가 들어있음 !! img src에 속성에 대입할 예정
+						
+						let productImg = new ProductImg(document.getElementById("preview"),e.target.result,50,50);
+					}
+					
+					reader.readAsDataURL(files[i]); //지정한 파일을 읽기
+		    		
+					
+		    	}
+		    	
 		    });
 		    
 		    //등록버튼 이벤트 연결
