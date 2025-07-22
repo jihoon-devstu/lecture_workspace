@@ -2,6 +2,8 @@ package mall.domain;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -13,7 +15,7 @@ public class Product {
 	private int discount;
 	private String introduce;
 	private String detail;
-	//private MultipartFile[] photo;
+	private MultipartFile[] photo;
 	
 	//하나의 상품은 여러 색상과 사이즈와 이미지를 보유할 수 있다. 1:多 관계 (mybatis에서 collection 수집)
 	private List<ProductColor> colorList;

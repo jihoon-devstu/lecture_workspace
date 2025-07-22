@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 import mall.domain.Color;
@@ -42,10 +41,8 @@ public class ProductController {
 	//상품 등록 요청을 처리 
 	@PostMapping("/admin/product/regist")
 	@ResponseBody
-	public String regist(Product product, int [] color, int [] size, MultipartFile[] photo,HttpServletRequest request) {
-		//MultipartFile 변수와 html 이름이 동일하면 매핑됨 
-		log.debug("업로드 한 파일의 수는" + photo.length);
-		
+	public String regist(Product product, int [] color, int [] size,HttpServletRequest request) {
+
 		//Product 객체의 멤버 변수로 직접 html과 매핑이 될 수 없는 경우 , 우회하면 된다... 
 		//우회란 파라미터를 별도로 받아서 , 다시 Product에 넣어준다
 		//사용자가 선택한 색상이 3개라면 , ProductColor의 인스턴스도 3개를 생성 !! 
@@ -79,7 +76,9 @@ public class ProductController {
 		//해결책은? 클라이언트의 파라미터를 받는 용도의 객체를 별도로 둔다(DTO=Data Transfer Object)
 		//DTO에서 Model 객체로 옮겨야 함..
 		
-		productService.regist(product);
+		String savePath = request.getServletContext().getRealPath("/data");
+		
+		productService.regist(product,savePath);
 		
 		//log.debug("product = "+product);
 		//log.debug("photo = "+photo);
