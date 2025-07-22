@@ -8,6 +8,8 @@
 		<typeAlias type="mall.domain.Product" alias="Product"/>
 		<typeAlias type="mall.domain.Color" alias="Color"/>
 		<typeAlias type="mall.domain.Size" alias="Size"/>
+		<typeAlias type="mall.domain.ProductColor" alias="ProductColor"/>
+		<typeAlias type="mall.domain.ProductSize" alias="ProductSize"/>
 		
 	</typeAliases>
   <environments default="development">
@@ -25,5 +27,7 @@
     <mapper resource="mall/mybatis/ProductMapper.xml"/>
     <mapper resource="mall/mybatis/ColorMapper.xml"/>
     <mapper resource="mall/mybatis/SizeMapper.xml"/>
+    <mapper resource="mall/mybatis/ProductColorMapper.xml"/>
+    <mapper resource="mall/mybatis/ProductSizeMapper.xml"/>
   </mappers>
 </configuration>

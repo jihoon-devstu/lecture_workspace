@@ -57,7 +57,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form>
+              <form id = "form1">
                 <div class="card-body">
                 
                 
@@ -100,11 +100,11 @@
                     <input type="text" class="form-control" name="introduce" placeholder="간단소개 100자이하입력">
                   </div>
 					<div class="form-group">
-                        <select class="form-control" id="color">
+                        <select class="form-control" name = "color" id="color" multiple="multiple">
                         </select>
                       </div>
                       <div class="form-group">
-                        <select class="form-control" id="size">
+                        <select class="form-control" name = "size" id="size" multiple="multiple">
                         </select>
                       </div>
                       
@@ -242,16 +242,41 @@
 	//주의) 아래의 배열은 , 개발자가 정의한 배열일 뿐이지 , form 태그가 전송할 컴포넌트는 아니므로,
 	//submit 시, selectedFile에 들어있는 파일을 전송할 수 는 없다.
 	//해결책 ? form태그에 인식을 시켜야 한다... (javascript로 프로그래밍적 formData 객체를 사용해야 함.)
+	//HTML 작성된 기존 폼에서 텍스트 입력관련된 컴포넌트는 사용하되 , 이미지 업로드 컴포넌트는 재설정해야함...
 	let selectedFile=[];
 	
 	
 	function regist(){
-		$("form").attr({
-			action:"/admin/admin/product/regist",
-			method:"post",
-			enctype:"multipart/form-data"
+		//기존 폼을 이용하되, file 컴포넌트 파라미터만 새로 교체(selectedFile 배열로 대체)
+		//js에서 프로그래밍 적 form 생성
+		let formData = new FormData(document.getElementById("form1"));
+		//formData 동기/비동기 둘다 지원하지만 , 대부분 비동기 방식을 많이 씀
+		//Jquery Ajax 자체에서 formData를 비동기 방식으로 간단하게 사용할 수 있는 코드를 지원
+		//기존 photo 버리고 ,. 우리가 선언한 배열로 대체
+		//formData는 개발자가 명시하지 않아도 , 디폴트로 multipart/form-data가 지정되어있음.
+		//기존의 photo 파라미터 제거하기 append의 반대
+		
+		formData.delete("photo");
+		
+		
+		for(let i=0; i<selectedFile.length;i++){
+			formData.append("photo",selectedFile[i]); //<input type="text" name="email">
+		}
+		//파일 마저도 비동기로 업로드 가능 !!!
+		$.ajax({
+			url:"/admin/admin/product/regist",
+			type:"post",
+			data: formData,
+			processData:false, /*form을 이루는 대상으로, 문자열로 변환되는 것을 방지(바이너리 파일 포함 때문)*/
+			contentType:false, /*브라우저가 자동으로 content-type을 설정하도록 하는 것 방지*/
+			success:function(result, status, xhr){
+				alert("업로드 성공");
+			},
+			error:function(xhr,status,err){
+				alert(err);
+			}
+			
 		});
-		$("form").submit();
 	}
 	
 	
