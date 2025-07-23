@@ -1,5 +1,7 @@
 package mall.model.product;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +66,28 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public void remove(Product product, String savePath) {
 		fileManager.remove(product, savePath);
+	}
+
+	@Override
+	public List selectAll() {
+		return productDAO.selectAll();
+	}
+
+	@Override
+	public Product select(int product_id) {
+		return productDAO.select(product_id);
+	}
+
+	@Override
+	public void update(Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Product product) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
