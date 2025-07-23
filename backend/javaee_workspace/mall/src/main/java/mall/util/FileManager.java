@@ -21,6 +21,10 @@ import mall.exception.UploadException;
 public class FileManager {
 	
 	public void save(Product product, String path) throws UploadException{
+		
+		//파일의 수가 복수개 이므로, 상품마다 1:1 대응하는 디렉토리를 생성하자
+		File directory = new File(path,"p_"+product.getProduct_id());
+		
 		//MultipartFile 변수와 html 이름이 동일하면 매핑됨
 		MultipartFile[] photo = product.getPhoto();
 		log.debug("업로드 한 파일의 수는" + photo);
@@ -51,7 +55,7 @@ public class FileManager {
 				product.setImgList(imgList);
 				//realPath를 사용하려면 , 앱의 전반적인 전역적 정보를 가진 객체인 ServletContext가 필요함 ! 
 				
-				File file = new File(path+File.separator+filename);
+				File file = new File(directory.getAbsolutePath()+File.separator+filename);
 				log.debug("업로드된 이미지가 생성된 경로는 "+path);
 				photo[i].transferTo(file);
 				
@@ -63,4 +67,35 @@ public class FileManager {
 		}
 	}
 
+	//상품 이미지 삭제 (지정한 상품의 디렉토리 및 그 안의 파일들....)
+	//savePath ~~~/data/p_pk값
+	public void remove(Product product,String savePath) {
+
+		// 디렉토리를 지우기 위해서는 , 그 안에 파일들이 먼저 지워져야 함
+		//1) 조사 대상 디렉토리를 지정
+		File directory = new File(savePath, "p_"+product.getProduct_id());
+		//디렉토리가 실제로 존재할 경우 그 안의 파일부터 지우기
+		
+		if(directory.exists() && directory.isDirectory()) {
+			//이 하위에 파일들이 존재하는지 그 목록을 얻자
+			File[] files = directory.listFiles();
+			
+			if(files !=null) { //파일이 존재한다면
+				//파일의 수만큼 삭제
+				
+				for(File file : files) {
+					boolean deleted = file.delete();
+					log.debug(file.getName()+"를 삭제한 결과 "+deleted);
+				}
+			}
+			
+			//파일이 모두 삭제되었으므로 , 디렉토리도 삭제
+			boolean result = directory.delete();
+			if(result == false) {
+				log.warn("디렉토리 삭제 실패" + directory.getAbsolutePath());
+			}
+		}
+		
+	}
+	
 }

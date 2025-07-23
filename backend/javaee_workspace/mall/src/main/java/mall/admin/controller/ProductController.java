@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
 import mall.domain.Color;
@@ -78,7 +80,12 @@ public class ProductController {
 		
 		String savePath = request.getServletContext().getRealPath("/data");
 		
-		productService.regist(product,savePath);
+		try {
+			productService.regist(product,savePath);
+		} catch (Exception e) {
+			productService.remove(product, savePath);
+			e.printStackTrace();
+		}
 		
 		//log.debug("product = "+product);
 		//log.debug("photo = "+photo);
@@ -95,4 +102,22 @@ public class ProductController {
 		
 		return "OK";
 	}
+	
+	//목록 요청 처리 : 요청이 들어오면 list.jsp를 응답정보로 보내줘야함 !! 
+	//따라서 ResponseBody가 아닌 ModelAndView로 반환
+	@GetMapping("/admin/product/list")
+	public ModelAndView getList() {
+		//3단계 : 목록 가져오기
+		
+		//4단계 : 결과 저장
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("secure/product/list");
+		
+		return mav;
+		
+	}
+	
+	
+	
+	
 }
