@@ -23,3 +23,7 @@
   <link rel="stylesheet" href="/static/admin/plugins/summernote/summernote-bs4.min.css">
   <!-- custom -->
   <link rel="stylesheet" href="/static/admin/custom/custom.css">
+  <!-- jQuery -->
+<script src="/static/admin/plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="/static/admin/plugins/jquery-ui/jquery-ui.min.js"></script>

@@ -20,6 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Dashboard</title>
 	<%@ include file="../inc/head_link.jsp" %>
+	<script src="/static/project/project_inc/custom.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -35,7 +36,6 @@
 
   <!-- Main Sidebar Container -->
 	<%@ include file="../inc/left_bar.jsp" %>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
    

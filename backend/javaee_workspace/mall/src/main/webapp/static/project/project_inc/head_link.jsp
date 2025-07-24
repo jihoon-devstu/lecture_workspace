@@ -6,3 +6,7 @@
   <link rel="stylesheet" href="/static/admin/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/static/admin/dist/css/adminlte.min.css">
+  <!-- jQuery -->
+<script src="/static/admin/plugins/jquery/jquery.min.js"></script>
+  <!-- summernote -->
+  <link rel="stylesheet" href="/static/admin/plugins/summernote/summernote-bs4.min.css">

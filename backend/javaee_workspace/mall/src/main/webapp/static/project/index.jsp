@@ -9,6 +9,7 @@
 <title>AdminLTE 3 | Projects</title>
 <!-- Style include -->
 <%@ include file="/static/project/project_inc/head_link.jsp"%>
+<script src="/static/project/project_inc/custom.js"></script>
 <!-- /Style include -->
 <!-- head_link -->
 <%@ include file="/static/project/project_inc/footer_link.jsp"%>
@@ -18,6 +19,7 @@ table.table td, table.table th {
 	text-align: center;
 }
 </style>
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -52,6 +54,7 @@ table.table td, table.table th {
 			<section class="content">
 
 				<!-- 상위 카테고리 카드 시작 -->
+				<%for(int i=1;i<5;i++) {%>
 				<div class="card">
 					<div class="card-header">
 						<h3 class="card-title">전자제품</h3>
@@ -88,11 +91,13 @@ table.table td, table.table th {
 								</tr>
 							</thead>
 							<!-- /컬럼 설정 -->
+							
 							<!-- 레코드 설정 -->
 							<tbody>
+							<%for(int a=1;a<6;a++){ %>
 								<tr>
-									<td>1</td>
-									<td><a> 써큘레이터 </a> <br /></td>
+									<td><%=i %></td>
+									<td><a href="#"> 써큘레이터 </a> <br /></td>
 									<td>가전제품</td>
 									<td>삼성</td>
 									<td>18,000</td>
@@ -102,209 +107,21 @@ table.table td, table.table th {
 										class="badge badge-success">활성화</span></td>
 									<td class="project-actions text-right"><a
 										class="btn btn-primary btn-sm" href="#"> <i
-											class="fas fa-folder"> </i> View
+											class="fas fa-folder"> </i> 상세
 									</a> <a class="btn btn-info btn-sm" href="#"> <i
-											class="fas fa-pencil-alt"> </i> Edit
+											class="fas fa-pencil-alt"> </i> 수정
 									</a> <a class="btn btn-danger btn-sm" href="#"> <i
-											class="fas fa-trash"> </i> Delete
+											class="fas fa-trash"> </i> 삭제
 									</a></td>
 								</tr>
-
-								<tr>
-									<td>2</td>
-									<td><a> 손선풍기 </a> <br /></td>
-									<td>가전제품</td>
-									<td>샤오미</td>
-									<td>8,000</td>
-									<td>25</td>
-									<td>100</td>
-									<td class="project-state"><span
-										class="badge badge-success">활성화</span></td>
-									<td class="project-actions text-right"><a
-										class="btn btn-primary btn-sm" href="#"> <i
-											class="fas fa-folder"> </i> View
-									</a> <a class="btn btn-info btn-sm" href="#"> <i
-											class="fas fa-pencil-alt"> </i> Edit
-									</a> <a class="btn btn-danger btn-sm" href="#"> <i
-											class="fas fa-trash"> </i> Delete
-									</a></td>
-								</tr>
-
-								<tr>
-									<td>3</td>
-									<td><a> 냉장고 </a> <br /></td>
-									<td>가전제품</td>
-									<td>LG</td>
-									<td>6,500,000</td>
-									<td>48</td>
-									<td>58</td>
-									<td class="project-state"><span
-										class="badge badge-success">활성화</span></td>
-									<td class="project-actions text-right"><a
-										class="btn btn-primary btn-sm" href="#"> <i
-											class="fas fa-folder"> </i> View
-									</a> <a class="btn btn-info btn-sm" href="#"> <i
-											class="fas fa-pencil-alt"> </i> Edit
-									</a> <a class="btn btn-danger btn-sm" href="#"> <i
-											class="fas fa-trash"> </i> Delete
-									</a></td>
-								</tr>
-
-								<tr>
-									<td>4</td>
-									<td><a> 김치냉장고 </a> <br /></td>
-									<td>가전제품</td>
-									<td>LG</td>
-									<td>4,800,000</td>
-									<td>29</td>
-									<td>110</td>
-									<td class="project-state"><span
-										class="badge badge-success">활성화</span></td>
-									<td class="project-actions text-right"><a
-										class="btn btn-primary btn-sm" href="#"> <i
-											class="fas fa-folder"> </i> View
-									</a> <a class="btn btn-info btn-sm" href="#"> <i
-											class="fas fa-pencil-alt"> </i> Edit
-									</a> <a class="btn btn-danger btn-sm" href="#"> <i
-											class="fas fa-trash"> </i> Delete
-									</a></td>
-								</tr>
-							</tbody>
-
+								<%} %>
 							<!-- /레코드 설정 -->
 
 
 						</table>
 					</div>
 				</div>
-				<!-- /상위 카테고리 카드 마무리 -->
-
-				<!-- 상위 카테고리 카드 시작 -->
-				<div class="card">
-					<div class="card-header">
-						<h3 class="card-title">가전제품</h3>
-						<div class="card-tools">
-							<div class="input-group input-group-sm" style="width: 300px;">
-								<input type="text" name="table_search"
-									class="form-control float-right" placeholder="Search">
-								<div class="input-group-append">
-									<button type="submit" class="btn btn-default">
-										<i class="fas fa-search"></i>
-									</button>
-									<button type="button" class="btn btn-tool"
-										data-card-widget="collapse" title="Collapse">
-										<i class="fas fa-minus"></i>
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="card-body p-0">
-						<table class="table table-striped projects">
-							<thead>
-								<tr>
-									<th style="width: 8%">상품 번호</th>
-									<th style="width: 16%">상품명</th>
-									<th style="width: 9%">카테고리</th>
-									<th style="width: 9%">브랜드</th>
-									<th style="width: 9%">가격</th>
-									<th style="width: 9%">판매 건수</th>
-									<th style="width: 9%">재고</th>
-									<th style="width: 8%" class="text-center">상품 상태</th>
-									<th style="width: 20%"></th>
-								</tr>
-							</thead>
-							<!-- /컬럼 설정 -->
-							<!-- 레코드 설정 -->
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td><a> 써큘레이터 </a> <br /></td>
-									<td>가전제품</td>
-									<td>삼성</td>
-									<td>18,000</td>
-									<td>19</td>
-									<td>150</td>
-									<td class="project-state"><span
-										class="badge badge-success">활성화</span></td>
-									<td class="project-actions text-right"><a
-										class="btn btn-primary btn-sm" href="#"> <i
-											class="fas fa-folder"> </i> View
-									</a> <a class="btn btn-info btn-sm" href="#"> <i
-											class="fas fa-pencil-alt"> </i> Edit
-									</a> <a class="btn btn-danger btn-sm" href="#"> <i
-											class="fas fa-trash"> </i> Delete
-									</a></td>
-								</tr>
-
-								<tr>
-									<td>2</td>
-									<td><a> 손선풍기 </a> <br /></td>
-									<td>가전제품</td>
-									<td>샤오미</td>
-									<td>8,000</td>
-									<td>25</td>
-									<td>100</td>
-									<td class="project-state"><span
-										class="badge badge-success">활성화</span></td>
-									<td class="project-actions text-right"><a
-										class="btn btn-primary btn-sm" href="#"> <i
-											class="fas fa-folder"> </i> View
-									</a> <a class="btn btn-info btn-sm" href="#"> <i
-											class="fas fa-pencil-alt"> </i> Edit
-									</a> <a class="btn btn-danger btn-sm" href="#"> <i
-											class="fas fa-trash"> </i> Delete
-									</a></td>
-								</tr>
-
-								<tr>
-									<td>3</td>
-									<td><a> 냉장고 </a> <br /></td>
-									<td>가전제품</td>
-									<td>LG</td>
-									<td>6,500,000</td>
-									<td>48</td>
-									<td>58</td>
-									<td class="project-state"><span
-										class="badge badge-success">활성화</span></td>
-									<td class="project-actions text-right"><a
-										class="btn btn-primary btn-sm" href="#"> <i
-											class="fas fa-folder"> </i> View
-									</a> <a class="btn btn-info btn-sm" href="#"> <i
-											class="fas fa-pencil-alt"> </i> Edit
-									</a> <a class="btn btn-danger btn-sm" href="#"> <i
-											class="fas fa-trash"> </i> Delete
-									</a></td>
-								</tr>
-
-								<tr>
-									<td>4</td>
-									<td><a> 김치냉장고 </a> <br /></td>
-									<td>가전제품</td>
-									<td>LG</td>
-									<td>4,800,000</td>
-									<td>29</td>
-									<td>110</td>
-									<td class="project-state"><span
-										class="badge badge-success">활성화</span></td>
-									<td class="project-actions text-right"><a
-										class="btn btn-primary btn-sm" href="#"> <i
-											class="fas fa-folder"> </i> View
-									</a> <a class="btn btn-info btn-sm" href="#"> <i
-											class="fas fa-pencil-alt"> </i> Edit
-									</a> <a class="btn btn-danger btn-sm" href="#"> <i
-											class="fas fa-trash"> </i> Delete
-									</a></td>
-								</tr>
-							</tbody>
-
-							<!-- /레코드 설정 -->
-
-
-						</table>
-					</div>
-				</div>
+				<%} %>
 				<!-- /상위 카테고리 카드 마무리 -->
 
 			</section>
