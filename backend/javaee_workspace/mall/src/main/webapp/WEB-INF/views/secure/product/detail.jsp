@@ -1,9 +1,29 @@
+<%@page import="com.fasterxml.jackson.databind.ObjectMapper"%>
 <%@page import="mall.domain.Product"%>
 <%@page import="mall.domain.ProductImg"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
- <%Product product = (Product)request.getAttribute("product"); %>
+ <%
+ 		Product product = (Product)request.getAttribute("product"); 
+ 		//java를 JSON문자열로 변환
+ 		ObjectMapper mapper = new ObjectMapper();
+ 		
+ 		//컬러 어레이 가져오기
+ 		int[] colorArray = new int[product.getColorList().size()];
+ 		for(int i=0;i<colorArray.length;i++){
+ 			colorArray[i]=product.getColorList().get(i).getColor().getColor_id();
+ 		}
+ 		String colorJson = mapper.writeValueAsString(colorArray);
+ 		
+ 		//사이즈 어레이 가져오기
+ 		int[] sizeArray = new int[product.getSizeList().size()];
+ 		for(int i=0; i<sizeArray.length;i++){
+ 			sizeArray[i] = product.getSizeList().get(i).getSize().getSize_id();
+ 		}
+ 		String sizeJson = mapper.writeValueAsString(sizeArray);
+ 		
+ %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,10 +199,8 @@
 		for(let i=0; i<list.length;i++){
 			if(obj=="#topcategory"){
 				tag+="<option value='"+list[i].topcategory_id+"'>"+list[i].top_name+"</option>";
-				
 			}else if(obj=="#subcategory"){
 				tag+="<option value='"+list[i].subcategory_id+"'>"+list[i].sub_name+"</option>";
-				
 			}else if(obj=="#color"){
 				tag+="<option value='"+list[i].color_id+"'>"+list[i].color_name+"</option>";
 			}else if(obj=="#size"){
@@ -222,24 +240,24 @@
 	
 	}
 	
-	function getColorList(){
+	function getColorList(categoryId){
 		$.ajax({
 			url:"/admin/admin/color/list",
 			type:"get",
 			success:function(result, status, xhr){ //200번대의 성공 응답 시, 이 함수 실행
-				printCategory("#color",result);
+				printCategory("#color",result,categoryId);
 			},
 			error:function(xhr,status,err){
 			}
 		});
 	}
 	
-	function getSizeList(){
+	function getSizeList(categoryId){
 		$.ajax({
 			url:"/admin/admin/size/list",
 			type:"get",
 			success:function(result, status, xhr){ //200번대의 성공 응답 시, 이 함수 실행
-				printCategory("#size",result);
+				printCategory("#size",result,categoryId);
 			},
 			error:function(xhr,status,err){
 			}
@@ -329,7 +347,7 @@
 	
 	  $(()=>{
 		    $('#summernote').summernote({
-				height:200,
+				height:200
 		    });
 		    $('#summernote').summernote('code', '<%= product.getDetail() %>');
 		    //상위 카테고리 가져오기
@@ -337,9 +355,9 @@
 		    //하위 카테고리 가져오기
 		    getSubCategory(<%=product.getSubcategory().getTopcategory().getTopcategory_id()%>,<%=product.getSubcategory().getSubcategory_id()%>);
 		    //색상 목록 가져오기
-		    getColorList();
+		    getColorList(<%=colorJson%>);
 		    //사이즈 목록 가져오기
-		    getSizeList();
+		    getSizeList(<%=sizeJson%>);
 		    
 			   //현재 우리가 가진 정보는,filename밖에 없으므로 실제 이미지를 onLoad 시점에 서버로 부터 다운로드 받자
 			   <%for( ProductImg productImg : product.getImgList()){%>
