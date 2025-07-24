@@ -2,12 +2,24 @@
 <!DOCTYPE mapper SYSTEM "mybatis-3-mapper.dtd">
 <mapper namespace="SubCategory">
 
+	<!-- 서브 카테고리를 가져올 때 TopCategory도 가져오기 
+			SubCategory 모델 객체는 topcategory 멤버 변수가 자동 매핑이 될 수 없고 , 또한 association으로
+			연결해야 하기 때문에 resultMap 이 필요.
+	-->
+	
+	<resultMap type="Subcategory" 					id="topcategoryMap">
+		<id column="subcategory_id" 				property="subcategory_id"/>
+		<result column="sub_name" 					property="sub_name"/>
+		<association column="topcategory_id" 	property="topcategory" 
+							javaType="TopCategory" 	select="TopCategory.select"/>
+	</resultMap>
+
 	<select id="selectByTopCategoryId" parameterType="int" resultType="SubCategory">
-		select *from subcategory where topcategory_id=#{topcategory_id}
+		select subcategory_id, sub_name, topcategory_id from subcategory where topcategory_id=#{topcategory_id}
 	</select>
 	
-	<select id="select" resultType="SubCategory" parameterType="int">
-		select *from subcategory where subcategory_id=#{subcategory_id}
+	<select id="select" resultMap="topcategoryMap" parameterType="int">
+		select subcategory_id, sub_name, topcategory_id from subcategory where subcategory_id=#{subcategory_id}
 	</select>
 
 </mapper>

@@ -38,8 +38,8 @@
                with font-awesome or any other icon font library -->
                
           <!--  상품관리 메뉴 시작-->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 상품관리
@@ -48,13 +48,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
+                <a href="/admin/admin/product/list" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>상품 목록</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/admin/admin/product/registform" class="nav-link">
+                <a href="/admin/admin/product/registform" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>상품 등록</p>
                 </a>
@@ -70,8 +70,8 @@
           <!--  상품관리 메뉴 끝-->    
           
            <!--  주문관리 메뉴 시작-->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 주문관리
@@ -80,7 +80,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
+                <a href="./index.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>주문 내역</p>
                 </a>
@@ -102,8 +102,8 @@
           <!--  주문관리 메뉴 끝--> 
                  
           <!--  회원관리 메뉴 시작-->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 회원관리
@@ -112,7 +112,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
+                <a href="./index.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>회원 목록</p>
                 </a>
@@ -134,8 +134,8 @@
           <!--  회원관리 메뉴 끝-->
           
           <!--  고객센터 메뉴 시작-->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 고객센터
@@ -144,7 +144,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
+                <a href="./index.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Q&A 관리</p>
                 </a>
@@ -166,8 +166,8 @@
           <!--  고객센터 메뉴 끝--> 
           
            <!--  상점관리 메뉴 시작-->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 상점관리
@@ -176,7 +176,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
+                <a href="./index.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>상점 정보</p>
                 </a>

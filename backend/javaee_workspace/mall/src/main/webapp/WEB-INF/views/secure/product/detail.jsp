@@ -174,13 +174,15 @@
 	<%@ include file="../inc/footer_link.jsp" %>
 	<script src="/static/admin/custom/ProductImg.js"></script>
 	<script>
-	function printCategory(obj,list){
+	function printCategory(obj,list,categoryId){
 		let tag="<option value='0'>카테고리 선택</option>"
 		for(let i=0; i<list.length;i++){
 			if(obj=="#topcategory"){
 				tag+="<option value='"+list[i].topcategory_id+"'>"+list[i].top_name+"</option>";
+				
 			}else if(obj=="#subcategory"){
 				tag+="<option value='"+list[i].subcategory_id+"'>"+list[i].sub_name+"</option>";
+				
 			}else if(obj=="#color"){
 				tag+="<option value='"+list[i].color_id+"'>"+list[i].color_name+"</option>";
 			}else if(obj=="#size"){
@@ -189,15 +191,17 @@
 				
 		}
 		$(obj).html(tag);
+		$(obj).val(categoryId);
 	}
 	
+	
 	//비동기 방식으로 서버에 요청을 시도하여 , 데이터 가져오기
-	function getTopCategory(){
+	function getTopCategory(categoryId){
 		$.ajax({
 			url:"/admin/admin/topcategory/list",
 			type:"get",
 			success:function(result, status, xhr){ //200번대의 성공 응답 시, 이 함수 실행
-				printCategory("#topcategory",result);
+				printCategory("#topcategory",result,categoryId);
 			},
 			error:function(xhr,status,err){
 			}
@@ -205,13 +209,13 @@
 	
 	}
 	
-	function getSubCategory(topcategory_id){
+	function getSubCategory(topcategory_id,categoryId){
 
 		$.ajax({
 			url :"/admin/admin/subcategory/list?topcategory_id="+topcategory_id,
 			type:"GET",
 			success:function(result, status, xhr){
-				printCategory("#subcategory",result);
+				printCategory("#subcategory",result,categoryId);
 			}
 		
 		});
@@ -329,7 +333,9 @@
 		    });
 		    $('#summernote').summernote('code', '<%= product.getDetail() %>');
 		    //상위 카테고리 가져오기
-		    getTopCategory();
+		    getTopCategory(<%=product.getSubcategory().getTopcategory().getTopcategory_id()%>);
+		    //하위 카테고리 가져오기
+		    getSubCategory(<%=product.getSubcategory().getTopcategory().getTopcategory_id()%>,<%=product.getSubcategory().getSubcategory_id()%>);
 		    //색상 목록 가져오기
 		    getColorList();
 		    //사이즈 목록 가져오기

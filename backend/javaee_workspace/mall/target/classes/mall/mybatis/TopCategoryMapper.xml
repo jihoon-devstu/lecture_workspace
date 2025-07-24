@@ -6,5 +6,8 @@
 		select *from topcategory
 	</select>
 	
-
+	<select id="select" resultType="TopCategory" parameterType="int">
+		select topcategory_id , top_name from topcategory where topcategory_id = #{topcategory_id}
+	</select>
+	
 </mapper>
