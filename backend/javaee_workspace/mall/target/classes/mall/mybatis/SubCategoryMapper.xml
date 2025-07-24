@@ -15,11 +15,13 @@
 	</resultMap>
 
 	<select id="selectByTopCategoryId" parameterType="int" resultType="SubCategory">
-		select subcategory_id, sub_name, topcategory_id from subcategory where topcategory_id=#{topcategory_id}
+		select subcategory_id, sub_name, topcategory_id from subcategory 
+		where topcategory_id=#{topcategory_id}
 	</select>
 	
 	<select id="select" resultMap="topcategoryMap" parameterType="int">
-		select subcategory_id, sub_name, topcategory_id from subcategory where subcategory_id=#{subcategory_id}
+		select subcategory_id, sub_name, topcategory_id from subcategory 
+		where subcategory_id=#{subcategory_id}
 	</select>
 
 </mapper>
