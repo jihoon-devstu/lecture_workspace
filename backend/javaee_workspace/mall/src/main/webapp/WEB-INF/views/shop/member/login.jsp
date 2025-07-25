@@ -191,7 +191,7 @@ input[type=submit]:hover {
 			url:"/shop/member/"+sns+"/authurl",
 			type:"get",
 			success:function(result){
-				alert(result);
+				location.href=result; //동의 화면으로 요청
 			}
 		});
 	}
