@@ -3,22 +3,42 @@
 
 수업 시작.
 
+IDP = IDentity Provider (소셜 로그인)
 
+Client = App or Application Server 
+
+Resource Owner = (User)
+
+OAuth (Open Authorization)표준.
+--------------------------------------------------------------------------------------------------------
+1. 구글 api console 홈페이지 가기.
+
+2. 프로젝트 신규로 만들기.
+
+3. 메뉴에서 OAuth 동의화면가기.
+
+4. 외부 체크 -> 만들기
+
+5. 브랜딩에 로고 이미지 넣기
+
+6. 앱 도메인 설정 (애플리케이션 홈페이지 , 개인정보처리방침 링크, 서비스 약관 링크)
+http://localhost:8888
+http://localhost:8888/shop/member/policy
+http://localhost:8888/shop/member/term
 
 
 --------------------------------------------------------------------------------------------------------
+Oauth 클라이언트 ID 만들기
+http://localhost:8888/shop/callback/sns/google
+http://localhost:8888/shop/callback/sns/naver
+http://localhost:8888/shop/callback/sns/kakao
 
 
+클라이언트 ID 
+99629635046-3mao7qk13pph1m7hk3tmfqv2dgu43iee.apps.googleusercontent.com
 
-
-
-
-
---------------------------------------------------------------------------------------------------------
-
-
-
-
+클라이언트 보안 비밀번호
+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
 
 
 
