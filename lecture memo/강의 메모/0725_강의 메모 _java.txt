@@ -26,13 +26,13 @@ http://localhost:8888
 http://localhost:8888/shop/member/policy
 http://localhost:8888/shop/member/term
 
-
---------------------------------------------------------------------------------------------------------
 Oauth 클라이언트 ID 만들기
 http://localhost:8888/shop/callback/sns/google
 http://localhost:8888/shop/callback/sns/naver
 http://localhost:8888/shop/callback/sns/kakao
 
+--------------------------------------------------------------------------------------------------------
+구글
 
 클라이언트 ID 
 99629635046-3mao7qk13pph1m7hk3tmfqv2dgu43iee.apps.googleusercontent.com
@@ -40,11 +40,15 @@ http://localhost:8888/shop/callback/sns/kakao
 클라이언트 보안 비밀번호
 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
 
-
-
 --------------------------------------------------------------------------------------------------------
+네이버
+
+클라이언트 ID
+o63OeSiP48nK06TxOmCI
 
 
+클라이언트 보안 비밀번호
+eg335yuPHp
 
 
 

@@ -8,14 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AdminLTE 3 | Projects</title>
 
-    <!-- 스타일 관련 파일 포함 -->
+    <!-- css,js 파일 포함 -->
     <%@ include file="/static/project/project_inc/head_link.jsp" %>
-
-    <!-- 커스텀 JS 파일 포함 -->
-    <script src="/static/project/project_inc/custom.js"></script>
-
-    <!-- 푸터 링크 포함 -->
-    <%@ include file="/static/project/project_inc/footer_link.jsp" %>
 
     <style type="text/css">
         /* 테이블 셀 가운데 정렬 */
@@ -169,5 +163,7 @@
 
     </div>
     <!-- ./wrapper -->
+    <!-- 커스텀 JS 파일 포함 -->
+    <!-- <script src="/static/project/project_inc/custom.js"></script> -->
 </body>
 </html>

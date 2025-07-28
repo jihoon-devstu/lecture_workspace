@@ -37,13 +37,18 @@ public class MemberController {
 	@Autowired
 	private OAuth20Service googleAuthService;
 	
+	@Autowired
+	private OAuth20Service naverAuthService;
+	
 	//로그인 폼 요청 처리
 	@GetMapping("/member/loginform")
 	public String getForm() {
 
 		return "shop/member/login";
 	}
-	
+	/*-------------------------------------------------------------------------------------------------------------------------------------------
+		구글 로그인 처리
+	-------------------------------------------------------------------------------------------------------------------------------------------*/
 	//인증 동의화면 요청 처리
 	@GetMapping("/member/google/authurl")
 	@ResponseBody
@@ -102,6 +107,16 @@ public class MemberController {
 		session.setAttribute("member", member); //세션이 살아있는 한 , Member를 사용할 수 있다.
 		
 		return "redirect:/shop/product/list";
+	}
+/*-------------------------------------------------------------------------------------------------------------------------------------------
+	네이버 로그인 처리
+-------------------------------------------------------------------------------------------------------------------------------------------*/
+	
+	//네이버 인증 동의화면 요청 처리
+	@GetMapping("/member/naver/authurl")
+	@ResponseBody
+	public String getNaverAuthUrl() {
+		return naverAuthService.getAuthorizationUrl();
 	}
 	
 	

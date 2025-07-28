@@ -10,6 +10,8 @@ import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
+import mall.model.member.NaverApi20;
+
 
 @Configuration
 @EnableWebMvc
@@ -34,6 +36,17 @@ public class UserWebConfig {
 		builder.defaultScope("email profile openid");
 		builder.callback("http://localhost:8888/shop/callback/sns/google");
 		return builder.build(GoogleApi20.instance());
+	}
+	
+	//네이버 로그인 관련 서비스 객체 등록
+	@Bean
+	public OAuth20Service naverAuthService() {
+		//클라이언트 ID , Secret , 콜백주소 , 리소스 Owner , 접근 범위
+		ServiceBuilder builder = new ServiceBuilder("o63OeSiP48nK06TxOmCI");
+		builder.apiSecret("eg335yuPHp");
+		builder.defaultScope("name email");
+		builder.callback("http://localhost:8888/shop/callback/sns/naver");
+		return builder.build(NaverApi20.instance());
 	}
 	
 }

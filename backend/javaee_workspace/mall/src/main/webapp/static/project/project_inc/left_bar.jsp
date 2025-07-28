@@ -39,7 +39,7 @@
                
           <!--  상품관리 메뉴 시작-->
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link">
+            <a href="javascript:void(0);" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 상품관리
@@ -48,21 +48,15 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/static/project/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>상품 목록</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/static/project/pr_regist.jsp" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>상품 등록</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>상품 상태 변경</p>
                 </a>
               </li>
             </ul>
@@ -83,12 +77,6 @@
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>주문 내역</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>주문 상세</p>
                 </a>
               </li>
               <li class="nav-item">

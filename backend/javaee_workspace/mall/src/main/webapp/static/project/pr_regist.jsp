@@ -7,13 +7,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AdminLTE 3 | Projects</title>
-<!-- Style include -->
+<!-- Style , js include -->
 <%@ include file="/static/project/project_inc/head_link.jsp"%>
-<script src="/static/project/project_inc/custom.js"></script>
-<!-- /Style include -->
-<!-- head_link -->
-<%@ include file="/static/project/project_inc/footer_link.jsp"%>
-<!-- head_link -->
+<!-- /Style, js include -->
 <style type="text/css">
 table.table td, table.table th {
 	text-align: center;
@@ -245,5 +241,6 @@ table.table td, table.table th {
 	    });
 	  }
 </script>
+<!-- <script src="/static/project/project_inc/custom.js"></script> -->
 </body>
 </html>
