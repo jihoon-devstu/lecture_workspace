@@ -4,6 +4,6 @@ import mall.domain.Member;
 
 public interface MemberService {
 
-	public Member checkDuplicate(String id);
+	public Member selectById(String id);
 	public void regist(Member member);
 }

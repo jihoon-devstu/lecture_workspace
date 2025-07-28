@@ -13,8 +13,8 @@ public class MemberServiceImpl implements MemberService{
 	private MemberDAO memberDAO;
 	
 	@Override
-	public Member checkDuplicate(String id) throws MemberExistException{
-		return memberDAO.checkDuplicate(id);
+	public Member selectById(String id) throws MemberExistException{
+		return memberDAO.selectById(id);
 	}
 
 	@Override

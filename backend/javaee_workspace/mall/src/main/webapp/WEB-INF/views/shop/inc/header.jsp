@@ -40,7 +40,8 @@
                             <a href="#">Login</a>
                             <a href="#">Register</a>
                             <%}else{ %>
-							<a href="#"><%= loginMember.getName()%> 님</a>		                            
+							<a href="#"><%= loginMember.getName()%> 님</a>	
+							<a href="/shop/member/logout">Logout</a>	                            
                             <%} %>
                         </div>
                         <ul class="header__right__widget">

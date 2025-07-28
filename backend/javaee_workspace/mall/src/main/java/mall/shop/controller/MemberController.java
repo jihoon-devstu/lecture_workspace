@@ -46,6 +46,14 @@ public class MemberController {
 
 		return "shop/member/login";
 	}
+	
+	//로그아웃 요청 처리
+	@GetMapping("/member/logout")
+	public String logout(HttpSession session) {
+		//세션 제거할 수는 없으며 , 단 세션을 무효화 시켜야 한다.
+		session.invalidate(); //현재 사용중인 세션 무효화... 따라서 이 시점부터 기존 세션을 참조할 수 없음.
+		return "redirect:/shop/main";
+	}
 	/*-------------------------------------------------------------------------------------------------------------------------------------------
 		구글 로그인 처리
 	-------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -89,9 +97,8 @@ public class MemberController {
 		//회원가입 확인 및 등록 : 토큰을 통해 얻은 회원정보가 우리 쇼핑몰에 등록되어 있는지 체크
 		//1. 없으면 가입 후 로그인
 		Member member=null;
-		try {
-			//계정이 없다면 , 회원가입 및 로그인 처리
-			//회원 등록
+		member = memberService.selectById(openid);
+		if(member==null) {
 			member = new Member();
 			member.setSnsProvider(snsProviderService.selectByName("google"));
 			member.setId(openid);
@@ -99,10 +106,8 @@ public class MemberController {
 			member.setName(name);
 			
 			memberService.regist(member);
-		} catch (Exception e) {
-			//동일한 계정이 이미 존재 한다면 , 로그인만 처리.
-			memberService.checkDuplicate(openid);
 		}
+		
 		//2. 있으면 로그인
 		session.setAttribute("member", member); //세션이 살아있는 한 , Member를 사용할 수 있다.
 		
@@ -119,5 +124,49 @@ public class MemberController {
 		return naverAuthService.getAuthorizationUrl();
 	}
 	
+	//네이버에 등록해 놓은 콜백 주소로 전송되는 콜백 요청 처리
+	@GetMapping("/callback/sns/naver")
+	public String naverCallback(@RequestParam("code") String code,@RequestParam("state")String state,HttpSession session) throws IOException, InterruptedException, ExecutionException {
+		
+		//IDP가 전송한 code와 client Id, client Secret을 조합하여 토큰을 요청하자 !!
+		//클라이언트Id 와 클라이언트Secret은 빈 등록 시 이미 등록해 놓은 걸 사용한다.
+		OAuth2AccessToken accessToken = naverAuthService.getAccessToken(code);
+		log.debug("네이버에서 발급받은 token은 "+ accessToken);
+		
+		//발급받은 토큰을 이용하여 회원 정보 조회
+		OAuthRequest request = new OAuthRequest(Verb.GET,"https://openapi.naver.com/v1/nid/me");
+		naverAuthService.signRequest(accessToken, request);
+		Response response=naverAuthService.execute(request); //요청 후 그 결과를 받자
+		
+		//Gson으로 파싱하기 !!
+		JsonObject json = JsonParser.parseString(response.getBody()).getAsJsonObject();
+		JsonObject resObj = json.getAsJsonObject("response");
+		//필요한 개인 정보를 key 값으로 조회하여 가져오기
+		String email = resObj.get("email").getAsString();
+		String name = resObj.get("name").getAsString();
+		String openid = resObj.get("id").getAsString();
+		
+		log.debug("Response 로 나온 json은 "+json);
+
+		//회원가입 확인 및 등록 : 토큰을 통해 얻은 회원정보가 우리 쇼핑몰에 등록되어 있는지 체크
+		//1. 없으면 가입 후 로그인
+		Member member=null;
+		member = memberService.selectById(openid);
+		if(member==null) {
+			member = new Member();
+			member.setSnsProvider(snsProviderService.selectByName("naver"));
+			member.setId(openid);
+			member.setEmail(email);
+			member.setName(name);
+			
+			memberService.regist(member);
+		}
+		
+		//2. 있으면 로그인
+		session.setAttribute("member", member); //세션이 살아있는 한 , Member를 사용할 수 있다.
+		
+		
+		return "redirect:/shop/main";
+	}
 	
 }
