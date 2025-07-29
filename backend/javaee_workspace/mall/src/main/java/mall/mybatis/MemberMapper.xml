@@ -9,8 +9,8 @@
 
 	<!-- 가입 -->
 	<insert id="insert">
-		insert into member(sns_provider_id,id,password,name,email) 
-		values (#{snsProvider.sns_provider_id},#{id},#{password},#{name},#{email})
+		insert into member(sns_provider_id,id,salt,password,name,email) 
+		values (#{snsProvider.sns_provider_id},#{id},#{salt},#{password},#{name},#{email})
 	</insert>
 	
 	<!-- 이메일을 이용한 회원정보 가져오기 (salt 가져오기 위해) -->

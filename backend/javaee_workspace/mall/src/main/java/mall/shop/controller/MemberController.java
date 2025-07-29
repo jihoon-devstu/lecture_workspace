@@ -8,10 +8,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -23,6 +25,8 @@ import com.google.gson.JsonParser;
 
 import lombok.extern.slf4j.Slf4j;
 import mall.domain.Member;
+import mall.exception.MemberExistException;
+import mall.exception.PasswordEncryptException;
 import mall.model.member.MemberService;
 import mall.model.member.SnsProviderService;
 
@@ -74,9 +78,17 @@ public class MemberController {
 		log.debug("Password = " + member.getPassword());
 		log.debug("name = " + member.getName());
 		log.debug("email = " + member.getEmail());
+		memberService.regist(member);
 		return "redirect:/shop/member/loginform";
 	}
 
+	//홈페이지 로그인 요청 처리
+	@PostMapping("/member/login")
+	public String homeLogin(Member member) {
+		
+		memberService.login(member);
+		return "redirect:/shop/main";
+	}
 	/*-------------------------------------------------------------------------------------------------------------------------------------------
 		구글 로그인 처리
 	-------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -224,5 +236,25 @@ public class MemberController {
 
 
 		return "redirect:/shop/product/list";
+	}
+	
+	
+	//현재 컨트롤러의 메서드들에서 발생하는 예외에 대한 처리
+	@ExceptionHandler(PasswordEncryptException.class)
+	public ModelAndView handle(PasswordEncryptException e) {
+		ModelAndView mav = new ModelAndView("shop/error/result");
+		//mav.addObject("e", e);
+		log.error("암호화에 문제가 생겼네요");
+		e.printStackTrace();
+		mav.addObject("msg", e.getMessage());
+		return mav;
+	}
+	
+	//현재 컨트롤러의 메서드들에서 발생하는 예외에 대한 처리
+	@ExceptionHandler(MemberExistException.class)
+	public ModelAndView Handle(Exception e) {
+		ModelAndView mav = new ModelAndView("shop/error/result");
+		mav.addObject("msg", e.getMessage());
+		return mav;
 	}
 }

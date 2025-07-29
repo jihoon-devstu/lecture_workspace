@@ -141,7 +141,7 @@ input[type=submit]:hover {
 <p>Resize the browser window to see the responsive effect. When the screen is less than 650px wide, make the two columns stack on top of each other instead of next to each other.</p>
 
 <div class="container">
-  <form action="/action_page.php">
+  <form id = "form1" action="/action_page.php">
     <div class="row">
       <h2 style="text-align:center">Login with Social Media or Manually</h2>
       <div class="vl">
@@ -196,8 +196,21 @@ input[type=submit]:hover {
 			}
 		});
 	}
+	
+	function homeLogin(){
+		$("#form1").attr({
+			action:"/shop/member/login",
+			method:"post"
+		});
+		$("#form1").submit();
+	}
 
-
+	$(()=>{
+		
+		$("#bt_login").click(()=>{
+			homeLogin();
+		});
+	});
 </script>
 
 </body>

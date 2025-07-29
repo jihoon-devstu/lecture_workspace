@@ -44,6 +44,7 @@ public class LoginCheckFilter implements Filter{
 			//로그인 폼 / 로그 아웃
 			uri.equals("/shop/member/loginform") ||
 			uri.equals("/shop/member/logout") ||
+			uri.equals("/shop/member/login") ||
 			
 			//회원가입 관련
 			uri.equals("/shop/member/registform") ||

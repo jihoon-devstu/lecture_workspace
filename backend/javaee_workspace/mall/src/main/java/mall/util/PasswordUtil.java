@@ -8,6 +8,7 @@ import java.util.Base64;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import mall.exception.PasswordEncryptException;
 
 @Slf4j
 @Component
@@ -26,7 +27,7 @@ public class PasswordUtil {
 	}
 	
 	//소금과 비번을 조합한 해시를 만든다
-	public static String hashPassword(String password, String salt) {
+	public static String hashPassword(String password, String salt) throws PasswordEncryptException{
 		//해시 함수 사용 객체 , 문자열을 일정 길이의 고정된 해시값으로 바꿔주는 객체
 		//banana - 64 , x - 64
 		String result = null;
@@ -38,6 +39,7 @@ public class PasswordUtil {
 			result =  Base64.getEncoder().encodeToString(hashedByte);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new PasswordEncryptException("암호화 실패", e);
 		} 
 	
 		return result;

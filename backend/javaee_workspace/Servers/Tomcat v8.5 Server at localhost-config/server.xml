@@ -17,7 +17,7 @@
 --><!-- Note:  A "Server" is not itself a "Container", so you may not
      define subcomponents such as "Valves" at this level.
      Documentation at /docs/config/server.html
- --><Server port="8005" shutdown="SHUTDOWN">
+ --><Server port="8006" shutdown="SHUTDOWN">
   <Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
   <!-- Security listener. Documentation at /docs/config/listeners.html
   <Listener className="org.apache.catalina.security.SecurityListener" />
@@ -37,11 +37,10 @@
          UserDatabaseRealm to authenticate users
     -->
     <Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
-  
-  	<!-- 톰켓이 지원하는 커넥션 풀 -->
-  	<Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="10" maxTotal="20" maxWaitMillis="-1" name="jndi/mysql" password="1234" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/spring4" username="spring4"/>
-  	
-  	
+    
+    <!-- 톰켓이 지원하는 커넥션풀  -->
+    <Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="10" maxTotal="20" maxWaitMillis="-1" name="jndi/mysql" password="1234" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/spring4" username="spring4"/>
+    
   </GlobalNamingResources>
 
   <!-- A "Service" is a collection of one or more "Connectors" that share
@@ -167,16 +166,13 @@
 
       
       
-      &gt;
+      
+      
+      
+      
       
       <Context docBase="mall" path="/" reloadable="true" source="org.eclipse.jst.jee.server:mall">
-      	      <ResourceLink 
-      	name="jndi/mysql"
-      	global="jndi/mysql"
-      	type="javax.sql.DataSource"
-      />
-      
-      
+      	<ResourceLink global="jndi/mysql" name="jndi/mysql" type="javax.sql.DataSource"/>
       </Context>
       </Host>
     </Engine>
