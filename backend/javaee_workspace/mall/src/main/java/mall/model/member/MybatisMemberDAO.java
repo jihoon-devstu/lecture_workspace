@@ -27,4 +27,22 @@ public class MybatisMemberDAO implements MemberDAO{
 		}
 	}
 
+	@Override
+	public Member selectByEmail(String email) throws MemberExistException{
+		Member member = sqlSessionTemplate.selectOne("Member.selectByEmail", email);
+		if(member==null) {
+			throw new MemberExistException("일치하는 회원 정보가 없습니다");
+		}
+		return member;
+	}
+
+	@Override
+	public Member login(Member member) throws MemberExistException{
+		Member obj = sqlSessionTemplate.selectOne("Member.login",member);
+		if(obj==null) {
+			throw new MemberExistException("로그인 정보가 올바르지 않습니다");
+		}
+		return null;
+	}
+
 }

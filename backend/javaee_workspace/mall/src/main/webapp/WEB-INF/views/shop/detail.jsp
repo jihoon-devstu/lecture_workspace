@@ -8,6 +8,8 @@
 <%
 	List<TopCategory> topList=(List)request.getAttribute("topList");
 	Product product = (Product)request.getAttribute("product");
+	
+	
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,7 +83,11 @@
                                     <input type="text" id="ea" value="1">
                                 </div>
                             </div>
-                            <a href="javascript:addCart()" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                            <%if(loginMember !=null){ %>
+                            	<a href="javascript:addCart(<%=loginMember.getMember_id() %>)" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                            <%}else{ %>
+                            	<a href="javascript:alert('로그인이 필요한 서비스 입니다')" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                            <%} %>
                             <ul>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
@@ -109,7 +115,7 @@
                                     	%>
                                         <label for="<%=color.toLowerCase()%>">
                                             <input type="radio" name="color" id="<%=color.toLowerCase()%>" value="<%=pc.getColor().getColor_id()%>">
-                                            <span class="checkmark <%=color.toLowerCase()%>-bg"></span>
+                                            <span class="checkmark <%=color.toLowerCase()%>-bg" style = "background : <%=color%>"</span>
                                         </label>
             							<%} %>
 
@@ -119,10 +125,8 @@
                                     <span>Available size:</span>
                                     <div class="size__btn">
                                     <%for(ProductSize ps : product.getSizeList()){ %>
-                                        <label for="xs-btn" class="active">
-                                            <input type="radio" id="xs-btn">
+                                            <input type="radio" id="xs-btn" name="size" value="<%=ps.getSize().getSize_id()%>">
                                             <%=ps.getSize().getSize_name() %>
-                                        </label>
                                         <%} %>
                                     </div>
                                 </li>
@@ -300,8 +304,21 @@
 	<%@include file="./inc/footer_link.jsp" %>
 	
 	<script type="text/javascript">
+	
+
+	
+	function getSelectedValue(array){
+		let selectedValue=0; //색상 or 사이즈의 pk
+		
+		for(int i=0;i<array.length;i++){
+			if(array[i].checked){
+				selectedValue = array[i].value;		
+			}
+		}
+		return selectedValue;
+	}
 		//비동기 요청으로 장바구니 담기
-		function addCart(){
+		function addCart(member_id){
 			
 			$.ajax({
 				url:"/shop/cart/regist", 
@@ -309,8 +326,9 @@
 				data:{
 					"product.product_id" : <%=product.getProduct_id()%>,
 					"ea" : $("#ea").val(),
-					"member_id":2,
-					
+					"member.member_id" : member_id,
+					"color.color_id" : getSelectedValue(document.getElementsByName("color")),
+					"size.size_id" : getSelectedValue(document.getElementsByName("size"))
 				},
 				success:function(result, status, xhr){
 					console.log(result);

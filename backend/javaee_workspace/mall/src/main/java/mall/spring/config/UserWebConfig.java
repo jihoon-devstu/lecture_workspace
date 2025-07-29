@@ -10,6 +10,7 @@ import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
+import mall.model.member.KakaoApi20;
 import mall.model.member.NaverApi20;
 
 
@@ -28,7 +29,7 @@ public class UserWebConfig {
 	}
 	
 	//구글 로그인 관련 서비스 객체 등록
-	@Bean
+	@Bean("googleAuthService")
 	public OAuth20Service googleAuthService() {
 		//클라이언트 ID , Secret , 콜백주소 , 리소스 Owner , 접근 범위
 		ServiceBuilder builder = new ServiceBuilder("99629635046-3mao7qk13pph1m7hk3tmfqv2dgu43iee.apps.googleusercontent.com");
@@ -39,7 +40,7 @@ public class UserWebConfig {
 	}
 	
 	//네이버 로그인 관련 서비스 객체 등록
-	@Bean
+	@Bean("naverAuthService")
 	public OAuth20Service naverAuthService() {
 		//클라이언트 ID , Secret , 콜백주소 , 리소스 Owner , 접근 범위
 		ServiceBuilder builder = new ServiceBuilder("o63OeSiP48nK06TxOmCI");
@@ -47,6 +48,17 @@ public class UserWebConfig {
 		builder.defaultScope("name email");
 		builder.callback("http://localhost:8888/shop/callback/sns/naver");
 		return builder.build(NaverApi20.instance());
+	}
+	
+	//카카오 로그인 관련 서비스 객체 등록
+	@Bean("kakaoAuthService")
+	public OAuth20Service kakaoAuthService() {
+		//클라이언트 ID , Secret , 콜백주소 , 리소스 Owner , 접근 범위
+		ServiceBuilder builder = new ServiceBuilder("0d52ab9f43e0833964075c5709aed4bc");
+		builder.apiSecret("qXJsif2VWdpgsAeE20W1ORyo8RO8t7zX");
+		builder.defaultScope("profile_nickname profile_image");
+		builder.callback("http://localhost:8888/shop/callback/sns/kakao");
+		return builder.build(KakaoApi20.instance());
 	}
 	
 }

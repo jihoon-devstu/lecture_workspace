@@ -8,7 +8,7 @@ public class Cart {
 	private int cart_id;
 	private int ea;
 	private Product product;
-	private int member_id; //내일 할 예정
-	private String selectedColor;
-	private String selectedSize;
+	private Member member; //내일 할 예정
+	private Color color; //선택한 색상
+	private Size size; //선택한 사이즈
 }

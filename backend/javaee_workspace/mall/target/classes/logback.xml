@@ -14,14 +14,18 @@
 	error : 오류 발생 (예외 처리 시) - - 운영환경 에선 On
  -->
 <configuration>
-	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>[%d{HH:mm:ss}] [%level] %logger - %msg%n</pattern>
-		</encoder>
-	</appender>
-	
-	<root level="debug">
-		<appender-ref ref="console"/>
-	</root>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{HH:mm:ss}] [%level] %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
 
+    <!-- Hibernate 로그 레벨 줄이기 -->
+    <logger name="org.hibernate" level="WARN" />
+    <logger name="org.hibernate.SQL" level="OFF" />
+    <logger name="org.hibernate.type.descriptor.sql" level="OFF" />
+
+    <root level="debug">
+        <appender-ref ref="console"/>
+    </root>
 </configuration>

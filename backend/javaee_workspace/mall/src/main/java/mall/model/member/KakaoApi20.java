@@ -1,13 +1,14 @@
 package mall.model.member;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
+import com.github.scribejava.core.model.Verb;
 
 //Scribejava api는 Google이 기본적으로 지원되지만 , 그 이외의 Naver, Kakao는 지원하지 않기 때문에
 //직접 구현.
 public class KakaoApi20 extends DefaultApi20{
 
-	private static final String AUTHORIZE_URL="https://nid.naver.com/oauth2.0/authorize";
-	private static final String ACCESS_TOKEN_URL = "https://nid.naver.com/oauth2.0/token";
+	private static final String AUTHORIZE_URL="https://kauth.kakao.com/oauth/authorize";
+	private static final String ACCESS_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
 	
 	protected KakaoApi20() {}
 	private static class InstanceHolder{
