@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -60,6 +61,20 @@ public class MemberController {
 		// 세션 제거할 수는 없으며 , 단 세션을 무효화 시켜야 한다.
 		session.invalidate(); // 현재 사용중인 세션 무효화... 따라서 이 시점부터 기존 세션을 참조할 수 없음.
 		return "redirect:/shop/main";
+	}
+	
+	@GetMapping("/member/registform")
+	public String getRegistForm() {
+		return "shop/member/join";
+	}
+	
+	@PostMapping("/member/regist")
+	public String regist(Member member) {
+		log.debug("ID = " + member.getId());
+		log.debug("Password = " + member.getPassword());
+		log.debug("name = " + member.getName());
+		log.debug("email = " + member.getEmail());
+		return "redirect:/shop/member/loginform";
 	}
 
 	/*-------------------------------------------------------------------------------------------------------------------------------------------

@@ -8,8 +8,6 @@
 <%
 	List<TopCategory> topList=(List)request.getAttribute("topList");
 	Product product = (Product)request.getAttribute("product");
-	
-	
 %>
 <!DOCTYPE html>
 <html lang="en">

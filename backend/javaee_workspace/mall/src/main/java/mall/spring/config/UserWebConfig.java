@@ -16,7 +16,7 @@ import mall.model.member.NaverApi20;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"mall.shop.controller"})
+@ComponentScan(basePackages = {"mall.advice, mall.shop.controller, mall.util"})
 public class UserWebConfig {
 	
 	@Bean

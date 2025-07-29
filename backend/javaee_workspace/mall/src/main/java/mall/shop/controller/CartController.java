@@ -15,17 +15,6 @@ import mall.model.category.TopCategoryService;
 @Slf4j
 @Controller
 public class CartController {
-
-	@Autowired
-	private TopCategoryService topCategoryService;
-	
-	
-	@GetMapping("/cart/list")
-	public String getList(Model model) {
-		List topList = topCategoryService.selectAll();
-		model.addAttribute("topList",topList);
-		return "shop/order/cart_list";
-	}
 	
 	//장바구니 담기
 	@PostMapping("/cart/regist")
