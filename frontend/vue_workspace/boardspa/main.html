@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #app{
+            width: 1400px;
+            height: 800px;
+        }
+        #aside_regist{
+            width: 199px;
+            height: 100%;
+            float: left;
+            background-color: lightcoral;
+            display: flex;
+            align-items: center;     /* 세로 중앙 정렬 */
+        }
+        #content{
+            width: 1000px;
+            height: 100%;
+            float: left;
+        }
+        #aside_detail{
+            width: 199px;
+            height: 100%;
+            float: left;
+            background-color: bisque;
+            display: flex;
+            align-items: center;     /* 세로 중앙 정렬 */
+        }
+
+        #content_header{
+            width: 1000px;
+            height: 50px;
+            background-color: lightgreen;
+        }
+        #content_list{
+            width: 1000px;
+            height: 750px;
+            background-color: lightpink;
+        }
+        #title{
+
+        }
+        #writter{
+
+        }
+        #content1{
+            height: 300px;
+        }
+        #content2{
+            height: 300px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="aside_regist">
+            <form action="" id="form1" name="form1">
+                <textarea name="title" id="title1"></textarea>
+                <textarea name="writer" id="writer1"></textarea>
+                <textarea name="content" id="content1"></textarea>
+            <button>클릭</button>
+            </form>
+        </div>
+        <div id="content">
+            <div id="content_header"></div>
+            <div id="content_list"></div>
+        </div>
+        <div id="aside_detail">
+            <form action="" id="form2" name="form1">
+                <textarea name="title" id="title2"></textarea>
+                <textarea name="writer" id="writer2"></textarea>
+                <textarea name="content" id="content2"></textarea>
+            <button>클릭</button>
+            </form>
+        </div>
+    </div>
+
+    
+</body>
+</html>

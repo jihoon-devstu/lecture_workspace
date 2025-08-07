@@ -28,6 +28,7 @@ table.table td, table.table th {
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Content Wrapper -->
+  
   <div class="content-wrapper">
     <!-- Content Header -->
     <div class="content-header">
@@ -175,6 +176,7 @@ table.table td, table.table th {
     </section>
     <!-- /.content -->
   </div>
+  
   <!-- /.content-wrapper -->
 
   <footer class="main-footer">

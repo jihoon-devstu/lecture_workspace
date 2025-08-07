@@ -167,7 +167,7 @@ input[type=submit]:hover {
 
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>
-        <input type="submit" value="Login">
+        <input type="submit" value="Login" id="bt_login">
       </div>
       
     </div>

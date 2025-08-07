@@ -8,7 +8,7 @@
 </head>
 <body style="background:yellow">
 	<p>이용에 불편을 드려 죄송합니다.</p>
-	<% request.getAttribute("mav")
+	<% request.getAttribute("mav");
 	
 	%>
 </body>
