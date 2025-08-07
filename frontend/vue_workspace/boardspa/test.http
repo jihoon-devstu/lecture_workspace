@@ -1,0 +1,44 @@
+###게시물 목록
+
+GET http://localhost:9999/shop/boards
+Content-Type: application/json
+
+###게시물 등록
+
+POST http://localhost:9999/shop/boards
+Content-Type: application/json
+
+{
+    "title" : "게시판 등록 테스트",
+    "writer" : "jihoon",
+    "content": "내용 테스트"
+}
+
+
+###게시물 한 건 조회
+
+GET http://localhost:9999/shop/boards/3
+Content-Type: application/json
+
+
+###게시물 수정
+
+PUT http://localhost:9999/shop/boards/2
+Content-Type: application/json
+
+{
+    "title" : "게시판 등록 테스트",
+    "writer" : "jihoon",
+    "content": "내용 테스트"
+}
+
+###게시물 삭제
+
+DELETE http://localhost:9999/shop/boards/2
+Content-Type: application/json
+
+{
+    "title" : "게시판 등록 테스트",
+    "writer" : "jihoon",
+    "content": "내용 테스트"
+}

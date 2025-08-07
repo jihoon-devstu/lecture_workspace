@@ -8,29 +8,19 @@
         #app{
             width: 1400px;
             height: 800px;
+            margin: auto;
         }
         #aside_regist{
             width: 199px;
             height: 100%;
             float: left;
             background-color: lightcoral;
-            display: flex;
-            align-items: center;     /* 세로 중앙 정렬 */
         }
         #content{
             width: 1000px;
             height: 100%;
             float: left;
         }
-        #aside_detail{
-            width: 199px;
-            height: 100%;
-            float: left;
-            background-color: bisque;
-            display: flex;
-            align-items: center;     /* 세로 중앙 정렬 */
-        }
-
         #content_header{
             width: 1000px;
             height: 50px;
@@ -41,18 +31,29 @@
             height: 750px;
             background-color: lightpink;
         }
-        #title{
+        #aside_detail{
+            width: 199px;
+            height: 100%;
+            float: left;
+            background-color: bisque;
+        }
 
+        #form1 input,textArea{
+            width: 90%;
+            height: 30px;
+            margin: 5px;
         }
-        #writter{
 
+        #form2 input,textArea{
+            width: 90%;
+            height: 30px;
+            margin: 5px;
         }
-        #content1{
-            height: 300px;
+
+        textarea{
+            height: 250px;
         }
-        #content2{
-            height: 300px;
-        }
+
 
     </style>
 </head>
@@ -60,10 +61,10 @@
     <div id="app">
         <div id="aside_regist">
             <form action="" id="form1" name="form1">
-                <textarea name="title" id="title1"></textarea>
-                <textarea name="writer" id="writer1"></textarea>
-                <textarea name="content" id="content1"></textarea>
-            <button>클릭</button>
+                <input type="text">
+                <input type="text">
+                <textarea name="" id=""></textarea>
+            <button>등록</button>
             </form>
         </div>
         <div id="content">
@@ -72,10 +73,11 @@
         </div>
         <div id="aside_detail">
             <form action="" id="form2" name="form1">
-                <textarea name="title" id="title2"></textarea>
-                <textarea name="writer" id="writer2"></textarea>
-                <textarea name="content" id="content2"></textarea>
-            <button>클릭</button>
+                <input type="text">
+                <input type="text">
+                <textarea name="" id=""></textarea>
+            <button>수정</button>
+            <button>삭제</button>
             </form>
         </div>
     </div>
