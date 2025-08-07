@@ -17,7 +17,7 @@ public class BoardServiceImpl implements BoardService {
     //근래의 스프링에서는 Autowired가 지양 대상이다.
     //따라서 생성자를 통해, 정확히 어떤 자료형을 사용할지 명시하는게 좋다...
     private BoardDAO boardDAO;
-    public BoardServiceImpl(@Qualifier("jpaBoardDAO") BoardDAO boardDAO) {
+    public BoardServiceImpl(@Qualifier("mybatisBoardDAO") BoardDAO boardDAO) {
         this.boardDAO = boardDAO;
     }
     @Override
