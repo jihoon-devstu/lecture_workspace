@@ -64,8 +64,8 @@
                 <input type="text" name="title">
                 <input type="text" name="writer">
                 <textarea name="content" id=""></textarea>
-            <button type="button" @click ="regist">등록</button>
-            <button type="button" @click ="getList">목록</button>
+            <button type="button" @click ="regist()">등록</button>
+            <button type="button" @click ="getList()">목록</button>
             </form>
         </div>
         <div id="content">
@@ -82,8 +82,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="board in boardList">
-                            <td>{{board.board_id}}</td>
+                        <tr v-for="board in boardList" :key="board.board_id">
+                            <td @click="getDetail(board.board_id)">{{board.board_id}}</td>
                             <td>{{board.title}}</td>
                             <td>{{board.writer}}</td>
                             <td>{{board.regdate}}</td>
@@ -96,67 +96,82 @@
         </div>
         <div id="aside_detail">
             <form action="" id="form2" name="form2">
-                <input type="text" name="board_id">
-                <input type="text" name="title">
-                <input type="text" name="writer">
-                <textarea name="content" id=""></textarea>
-            <button type="button" @click ="update">수정</button>
-            <button type="button" @click ="remove">삭제</button>
+                <input type="text" name="board_id" v-model="board.board_id">
+                <input type="text" name="title" v-model="board.title">
+                <input type="text" name="writer" v-model="board.writer">
+                <textarea name="content" v-model="board.content"></textarea>
+            <button type="button" @click ="edit()">수정</button>
+            <button type="button" @click ="del()">삭제</button>
             </form>
         </div>
     </div>
 
     <script>
-        //뷰 애플리케이션 생성
-        const app = Vue.createApp({
-            data(){
-                return {
-                    boardList:[]
-                };
-            },
-            methods:{
-                //등록 메서드 정의
-                regist(){
-                    let data = JSON.stringify({
-                            title:$("#form1 input[name='title']").val(),
-                            writer:$("#form1 input[name='writer']").val(),
-                            content:$("#form1 textarea[name='content']").val()
-                        });
+        
+        const { createApp, reactive, ref } = Vue;
+        /*
+        위와 같은 코드를 구조 분해라 한다.
+        */
+        createApp({
+            setup(){
+                const boardList = reactive([]); //배열 또는 객체 유형의 바인딩 데이터를 선언할 때.
+                const board = reactive({});
+                const price = ref(0); //숫자 , 문자 , 논리값과 같은 일반 데이터는 ref
 
+                //글 목록
+                const getList=()=>{
+                    $.ajax({
+                        url:"http://192.168.60.40:9999/shop/boards",
+                        method:"GET",
+                        success:result=>{
+                            boardList.splice(0);
+                            result.forEach(item => {
+                                boardList.push(item);
+                            });
+                        },
+                        err:(err)=>{
+                            console.log(err);
+                        }
+                    });
+                }
+                //글 등록
+                const regist=()=>{
                     $.ajax({
                         url:"http://192.168.60.40:9999/shop/boards",
                         method:"POST",
                         contentType:"application/json",
-                        data: data,
-                        success:(result,status,xhr)=>{
-                            $("#form1 input[name='title']").val("");
-                            $("#form1 input[name='writer']").val("");
-                            $("#form1 textarea[name='content']").val("");
-                            this.getList();
+                        data:JSON.stringify({
+                            title:$("#form1 input[name='title']").val(),
+                            writer:$("#form1 input[name='writer']").val(),
+                            content:$("#form1 textarea[name='content']").val()
+                        }),
+                        success:()=>{
+                            getList();
                         },
-                        error:function(xhr,status,err){
-                            console.log(err);
+                        err:()=>{
+
                         }
                     });
-                },
-
-                getList(){
-                    $.ajax({
-                        url:"http://192.168.60.40:9999/shop/boards",
+                }
+                //글 상세
+                const getDetail=(board_id)=>{
+                        $.ajax({
+                        url:`http://192.168.60.40:9999/shop/boards/${board_id}`,
                         method:"GET",
                         //화살표 함수는 , 상위 컨텍스트를 가리킴. 따라서 success 콜백함수는 this가 ajax 이지만 , 화살표함수를 사용하여 상위 객체를 지정.
                         success:(result,status,xhr)=>{
                             console.log(result);
-                            this.boardList=result;
+                            //board.value=result;
+                            Object.assign(board, result); //ref 의 경우 .value 로 접근 , reactive 의 경우 해당 코드로 접근
                         },
                         error:function(xhr,status,err){
                             console.log(err);
                         }
                     });
-                },
-
-                update(){
-                        let data = JSON.stringify({
+                }
+                //글 수정
+                const edit=()=>{
+                    let data = JSON.stringify({
                             title:$("#form2 input[name='title']").val(),
                             writer:$("#form2 input[name='writer']").val(),
                             content:$("#form2 textarea[name='content']").val()
@@ -168,39 +183,39 @@
                         contentType:"application/json",
                         data: data,
                         success:(result,status,xhr)=>{
-                            $("#form1 input[name='title']").val("");
-                            $("#form1 input[name='writer']").val("");
-                            $("#form1 textarea[name='content']").val("");
-                            this.getList();
-                        },
-                        error:function(xhr,status,err){
-                            console.log(err);
-                        }
-                    });
-
-                },
-
-                remove(){
-                        $.ajax({
-                        url:"http://192.168.60.40:9999/shop/boards/"+$("#form2 input[name='board_id']").val(),
-                        method:"DELETE",
-                        success:(result,status,xhr)=>{
-                            console.log(result);
-                            this.getList();
+                            //board.value= {};
+                            for (const key in board) {
+                                delete board[key];
+                            }                            
+                            getList();
                         },
                         error:function(xhr,status,err){
                             console.log(err);
                         }
                     });
                 }
-            },
-            
-            mounted(){
-                this.getList();
-            }
+                //글 삭제
+                const del=()=>{
+                        $.ajax({
+                        url:"http://192.168.60.40:9999/shop/boards/"+$("#form2 input[name='board_id']").val(),
+                        method:"DELETE",
+                        success:(result,status,xhr)=>{
+                            for (const key in board) {
+                                delete board[key];
+                            } 
+                            getList();
+                        },
+                        error:function(xhr,status,err){
+                            console.log(err);
+                        }
+                    });
+                }
 
-        });
-        app.mount("#app");
+                //목록 요청
+                getList();
+                return {boardList , board, price,getList,regist,getDetail,edit,del}
+            }
+        }).mount("#app");
     </script>
     
 </body>

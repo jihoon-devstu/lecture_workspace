@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #app{
+            width: 1400px;
+            height: 800px;
+            margin: auto;
+        }
+        #aside_regist{
+            width: 199px;
+            height: 100%;
+            float: left;
+            background-color: lightcoral;
+        }
+        #content{
+            width: 1000px;
+            height: 100%;
+            float: left;
+        }
+        #content_header{
+            width: 1000px;
+            height: 50px;
+            background-color: lightgreen;
+        }
+        #content_list{
+            width: 1000px;
+            height: 750px;
+            background-color: lightpink;
+        }
+        #aside_detail{
+            width: 199px;
+            height: 100%;
+            float: left;
+            background-color: bisque;
+        }
+
+        #form1 input,textArea{
+            width: 90%;
+            height: 30px;
+            margin: 5px;
+        }
+
+        #form2 input,textArea{
+            width: 90%;
+            height: 30px;
+            margin: 5px;
+        }
+
+        textarea{
+            height: 250px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="aside_regist">
+            <form action="" id="form1" name="form1">
+                <input type="text" name="title">
+                <input type="text" name="writer">
+                <textarea name="content" id=""></textarea>
+            <button type="button" @click ="regist">등록</button>
+            <button type="button" @click ="getList">목록</button>
+            </form>
+        </div>
+        <div id="content">
+            <div id="content_header"></div>
+            <div id="content_list">
+                <table width="100%" border="1px">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Title</th>
+                            <th>Writer</th>
+                            <th>Regdate</th>
+                            <th>hit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="board in boardList">
+                            <td @click="getDetail(board.board_id)">{{board.board_id}}</td>
+                            <td>{{board.title}}</td>
+                            <td>{{board.writer}}</td>
+                            <td>{{board.regdate}}</td>
+                            <td>{{board.hit}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div id="aside_detail">
+            <form action="" id="form2" name="form2">
+                <input type="text" name="board_id" v-model="board.board_id">
+                <input type="text" name="title" v-model="board.title">
+                <input type="text" name="writer" v-model="board.writer">
+                <textarea name="content" v-model="board.content"></textarea>
+            <button type="button" @click ="update">수정</button>
+            <button type="button" @click ="remove">삭제</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        //뷰 애플리케이션 생성
+        const app = Vue.createApp({
+            data(){
+                return {
+                    //UI 영역에 바인딩 시키고 싶은 데이터 선언
+                    //이 데이터들은 일반 데이터가 아니라 , UI로 연결되어 있으므로 , 이 값만 변경해도
+                    //UI가 자동으로 바뀐다... 이러한 유형의 Vue 데이털르 가리켜 바인딩 데이터라 한다.
+                    boardList:[],
+                    board:{}
+                };
+            },
+            methods:{
+                //등록 메서드 정의
+                regist(){
+                    let data = JSON.stringify({
+                            title:$("#form1 input[name='title']").val(),
+                            writer:$("#form1 input[name='writer']").val(),
+                            content:$("#form1 textarea[name='content']").val()
+                        });
+
+                    $.ajax({
+                        url:"http://192.168.60.40:9999/shop/boards",
+                        method:"POST",
+                        contentType:"application/json",
+                        data: data,
+                        success:(result,status,xhr)=>{
+                            $("#form1 input[name='title']").val("");
+                            $("#form1 input[name='writer']").val("");
+                            $("#form1 textarea[name='content']").val("");
+                            this.getList();
+                        },
+                        error:function(xhr,status,err){
+                            console.log(err);
+                        }
+                    });
+                },
+
+                getList(){
+                    $.ajax({
+                        url:"http://192.168.60.40:9999/shop/boards",
+                        method:"GET",
+                        //화살표 함수는 , 상위 컨텍스트를 가리킴. 따라서 success 콜백함수는 this가 ajax 이지만 , 화살표함수를 사용하여 상위 객체를 지정.
+                        success:(result,status,xhr)=>{
+                            console.log(result);
+                            this.boardList=result;
+                        },
+                        error:function(xhr,status,err){
+                            console.log(err);
+                        }
+                    });
+                },
+
+                update(){
+                    if(!this.board.board_id){
+                        alert("수정하실 글을 선택 해 주세요");
+                    }
+                        let data = JSON.stringify({
+                            title:$("#form2 input[name='title']").val(),
+                            writer:$("#form2 input[name='writer']").val(),
+                            content:$("#form2 textarea[name='content']").val()
+                        });
+
+                    $.ajax({
+                        url:"http://192.168.60.40:9999/shop/boards/"+$("#form2 input[name='board_id']").val(),
+                        method:"PUT",
+                        contentType:"application/json",
+                        data: data,
+                        success:(result,status,xhr)=>{
+                            this.board = {};
+                            this.getList();
+                        },
+                        error:function(xhr,status,err){
+                            console.log(err);
+                        }
+                    });
+
+                },
+
+                remove(){
+                        if(!this.board.board_id){
+                            alert("삭제하실 글을 선택 해 주세요");
+                        }
+
+                        $.ajax({
+                        url:"http://192.168.60.40:9999/shop/boards/"+$("#form2 input[name='board_id']").val(),
+                        method:"DELETE",
+                        success:(result,status,xhr)=>{
+                            this.board = {};
+                            this.getList();
+                        },
+                        error:function(xhr,status,err){
+                            console.log(err);
+                        }
+                    });
+                },
+
+                getDetail(board_id){
+                        $.ajax({
+                        url:`http://192.168.60.40:9999/shop/boards/${board_id}`,
+                        method:"GET",
+                        //화살표 함수는 , 상위 컨텍스트를 가리킴. 따라서 success 콜백함수는 this가 ajax 이지만 , 화살표함수를 사용하여 상위 객체를 지정.
+                        success:(result,status,xhr)=>{
+                            console.log(result);
+                            this.board=result;
+                        },
+                        error:function(xhr,status,err){
+                            console.log(err);
+                        }
+                    });
+                }
+            },
+            
+            mounted(){
+                this.getList();
+            }
+
+        });
+        app.mount("#app");
+    </script>
+    
+</body>
+</html>

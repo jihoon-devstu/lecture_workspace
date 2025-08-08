@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        /*js 에서는 for , forEach
+        둘다 반복문임 ! 
+        forEach는 배열의 각 요소에 대해 콜백 함수를 한번 씩 실행하는 배열 메서드
+        고전적인 for문과 목적이 다름.
+        [특징]
+        1) 반드시 배열이 있어야함.
+        2) 콜백 함수의 두번째 인자가 인덱스이다.
+        3) break , continue 사용 불가. (즉 , 반복 중단 불가능)
+        4) 반환값은 undefined, 즉 반복 결과를 반환하지 않음.
+        */
+
+        const fruit=["banana","berry","melon"];
+        fruit.forEach((item,index,array)=>{
+            console.log(item)
+            console.log(index)
+            console.log(array)
+        });
+
+        const arr =[1,2,3,4,5,6,7,8,9,10];
+        arr.forEach((item)=>{
+            console.log(item);
+        });
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
