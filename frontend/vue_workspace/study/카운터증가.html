@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button type="button" @click ="plus">카운트 증가</button>
+        <button type="button" @click ="minus">카운트 감소</button>
+        <button type="button" @click ="reset">0으로 초기화</button>
+        <h1>{{msg}}</h1>
+    </div>
+    
+    <script>
+        const app = Vue.createApp({
+            data(){
+                return{
+                    msg:0
+                }
+            },
+            methods:{
+                plus(){
+                    this.msg = this.msg+1;
+                },
+                minus(){
+                    this.msg = this.msg-1;
+                },
+                reset(){
+                    this.msg = 0;
+                }
+            }
+        })
+
+        app.mount("#app");
+    </script>
+</body>
+</html>

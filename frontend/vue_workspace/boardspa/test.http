@@ -17,28 +17,23 @@ Content-Type: application/json
 
 ###게시물 한 건 조회
 
-GET http://localhost:9999/shop/boards/3
+GET http://localhost:9999/shop/boards/1
 Content-Type: application/json
 
 
 ###게시물 수정
 
-PUT http://localhost:9999/shop/boards/2
+PUT http://localhost:9999/shop/boards/1
 Content-Type: application/json
 
 {
-    "title" : "게시판 등록 테스트",
+    "title" : "게시판 수정 진짜 됨??",
     "writer" : "jihoon",
-    "content": "내용 테스트"
+    "content": "수정 테스트"
 }
 
 ###게시물 삭제
 
-DELETE http://localhost:9999/shop/boards/2
+DELETE http://localhost:9999/shop/boards/5
 Content-Type: application/json
 
-{
-    "title" : "게시판 등록 테스트",
-    "writer" : "jihoon",
-    "content": "내용 테스트"
-}
