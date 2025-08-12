@@ -10,7 +10,7 @@ public class WebCorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 //지정한 다른 서버에서 들어오는 요청도 받아들이겠다.
                 .allowedOrigins("http://127.0.0.1:5500", "http://localhost:5500")
-                .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(false);
     }

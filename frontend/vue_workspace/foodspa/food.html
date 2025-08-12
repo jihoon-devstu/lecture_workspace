@@ -28,9 +28,10 @@
 <body>
     <div id="app">
         <div id="content_header">
-             <form action="" id="form" name="form">
-                <input type="text" name="store_name" placeholder="상호명 입력">
-                <button type="button" @click ="getList()">검색</button>
+            <input type="text" id="storeInput" name="store_name" placeholder="상호명 입력" 
+                v-model="keyword" 
+                @keyup.enter="getList(keyword)">
+            <button type="button" @click="getList(keyword)">검색</button>
         </div>
         <div id="content_body">
                 <table width="100%" border="1px">
@@ -39,6 +40,9 @@
                             <th>시군</th>
                             <th>상호명</th>
                             <th>전화번호</th>
+                            <th>위도</th>
+                            <th>경도</th>
+                            <th>대표메뉴</th>
                             <th>영업시간</th>
                             <th>가게주소</th>
                         </tr>
@@ -48,6 +52,9 @@
                             <td>{{store.SIGUN}}</td>
                             <td><a :href="store._URL" target="_blank">{{store.CMPNM}}</a></td>
                             <td>{{store.TELNO}}</td>
+                            <td>{{store.LA}}</td>
+                            <td>{{store.LO}}</td>
+                            <td>{{store.MNMNU}}</td>
                             <td>{{store.TIME}}</td>
                             <td>{{store.ADRES}}</td>
                         </tr>
@@ -62,20 +69,31 @@
             setup(){
                 const storeList = reactive([]);
                 const store = reactive({});
-
-
+                const keyword = ref(""); // 검색어 상태
 
                 const getList=(store_name)=>{
+                    store_name = (store_name == undefined) ? "" : store_name;
                     $.ajax({
-                        url:"http://192.168.60.40:7777/food/stores?store_name="+store_name+"&_type=json",
+                        url:"http://192.168.60.40:7777/food/stores?store_name="+store_name,
                         method:"GET",
-                        dataType: "json",
                         success:result=>{
                             console.log("서버로부터 받은 음식점 목록은",result);
                             storeList.splice(0);
-                            result.body.forEach(item => {
-                                storeList.push(item);
-                            });
+                            const data = result.body;
+                            if (!data) {
+                                // 결과가 없을 때
+                                return;
+                            }
+
+                            if (Array.isArray(data)) {
+                                // 배열인 경우
+                                data.forEach(item => {
+                                    storeList.push(item);
+                                });
+                            } else if (typeof data === "object") {
+                                // 단일 객체인 경우 (검색 결과 1건)
+                                storeList.push(data);
+                            }
                         },
                         err:(err)=>{
                             console.log(err);
@@ -84,7 +102,7 @@
                 }
 
                 getList();
-                return{storeList,store,getList}
+                return{storeList,store,keyword,getList}
             }
         }).mount("#app");
     </script>
