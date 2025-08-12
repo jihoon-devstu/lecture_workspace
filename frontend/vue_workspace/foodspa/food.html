@@ -38,22 +38,18 @@
                         <tr>
                             <th>시군</th>
                             <th>상호명</th>
-                            <th>메뉴</th>
                             <th>전화번호</th>
                             <th>영업시간</th>
                             <th>가게주소</th>
-                            <th>홈페이지 URL</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="store in storeList">
                             <td>{{store.SIGUN}}</td>
-                            <td>{{store.CMPNM}}</td>
-                            <td>{{store.MENU}}</td>
+                            <td><a :href="store._URL" target="_blank">{{store.CMPNM}}</a></td>
                             <td>{{store.TELNO}}</td>
                             <td>{{store.TIME}}</td>
                             <td>{{store.ADRES}}</td>
-                            <td><a :href="store._URL" target="_blank">{{store._URL}}</a></td>
                         </tr>
                     </tbody>
                 </table>
