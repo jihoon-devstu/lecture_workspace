@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #app{
+            width: 1600px;
+            height: 800px;
+            margin: auto;
+        }
+        #content_header{
+            width: 100%;
+            height: 50px;
+            background-color: lightgreen;
+            text-align: center;
+        }
+        #content_body{
+            width: 100%;
+            height: 750px;
+            background-color: lightgoldenrodyellow;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div id="content_header">
+             <form action="" id="form" name="form">
+                <input type="text" name="store_name" placeholder="상호명 입력">
+                <button type="button" @click ="getList()">검색</button>
+        </div>
+        <div id="content_body">
+                <table width="100%" border="1px">
+                    <thead>
+                        <tr>
+                            <th>시군</th>
+                            <th>상호명</th>
+                            <th>메뉴</th>
+                            <th>전화번호</th>
+                            <th>영업시간</th>
+                            <th>가게주소</th>
+                            <th>홈페이지 URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="store in storeList">
+                            <td>{{store.SIGUN}}</td>
+                            <td>{{store.CMPNM}}</td>
+                            <td>{{store.MENU}}</td>
+                            <td>{{store.TELNO}}</td>
+                            <td>{{store.TIME}}</td>
+                            <td>{{store.ADRES}}</td>
+                            <td><a :href="store._URL" target="_blank">{{store._URL}}</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, reactive , ref } = Vue;
+        createApp({
+            setup(){
+                const storeList = reactive([]);
+                const store = reactive({});
+
+
+
+                const getList=(store_name)=>{
+                    $.ajax({
+                        url:"http://192.168.60.40:7777/food/stores?store_name="+store_name+"&_type=json",
+                        method:"GET",
+                        dataType: "json",
+                        success:result=>{
+                            console.log("서버로부터 받은 음식점 목록은",result);
+                            storeList.splice(0);
+                            result.body.forEach(item => {
+                                storeList.push(item);
+                            });
+                        },
+                        err:(err)=>{
+                            console.log(err);
+                        }
+                    });
+                }
+
+                getList();
+                return{storeList,store,getList}
+            }
+        }).mount("#app");
+    </script>
+</body>
+</html>
