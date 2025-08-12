@@ -25,20 +25,11 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    // JPA (Java Persistence API) 자바의 공식 ORM (Hibernate)
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.5.4")
-    // Mysql JDBC
-    implementation("com.mysql:mysql-connector-j:8.0.33")
-    // Mybatis
-    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3")
-    //API 문서 작성
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 }
 
 tasks.named('test') {
