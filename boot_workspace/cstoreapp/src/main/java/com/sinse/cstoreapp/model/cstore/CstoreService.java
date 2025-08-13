@@ -1,4 +1,4 @@
-package com.sinse.mineralapp.model.mineral;
+package com.sinse.cstoreapp.model.cstore;
 
 import org.springframework.stereotype.Service;
 import org.xml.sax.InputSource;
@@ -18,32 +18,25 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
-public class MineralService {
-    private String serviceKey = "vzb47%2FTnsL5t93ciUjDyGl5PAsSYpRAc0%2B7lpZeq6YO78Ud3kR%2FEK3Tmvvoqn%2Fu7nY%2BPHIwJ4HmQnAhBArnDGw%3D%3D";
-    private String baseUrl = "http://apis.data.go.kr/6460000/jnYaksoo/getYakSooList";
-
-
-    private CstoreHandler cstoreHandler;
-    public MineralService(CstoreHandler cstoreHandler) {
-        this.cstoreHandler = cstoreHandler;
-    }
+public class CstoreService {
+    private String serviceKey = "24447f5f9258417292a96850c144b7f3";
+    private String baseUrl = "https://openapi.gg.go.kr/Resrestrtcvnstr";
 
     public List<Cstore> parse() throws IOException, InterruptedException, ParserConfigurationException, SAXException {
-
         String url = baseUrl + "?" +
-                "serviceKey="+serviceKey+
-                "&title="+URLEncoder.encode("꽃무릇", StandardCharsets.UTF_8)+
-                "&pageSize="+ URLEncoder.encode("10", StandardCharsets.UTF_8) +
-                "&startPage="+ URLEncoder.encode("1", StandardCharsets.UTF_8);
+                "KEY=" + serviceKey +
+                "&Type=xml" +
+                "&pIndex=1" +
+                "&pSize=10";
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header( "Accept", "application/xml")
+                .header( "Content-Type", "application/xml")
                 .GET()
                 .build();
         HttpResponse<String> response=client.send(request , HttpResponse.BodyHandlers.ofString());
-
+        CstoreHandler cstoreHandler = new CstoreHandler();
 
         SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
@@ -51,12 +44,9 @@ public class MineralService {
         InputSource inputSource = new InputSource(new StringReader(response.body()));
 
         saxParser.parse(inputSource, cstoreHandler);
-
-
-        System.out.println("OpenAPI XML response: " + response.body());
+        System.out.println("cstores parsed: " +cstoreHandler.getCstoreList().size());
 
         return cstoreHandler.getCstoreList();
     }
-
 
 }

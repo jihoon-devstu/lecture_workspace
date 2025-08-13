@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class Mineral {
+public class Cstore {
 
     @JsonProperty("title")
     private String title;          // 제목

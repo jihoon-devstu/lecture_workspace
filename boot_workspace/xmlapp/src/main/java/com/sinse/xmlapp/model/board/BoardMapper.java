@@ -1,0 +1,15 @@
+package com.sinse.xmlapp.model.board;
+
+import com.sinse.xmlapp.domain.Board;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+@Mapper
+public interface BoardMapper {
+    public List<Board> selectAll();
+    public Board select(int board_id);
+    public void insert(Board board);
+    public void update(Board board);
+    public void delete(int board_id);
+}

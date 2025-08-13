@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class MineralHandler extends DefaultHandler {
+public class CstoreHandler extends DefaultHandler {
     @Getter
-    private List<Mineral> mineralList;
+    private List<Cstore> cstoreList;
 
-    Mineral mineral;
+    Cstore cstore;
 
     private boolean isTitle =false;
     private boolean isIngredient =false;
@@ -25,13 +25,13 @@ public class MineralHandler extends DefaultHandler {
 
     @Override
     public void startDocument() throws SAXException {
-        mineralList=new ArrayList<Mineral>();
+        cstoreList =new ArrayList<Cstore>();
     }
 
     @Override
     public void startElement(String uri, String localName, String tag, Attributes attributes) throws SAXException {
         if(tag.equals("mineral")){
-            mineral=new Mineral();
+            cstore =new Cstore();
         }else if(tag.equals("title")){
             isTitle=true;
         }else if(tag.equals("ingredient")){
@@ -52,22 +52,22 @@ public class MineralHandler extends DefaultHandler {
         String content=new String(ch,start,length);
 
         if(isTitle){
-            mineral.setTitle(content);
+            cstore.setTitle(content);
         }
         if(isIngredient){
-            mineral.setIngredient(content);
+            cstore.setIngredient(content);
         }
         if(isposx){
-            mineral.setPosx(Double.parseDouble(content));
+            cstore.setPosx(Double.parseDouble(content));
         }
         if(isposy){
-            mineral.setPosy(Double.parseDouble(content));
+            cstore.setPosy(Double.parseDouble(content));
         }
         if(isWaterBase){
-            mineral.setWaterBase(content);
+            cstore.setWaterBase(content);
         }
         if(isWaterType){
-            mineral.setWaterType(content);
+            cstore.setWaterType(content);
         }
 
     }
@@ -75,7 +75,7 @@ public class MineralHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String tag) throws SAXException {
         if(tag.equals("mineral")){
-            mineralList.add(mineral);
+            cstoreList.add(cstore);
         }else if(tag.equals("title")){
             isTitle=false;
         }else if(tag.equals("ingredient")){

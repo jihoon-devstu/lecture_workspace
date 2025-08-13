@@ -26,22 +26,18 @@
             <table width="100%" border="1px">
                 <thead>
                     <tr>
-                        <th>약수터명</th>
-                        <th>특이성분</th>
-                        <th>경도</th>
-                        <th>위도</th>
-                        <th>수질평가</th>
-                        <th>수질특성</th>
+                        <th>시군명</th>
+                        <th>사업장명</th>
+                        <th>영업상태</th>
+                        <th>소재지도로명주소</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="mineral in mineralList">
-                        <td>{{mineral.title}}</td>
-                        <td>{{mineral.ingredient}}</td>
-                        <td>{{mineral.posx}}</td>
-                        <td>{{mineral.posy}}</td>
-                        <td>{{mineral.waterBase}}</td>
-                        <td>{{mineral.waterType}}</td>
+                    <tr v-for="cstore in cstoreList">
+                        <td>{{cstore.SIGUN_NM}}</td>
+                        <td>{{cstore.BIZPLC_NM}}</td>
+                        <td>{{cstore.BSN_STATE_NM}}</td>
+                        <td>{{cstore.REFINE_ROADNM_ADDR}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -52,16 +48,16 @@
         const {createApp, reactive, ref} = Vue;
         createApp({
             setup(){
-                const mineralList = reactive([]); //바인딩 배열
+                const cstoreList = reactive([]); //바인딩 배열
 
                 const getList=()=>{
                     $.ajax({
-                        url:"http://192.168.60.40:8888/minerals",
+                        url:"http://192.168.60.40:8888/cstores",
                         method:"GET",
                         success:result=>{
-                            mineralList.splice(0);
+                            cstoreList.splice(0);
                             result.forEach(item => {
-                                mineralList.push(item);
+                                cstoreList.push(item);
                             });
                         },
                         err:err=>{
@@ -72,7 +68,7 @@
 
 
                 getList();
-                return{mineralList,getList}
+                return{cstoreList,getList}
             }
         }).mount("#app");
     </script>
