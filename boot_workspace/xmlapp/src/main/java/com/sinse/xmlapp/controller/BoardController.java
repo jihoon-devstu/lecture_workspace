@@ -26,6 +26,11 @@ public class BoardController {
         return "board/list";
     }
 
+    @GetMapping("/board/registform")
+    public String registForm(Model model){
+        return "/board/write";
+    }
+
     @GetMapping("/board/detail")
     public String getDetail(int board_id, Model model){
         Board board = boardService.select(board_id);
@@ -52,6 +57,8 @@ public class BoardController {
         boardService.delete(board_id);
         return "redirect:/board/list";
     }
+
+
 
     @ExceptionHandler(BoardException.class)
     public ModelAndView handleException(BoardException e) {

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        * {box-sizing: border-box;}
+
+        input[type=text], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        input[type=submit] {
+            background-color: #04AA6D;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+<h3>게시글 작성</h3>
+
+<div class="container">
+    <form>
+        <input type="hidden" id="board_id" name="board_id" th:value="${board.board_id}">
+        <input type="text" id="title" name="title" th:value="${board.title}">
+        <input type="text" id="writer" name="writer" th:value="${board.writer}">
+        <textarea id="subject" name="content" th:text="${board.content}"></textarea>
+
+        <input type="button" value="Submit" id="submit">
+        <button type="button" id="list">목록으로</button>
+    </form>
+</div>
+<script th:inline="javascript">
+    function goToList(){
+        location.href = "/board/list";
+    }
+    function update(){
+        const boardId =  $("#board_id").val();
+        //폼 전송
+        $.ajax({
+            url: "/board/update?board_id="+boardId,
+            type: "PUT",
+            data: $("form").serialize(),
+            success: function(res){
+                location.href = "/board/list";
+            }
+        });
+    }
+    $(()=>{
+        $("#submit").click(()=>{
+            update();
+        })
+        $("#list").click(()=>{
+            goToList();
+        })
+    });
+</script>
+</body>
+</html>

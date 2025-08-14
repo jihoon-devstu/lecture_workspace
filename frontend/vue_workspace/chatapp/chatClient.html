@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        #app {
+            width: 300px;
+            height: 400px;
+            background-color: #ffe812; /* 카카오톡 배경색 */
+            margin: auto;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* 상단 버튼 영역 */
+        #header {
+            width: 100%;
+            height: 50px;
+            background-color: #fdd835;
+            text-align: center;
+            border-bottom: 1px solid #e0c200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #header button {
+            background-color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* 채팅 내용 영역 */
+        #content {
+            flex: 1;
+            background-color: #fff9c4;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 채팅창 */
+        textarea {
+            width: 280px;
+            height: 300px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            resize: none;
+            padding: 5px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* 입력창 */
+        input {
+            width: 280px;
+            height: 30px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            padding: 0 10px;
+            display: block;
+            margin: 5px auto;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="app">
+        <div id="header">
+            <button type="button" @click="connect()">접속</button>
+            <button type="button" @click="sendMsg()">메시지</button>
+            <button type="button" @click="disconnect()">끊기</button>
+        </div>
+        <div id="content">
+            <textarea name="" id="chat" ref="area" v-model="log"></textarea>
+            <input type="text" placeholder="메시지를 입력하세요" v-model="text" @keyup.enter="sendMsg()">
+        </div>
+    </div>
+
+    <script>
+         const {createApp, reactive, ref} = Vue;
+         createApp({
+            setup(){
+                //웹 소켓 서버 접속 (모든 브라우저에는 표준으로 웹 소켓이 지원됨)
+                //따라서 별도의 라이브러리 설치가 필요 없음
+                let ws = null;
+
+                let log = ref("");
+                let area = ref(null);
+                let text = ref("");
+
+                //로그 기록 남기기
+                const appendLog=(msg)=>{
+                    log.value+=msg+"\n"; //.value로 접근해야 바인딩 속성 유지
+                }
+                                
+                //메세지 보내기
+                const sendMsg=()=>{
+                    ws.send(text.value);
+                    text.value="";
+                }
+
+                //접속 메서드
+                const connect=()=>{
+                    if(ws==null ) {
+                        ws=new WebSocket("ws://192.168.60.40:7777/ws/echo");
+                        //접속 성공
+                        ws.onopen=()=>{
+                            appendLog("Open : 서버 접속 성공");
+                            area.value.style.backgroundColor="lightskyblue";
+                        }
+                        //서버 메시지 청취
+                        ws.onmessage = (e)=>{
+                            appendLog(e.data);
+                        }
+                    }
+                }
+
+                //접속 끊기 메서드
+                const disconnect=()=>{
+                    if(ws && ws.readyState==WebSocket.OPEN){
+                        //웹 소켓에서 1000은 상태코드인데 , 정상 종료를 의미.
+                        //즉 서버에게 정상 종료를 의미
+                        ws.close(1000,"사용자 요청에 의한 접속 종료");
+                        appendLog("서버 접속 종료");
+                    }else{
+                        appendLog("이미 연결이 끊겨 있습니다");
+                    }
+                    area.value.style.backgroundColor="";
+                    ws=null;
+                }
+
+
+                
+
+                return{area,log,text,connect,appendLog,sendMsg,disconnect};
+            }
+         }).mount("#app");
+    </script>
+
+</body>
+</html>

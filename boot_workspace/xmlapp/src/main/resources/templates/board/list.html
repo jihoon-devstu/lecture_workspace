@@ -15,13 +15,16 @@
                 <th>hit</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody  style="text-align: center;">
             <tr th:each="board : ${boardList}">
                 <td th:text="${board.board_id}"></td>
-                <td th:text="${board.title}"></td>
+                <td><a th:href="@{|/board/detail?board_id=${board.board_id}|}" th:text="${board.title}"></a></td>
                 <td th:text="${board.writer}"></td>
                 <td th:text="${board.regdate}"></td>
                 <td th:text="${board.hit}"></td>
+            </tr>
+            <tr colspan="5">
+                <button onclick="location.href=`/board/registform`">글 등록</button>
             </tr>
         </tbody>
     </table>
