@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5cNOj/AhaK/Iq4P6O/I6q6iQO22" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        #app, #wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        #header {
+            flex-shrink: 0;
+            padding: 1rem;
+            background-color: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+        }
+        #main-content {
+            flex-grow: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        #main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column; /* 텍스트 입력과 로그 영역을 분리하기 위해 수정 */
+        }
+        #chat-log { /* 새로운 채팅 로그 영역 */
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background-color: #fff;
+            min-height: 500px;
+            white-space: pre-wrap; /* 줄바꿈 문자를 인식하도록 설정 */
+            min-height: 500px;
+        }
+        #users {
+            flex-shrink: 0;
+            width: 250px;
+            background-color: #f1f1f1;
+            padding: 1rem;
+            border-left: 1px solid #dee2e6;
+        }
+        #footer {
+            flex-shrink: 0;
+            padding: 1rem;
+            background-color: #e9ecef;
+            border-top: 1px solid #dee2e6;
+        }
+        .users-list-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            margin-bottom: 0.25rem;
+            border-radius: 0.25rem;
+            background-color: #e9ecef;
+        }
+        .message-box {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+
+    <div id="app" class="d-flex flex-column h-100">
+        <div id="wrapper" class="d-flex flex-column h-100">
+            <!-- Header: 접속/끊기 버튼 -->
+            <div id="header" class="d-flex justify-content-start align-items-center p-3 border-bottom bg-light">
+                <h5 class="m-0 me-3">Simple Chat</h5>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-success" @click="connect()">접속</button>
+                    <button type="button" class="btn btn-danger" >끊기</button>
+                </div>
+            </div>
+
+            <!-- Main Content: 메시지 영역 및 사용자 목록 -->
+            <div id="main-content" class="d-flex flex-grow-1 overflow-hidden">
+                <!-- Main: 메시지 출력 영역 -->
+                <div id="main" class="d-flex flex-grow-1 flex-column bg-white">
+                    <textarea id="chat-log" class="form-control h-100" readonly ref="area" v-model="log"></textarea>
+                </div>
+                
+                <!-- User List: 접속자 목록 -->
+                <div id="users" class="bg-light p-3 border-start d-flex flex-column" style="width: 250px;">
+                    <h6 class="text-uppercase text-muted">접속자 목록</h6>
+                    <ul class="list-unstyled overflow-auto">
+                        <!-- 사용자 목록 항목들은 여기에 동적으로 추가됩니다 -->
+                         <li v-for="id in userList" :key = "id">{{id}}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer: 메시지 입력 -->
+            <div id="footer" class="p-3 border-top bg-light">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="메시지를 입력하세요..." v-model="txt" @keyup.enter="sendMsg()">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<!--
+    
+textarea :  id : chat-log / ref : area / v-model : log
+
+-->
+<script>
+    const {createApp,ref,reactive} = Vue;
+    createApp({
+        setup(){
+            
+            let ws=null;
+            let area=ref(null); //textarea 를 제어하기 위한 변수
+            let log=ref(""); //input 값에 대한 문자열 바인딩 데이터
+            let txt=ref(""); //문자열 바인딩 데이터 선언
+            let userList = reactive([]);
+            
+            //서버에 요청하기
+            const request=(msg)=>{
+                ws.send(msg); //서버에 데이터 전송
+            }
+            const connect=()=>{
+                    ws=new WebSocket("ws://localhost:9999/ws/multi");
+
+                    ws.onopen=()=>{
+                        log.value+="접속함\n";
+
+                        let msg={};
+                        msg["requestType"]="connect";
+                        request(JSON.stringify(msg));
+
+                    };
+
+                    ws.onmessage=(e)=>{
+
+                        console.log(e.data);
+
+                        let responseJson = JSON.parse(e.data);
+
+                        responseJson.requestType;
+                        //1) 서버 최초 접속 시 서버로 부터 접속자 정보를 받는 경우 라면 ! 
+                        if(responseJson.responseType=="connect"){ //접속 시 받은 응답이라면
+
+                        
+
+                            console.log("접속 요청에 대한 응답 받음");
+
+                            //log.value+=e.data+"\n";
+                            
+                            userList.splice(0); //기존 배열 비우기
+                            //서버에서 접속자 명단을 보내준 경우..
+                            responseJson.data.forEach(item=>{
+                                userList.push(item);
+                            });
+                        }else if(responseJson.responseType=="chat"){
+                            //2) 채팅을 위한 메시지 전송 후 , 서버로부터 다시 받게되는 메시지인 경우
+                            
+                            log.value+=responseJson.sender+" : "+responseJson.data+"\n";
+
+                        }
+
+
+
+                        //3) 방 개설을 위해 서버에 요청 후 , 그 결과를 받는 경우
+
+
+                        //4) 방 폐쇄 ~~ 
+
+
+
+                    };
+            }
+
+
+            const sendMsg=()=>{
+                /*
+                ws.send(txt.value);
+                서버는 클라이언트가 무엇을 원하는지 알아야 하므로 , 클라이언트와 서버는 서로 원하는게 무엇인 지를 표현해 놓은
+                형식을 만들어 놓고 , 그 형식대로 메시지를 주고 받아야 함.
+                이처럼 정해진 약속을 통신 분야에서는 프로토콜이라고 한다.
+                [접속시 구성 할 요청 정보]
+                {
+                    "requestType" : "connect",
+                    "userId" : "jihoon0216"
+                }
+                [응답 시 구성할 응답 정보]
+                {
+                    "requestType" : "connect",
+                    "data" : [
+                        {
+                            "userId" : "scott"
+                        },
+                        {
+                            "userId" : "adams"
+                        },
+                    ]
+                }
+                */
+
+                let msg = {};
+                msg["requestType"]="chat";
+                msg["data"]=txt.value;
+
+                request(JSON.stringify(msg));
+                txt.value="";
+            }
+
+                return{area,log,txt,userList,connect,sendMsg};
+        }
+    }).mount("#app");
+</script>
+</body>
+</html>
