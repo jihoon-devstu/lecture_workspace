@@ -91,10 +91,12 @@ a{text-decoration: none}
   			<%}else{ %>
   				<a href="javascript:alert('이전 페이지가 없습니다')">◀</a>
   			<%} %>
+  			
 				<%for(int i =paging.getFirstPage(); i<=paging.getLastPage();i++){ %> 
 				<%if(i>paging.getTotalPage()) break; %>
 					<a <%if(paging.getCurrentPage() ==i) {%>class = "pageNum" <%} %>href = "/news/list.jsp?currentPage=<%=i%>">[<%=i %>]</a>
 				<%} %>
+				
 			<%if(paging.getLastPage()<paging.getTotalPage()){ %>
 			<a href="/news/list.jsp?currentPage=<%=paging.getLastPage()+1%>">▶</a>
 			<%} %>
