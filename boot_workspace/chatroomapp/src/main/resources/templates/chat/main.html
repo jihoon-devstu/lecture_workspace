@@ -94,20 +94,33 @@
             margin-bottom: 1.5rem;
         }
 
+        #userList {
+            flex-grow: 1; /* 남은 세로 공간을 모두 차지 */
+            overflow-y: auto; /* 내용이 넘치면 세로 스크롤 생성 */
+            margin-top: 1rem; /* 위쪽 제목과의 간격 */
+        }
+
     </style>
 </head>
 <body class="d-flex flex-column vh-100">
 <div id="app">
     <div id="wrapper">
         <div id="aside">
-            <div th:if="${session.loginMember != null}">
-                <h4 th:text="|${session.loginMember.name} 님|"></h4>
+            <div th:if="${session.member != null}">
+                <h4 th:text="|${session.member.name} 님|"></h4>
             </div>
             <h5 class="fw-bold"><i class="bi bi-chat-dots-fill"></i> 채팅방 목록</h5>
             <div class="input-group mb-3">
-                <input type="hidden" th:value="${session.loginMember.id}" name="id">
+                <input type="hidden" th:value="${session.member.id}" name="id">
                 <input type="text" class="form-control" placeholder="방 제목 설정" name="roomName">
                 <button class="btn btn-primary" type="button" @click="createRoom()">방 만들기</button>
+            </div>
+            <h5 class="fw-bold mt-4"><i class="bi bi-people-fill"></i> 접속자 목록</h5>
+            <div id="userList" class="list-group">
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" v-for ="member in memberList">
+                    {{member.name}}
+                    <span class="badge bg-primary rounded-pill">online</span>
+                </a>
             </div>
         </div>
 
@@ -125,6 +138,7 @@
     createApp({
         setup(){
             let roomList=reactive(["","","","","",""]);
+            let memberList = reactive([]);
             let ws = null;
 
             //서버에 요청
@@ -135,6 +149,24 @@
             //웹소켓 서버에 접속
             const connect = () => {
                 ws = new WebSocket('ws://localhost:8989/chat/multi');
+
+                //접속이 성공되면
+                ws.onopen = () => {
+
+                }
+
+                //메시지가 수신되면
+                ws.onmessage = (e) => {
+                    console.log("접속과 동시에 수신받은 데이터는",e.data);
+                    const responseJson = JSON.parse(e.data);
+                    if(responseJson.responseType == "createRoom"){
+                        memberList.splice(0);
+                        responseJson.memberList.forEach(member=>{
+                            memberList.push(member);
+                        });
+                    }
+                }
+
             }
 
             //방만들기 요청
@@ -151,7 +183,7 @@
 
 
             connect();
-            return {roomList,request,connect,createRoom};
+            return {memberList,roomList,request,connect,createRoom};
         }
     }).mount("#app");
 

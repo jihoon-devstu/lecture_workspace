@@ -43,7 +43,7 @@ public class MemberController {
             Member loginMember = memberService.login(member);
             if(loginMember != null){
                 model.addAttribute("member",loginMember);
-                session.setAttribute("loginMember",loginMember);
+                session.setAttribute("member",loginMember);
                 return "chat/main";
             }else{
                 model.addAttribute("error","아이디 또는 비밀번호가 일치하지 않습니다");
@@ -63,7 +63,7 @@ public class MemberController {
 
         //로그인하지 않고 , /chat/main을 접근하면 자동으로 로그인 폼으로 돌려보낸다 !
         String viewName = "chat/main";
-        if(session.getAttribute("loginMember")==null){
+        if(session.getAttribute("member")==null){
             viewName="member/login";
         }
 
