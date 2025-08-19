@@ -3,6 +3,7 @@ package com.sinse.chatroomapp.controller;
 import com.sinse.chatroomapp.domain.Member;
 import com.sinse.chatroomapp.exception.MemberException;
 import com.sinse.chatroomapp.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,13 +37,14 @@ public class MemberController {
     }
 
     @PostMapping("/member/login")
-    public String login(Member member, Model model){
+    public String login(Member member, Model model, HttpSession session){
 
         try {
             Member loginMember = memberService.login(member);
             if(loginMember != null){
                 model.addAttribute("member",loginMember);
-                return "member/result";
+                session.setAttribute("loginMember",loginMember);
+                return "chat/main";
             }else{
                 model.addAttribute("error","아이디 또는 비밀번호가 일치하지 않습니다");
                 return "member/login";
@@ -55,5 +57,19 @@ public class MemberController {
         }
 
     }
+
+    @GetMapping("/chat/main")
+    public String main(HttpSession session){
+
+        //로그인하지 않고 , /chat/main을 접근하면 자동으로 로그인 폼으로 돌려보낸다 !
+        String viewName = "chat/main";
+        if(session.getAttribute("loginMember")==null){
+            viewName="member/login";
+        }
+
+        return viewName;
+    }
+
+
 
 }

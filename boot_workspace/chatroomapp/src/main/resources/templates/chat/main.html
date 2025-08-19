@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅 애플리케이션</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        /* 전체 페이지 높이를 100%로 설정 */
+        html, body {
+            height: 100%;
+            overflow: hidden; /* 스크롤바 숨기기 */
+        }
+
+        /* 메인 레이아웃 wrapper */
+        #wrapper {
+            display: flex; /* Flexbox 레이아웃 사용 */
+            height: 100vh; /* 화면 전체 높이 사용 */
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 왼쪽 사이드바 */
+        #aside {
+            width: 300px; /* 너비 고정 */
+            flex-shrink: 0; /* 창 크기가 줄어도 너비 유지 */
+            background-color: #f8f9fa; /* 밝은 회색 배경 */
+            padding: 1.5rem;
+            border-right: 1px solid #dee2e6; /* 오른쪽 구분선 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 오른쪽 콘텐츠 영역 */
+        #content {
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap; /* 핵심! 아이템들이 공간이 없으면 다음 줄로 넘어가도록 설정 */
+            align-content: flex-start; /* 여러 줄일 때 위쪽부터 차곡차곡 쌓이도록 정렬 */
+            padding: 1.5rem;
+            height: 100%;
+            overflow-y: auto; /* 세로 스크롤바가 필요할 때만 나타나도록 설정 */
+            background-color: #e9ecef;
+        }
+
+        /* 채팅방 */
+        .room {
+            width: 380px;
+            height: 300px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            background-color: #ffffff;
+            margin-right: 1.5rem;
+            margin-bottom: 1.5rem; /* 아랫줄과의 간격을 위해 추가 */
+        }
+
+        /* 채팅방 헤더 */
+        .room_header {
+            height: 25px; /* 원하는 높이로 직접 지정 */
+
+            /* height에 맞춰 padding-top, padding-bottom 값 줄이기 */
+            padding: 0.1rem 1.25rem;
+
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.9rem; /* 폰트 크기도 살짝 줄여주면 좋습니다 */
+            font-weight: 500;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+
+            /* 텍스트를 세로 중앙에 정렬하고 싶을 때 추가 */
+            display: flex;
+            align-items: center;
+        }
+
+        /* 채팅방 내용 (메시지 영역) */
+        .room_body {
+            flex-grow: 1; /* 남은 공간 모두 차지 */
+            padding: 1.25rem;
+            overflow-y: auto; /* 내용이 많아지면 스크롤 생성 */
+        }
+
+        /* 채팅방 생성 부분 스타일 */
+        #aside h5 {
+            margin-bottom: 1.5rem;
+        }
+
+    </style>
+</head>
+<body class="d-flex flex-column vh-100">
+<div id="app">
+    <div id="wrapper">
+        <div id="aside">
+            <div th:if="${session.loginMember != null}">
+                <h4 th:text="|${session.loginMember.name} 님|"></h4>
+            </div>
+            <h5 class="fw-bold"><i class="bi bi-chat-dots-fill"></i> 채팅방 목록</h5>
+            <div class="input-group mb-3">
+                <input type="hidden" th:value="${session.loginMember.id}" name="id">
+                <input type="text" class="form-control" placeholder="방 제목 설정" name="roomName">
+                <button class="btn btn-primary" type="button" @click="createRoom()">방 만들기</button>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="room" v-for="room in roomList">
+                <div class="room_header"><span>Vue.js 스터디방</span></div>
+                <div class="room_body"><p>채팅 내용...</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const {createApp, reactive , ref} = Vue;
+    createApp({
+        setup(){
+            let roomList=reactive(["","","","","",""]);
+            let ws = null;
+
+            //서버에 요청
+            const request = (data) => {
+                ws.send(data);
+            }
+
+            //웹소켓 서버에 접속
+            const connect = () => {
+                ws = new WebSocket('wss://localhost:8989/chat/multi');
+            }
+
+            //방만들기 요청
+            const createRoom = () => {
+                let payload={
+                    requestType:"createRoom",
+                    userId:$("input[name='id']").val(),
+                    roomName:$("input[name='roomName']").val(),
+                }
+
+                console.log(payload);
+                request(JSON.stringify(payload));
+            }
+
+
+            return {roomList,request,createRoom};
+        }
+    }).mount("#app");
+
+
+</script>
+</body>
+</html>
