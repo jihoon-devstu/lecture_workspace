@@ -20,7 +20,7 @@ public class ChatEndpoint {
 
     @OnMessage
     public void onMessage(String message, Session session) {
-
+        log.debug("클라이언트 메시지 : " + message);
     }
 
 }

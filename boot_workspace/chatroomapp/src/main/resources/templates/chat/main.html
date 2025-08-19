@@ -134,7 +134,7 @@
 
             //웹소켓 서버에 접속
             const connect = () => {
-                ws = new WebSocket('wss://localhost:8989/chat/multi');
+                ws = new WebSocket('ws://localhost:8989/chat/multi');
             }
 
             //방만들기 요청
@@ -150,7 +150,8 @@
             }
 
 
-            return {roomList,request,createRoom};
+            connect();
+            return {roomList,request,connect,createRoom};
         }
     }).mount("#app");
 
