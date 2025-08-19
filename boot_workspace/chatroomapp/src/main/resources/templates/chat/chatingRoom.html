@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅방</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center; /* 가로 중앙 정렬 */
+            align-items: center;    /* 세로 중앙 정렬 */
+            height: 100vh;          /* body의 높이를 화면 전체 높이로 설정 */
+            margin: 0;              /* 기본 마진 제거 */
+            background-color: #f0f2f5; /* wrapper 바깥 배경색 (선택 사항) */
+        }
+        #app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #wrapper {
+            width: 1000px;  /* 가로 크기 1000px로 고정 */
+            height: 1000px; /* 세로 크기 1000px로 고정 */
+            display: flex;
+            border: 1px solid #ccc; /* 경계가 보이도록 테두리 추가 (선택 사항) */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 그림자 효과 (선택 사항) */
+        }
+        #content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #dee2e6;
+        }
+        #content_header {
+            /* --- 기존 속성 --- */
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            flex-shrink: 0;
+
+            /* --- 추가 및 수정된 속성 --- */
+            height: 60px;          /* 1. 높이를 60px로 키움 */
+            font-size: 1.5rem;     /* 2. 폰트 크기를 키움 (rem은 상대 단위) */
+            font-weight: bold;
+
+            /* 3. Flexbox를 이용한 중앙 정렬 */
+            display: flex;
+            justify-content: center; /* 가로 중앙 정렬 */
+            align-items: center;    /* 세로 중앙 정렬 */
+        }
+        #content_body {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        #aside {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+        #aside_header {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        #aside_body {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        #aside_footer {
+            padding: 1rem;
+            border-top: 1px solid #dee2e6;
+            flex-shrink: 0;
+        }
+        #footer {
+            flex-shrink: 0;
+            padding: 1rem;
+            background-color: #ffffff;
+            border-top: 1px solid #dee2e6;
+        }
+        .chat-message {
+            margin-bottom: 1rem;
+        }
+        .chat-message .sender {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .chat-message .message-bubble {
+            display: inline-block;
+            max-width: 80%;
+            padding: 0.5rem 0.8rem;
+            border-radius: 1rem;
+            background-color: #d1d8e0;
+        }
+        .chat-message.my-message {
+            text-align: right;
+        }
+        .chat-message.my-message .message-bubble {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="pop">
+        <div id="content">
+            <div id="content_header">
+                아이언맨의 채팅방
+            </div>
+            <div id="content_body">
+                <div class="chat-message">
+                    <div class="sender">상대방 이름</div>
+                    <div class="message-bubble">상대방이 보낸 메시지 내용</div>
+                </div>
+                <div class="chat-message my-message">
+                    <div class="message-bubble">내가 보낸 메시지 내용</div>
+                </div>
+            </div>
+        </div>
+        <div id="aside">
+            <div id="aside_header">
+                <span class="fw-bold">내 이름: </span>
+                <span></span>
+            </div>
+            <div id="aside_body" class="list-group list-group-flush">
+                <div class="list-group-item fw-bold border-bottom">
+                    <i class="bi bi-people-fill"></i> 참여자
+                </div>
+                <!--여기에 참여자 목록 반복문-->
+                <a href="#" class="list-group-item list-group-item-action"
+                   v-for="">
+                    {{ }}
+                </a>
+            </div>
+            <div id="aside_footer">
+                <button class="btn btn-danger w-100">나가기</button>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="메시지를 입력하세요...">
+            <button class="btn btn-primary" type="button">보내기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const { createApp } = Vue;
+
+    createApp({
+        setup() {
+
+
+            return {};
+        }
+    }).mount('#app');
+</script>
+
+</body>
+</html>

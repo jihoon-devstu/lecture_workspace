@@ -2,7 +2,6 @@ package com.sinse.chatroomapp.domain;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
 
 @Data
 public class Member {
@@ -11,6 +10,8 @@ public class Member {
     private String password;
     private String name;
     private String email;
-    private LocalDateTime regdate;
+    private String regdate;
+
+
 
 }

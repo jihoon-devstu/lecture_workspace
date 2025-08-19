@@ -70,6 +70,11 @@ public class MemberController {
         return viewName;
     }
 
+    @GetMapping("/chat/room")
+    public String room(HttpSession session){
+        String viewName = "chat/chatingRoom";
+        return viewName;
+    }
 
 
 }

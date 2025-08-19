@@ -10,45 +10,37 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <style>
-        /* 전체 페이지 높이를 100%로 설정 */
+        /* --- 기존 main.html 스타일 --- */
         html, body {
             height: 100%;
-            overflow: hidden; /* 스크롤바 숨기기 */
+            overflow: hidden;
         }
-
-        /* 메인 레이아웃 wrapper */
         #wrapper {
-            display: flex; /* Flexbox 레이아웃 사용 */
-            height: 100vh; /* 화면 전체 높이 사용 */
+            display: flex;
+            height: 100vh;
             max-width: 100%;
             padding: 0;
             margin: 0;
         }
-
-        /* 왼쪽 사이드바 */
         #aside {
-            width: 300px; /* 너비 고정 */
-            flex-shrink: 0; /* 창 크기가 줄어도 너비 유지 */
-            background-color: #f8f9fa; /* 밝은 회색 배경 */
+            width: 300px;
+            flex-shrink: 0;
+            background-color: #f8f9fa;
             padding: 1.5rem;
-            border-right: 1px solid #dee2e6; /* 오른쪽 구분선 */
+            border-right: 1px solid #dee2e6;
             display: flex;
             flex-direction: column;
         }
-
-        /* 오른쪽 콘텐츠 영역 */
         #content {
             flex-grow: 1;
             display: flex;
-            flex-wrap: wrap; /* 핵심! 아이템들이 공간이 없으면 다음 줄로 넘어가도록 설정 */
-            align-content: flex-start; /* 여러 줄일 때 위쪽부터 차곡차곡 쌓이도록 정렬 */
+            flex-wrap: wrap;
+            align-content: flex-start;
             padding: 1.5rem;
             height: 100%;
-            overflow-y: auto; /* 세로 스크롤바가 필요할 때만 나타나도록 설정 */
+            overflow-y: auto;
             background-color: #e9ecef;
         }
-
-        /* 채팅방 */
         .room {
             width: 380px;
             height: 300px;
@@ -60,46 +52,100 @@
             box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
             background-color: #ffffff;
             margin-right: 1.5rem;
-            margin-bottom: 1.5rem; /* 아랫줄과의 간격을 위해 추가 */
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+        .room:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+        }
+        .room_header, .room_body { padding: 1rem; }
+        #userList {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-top: 1rem;
         }
 
-        /* 채팅방 헤더 */
-        .room_header {
-            height: 25px; /* 원하는 높이로 직접 지정 */
+        /* --- 팝업을 위한 스타일 --- */
+        #popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        /* 팝업을 숨기기 위한 helper class */
+        .hidden {
+            display: none !important;
+        }
 
-            /* height에 맞춰 padding-top, padding-bottom 값 줄이기 */
-            padding: 0.1rem 1.25rem;
+        #pop {
+            width: 1000px;
+            height: 90vh;
+            max-height: 1000px;
+            display: flex;
+            background-color: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .btn-close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1010;
+        }
 
+        /* --- 팝업 내부 요소 스타일 (ID 변경 적용) --- */
+        #content2 {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #dee2e6;
+        }
+        #content_header2 {
             background-color: #f8f9fa;
             border-bottom: 1px solid #dee2e6;
-            font-size: 0.9rem; /* 폰트 크기도 살짝 줄여주면 좋습니다 */
-            font-weight: 500;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
-
-            /* 텍스트를 세로 중앙에 정렬하고 싶을 때 추가 */
+            flex-shrink: 0;
+            height: 60px;
+            font-size: 1.5rem;
+            font-weight: bold;
             display: flex;
+            justify-content: center;
             align-items: center;
         }
-
-        /* 채팅방 내용 (메시지 영역) */
-        .room_body {
-            flex-grow: 1; /* 남은 공간 모두 차지 */
-            padding: 1.25rem;
-            overflow-y: auto; /* 내용이 많아지면 스크롤 생성 */
+        #content_body2 {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
         }
-
-        /* 채팅방 생성 부분 스타일 */
-        #aside h5 {
-            margin-bottom: 1.5rem;
+        #aside2 {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
         }
+        #aside_header2, #aside_footer2 { padding: 1rem; border-bottom: 1px solid #dee2e6; }
+        #aside_body2 { flex-grow: 1; overflow-y: auto; }
+        #aside_footer2 { border-top: 1px solid #dee2e6; border-bottom: none; }
 
-        #userList {
-            flex-grow: 1; /* 남은 세로 공간을 모두 차지 */
-            overflow-y: auto; /* 내용이 넘치면 세로 스크롤 생성 */
-            margin-top: 1rem; /* 위쪽 제목과의 간격 */
+        #footer2 {
+            border-top: 1px solid #dee2e6;
+            flex-shrink: 0;
+            padding: 1rem;
+            background-color: #ffffff;
         }
-
+        .chat-message { margin-bottom: 1rem; }
+        .chat-message .sender { font-weight: bold; font-size: 0.9rem; color: #555; }
+        .chat-message .message-bubble { display: inline-block; max-width: 80%; padding: 0.5rem 0.8rem; border-radius: 1rem; background-color: #d1d8e0; }
+        .chat-message.my-message { text-align: right; }
+        .chat-message.my-message .message-bubble { background-color: #0d6efd; color: white; }
     </style>
 </head>
 <body class="d-flex flex-column vh-100">
@@ -123,71 +169,118 @@
                 </a>
             </div>
         </div>
-
         <div id="content">
             <div class="room" v-for="room in roomList">
-                <div class="room_header"><span>Vue.js 스터디방</span></div>
-                <div class="room_body"><p>채팅 내용...</p></div>
+                <div class="room_header"><span>{{room.roomName}}</span></div>
+                <div class="room_body"><p>참여자: {{ room.users.length }}명</p></div>
+            </div>
+        </div>
+
+        <div id="popup-overlay" class="hidden">
+            <div id="pop">
+                <button type="button" class="btn-close btn-close-popup"></button>
+                <div id="content2">
+                    <div id="content_header2"></div>
+                    <div id="content_body2">
+                        <div class="chat-message">
+                            <div class="sender">상대방 이름</div>
+                            <div class="message-bubble">상대방이 보낸 메시지 내용</div>
+                        </div>
+                        <div class="chat-message my-message">
+                            <div class="message-bubble">내가 보낸 메시지 내용</div>
+                        </div>
+                    </div>
+                    <div id="footer2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="메시지를 입력하세요...">
+                            <button class="btn btn-primary" type="button">보내기</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="aside2">
+                    <div id="aside_header2">
+                        <span class="fw-bold">내 이름: </span>
+                        <span th:text="${session.member.name}"></span>
+                    </div>
+                    <div id="aside_body2" class="list-group list-group-flush">
+                        <div class="list-group-item fw-bold border-bottom">
+                            <i class="bi bi-people-fill"></i> 참여자
+                        </div>
+                    </div>
+                    <div id="aside_footer2">
+                        <button class="btn btn-danger w-100">나가기</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const {createApp, reactive , ref} = Vue;
+    const {createApp, reactive, ref} = Vue;
+    /** @vue/component */
     createApp({
-        setup(){
-            let roomList=reactive(["","","","","",""]);
-            let memberList = reactive([]);
+        setup() {
+            // 로비 관련 데이터 및 로직
+            const roomList = reactive([]);
+            const memberList = reactive([]);
             let ws = null;
 
-            //서버에 요청
-            const request = (data) => {
-                ws.send(data);
-            }
-
-            //웹소켓 서버에 접속
             const connect = () => {
                 ws = new WebSocket('ws://localhost:8989/chat/multi');
 
-                //접속이 성공되면
                 ws.onopen = () => {
+                    console.log("WebSocket Connected");
+                };
 
-                }
-
-                //메시지가 수신되면
                 ws.onmessage = (e) => {
-                    console.log("접속과 동시에 수신받은 데이터는",e.data);
+                    console.log("Message received:", e.data);
                     const responseJson = JSON.parse(e.data);
-                    if(responseJson.responseType == "createRoom"){
-                        memberList.splice(0);
-                        responseJson.memberList.forEach(member=>{
+
+                    if(responseJson.responseType == "connect" || responseJson.responseType == "createRoom"){
+                        //접속자 명단 채우기
+                        memberList.splice(0); // 배열 비우기
+                        responseJson.memberList.forEach(member => {
                             memberList.push(member);
                         });
+
+                        //채팅방 목록 채우기
+                        roomList.splice(0); // 배열 비우기
+                        if(responseJson.roomList != null){
+                            responseJson.roomList.forEach(room => {
+                                roomList.push(room);
+                            });
+                        }
                     }
-                }
+                };
+            };
 
-            }
+            const request = (data) => {
+                ws.send(data);
+            };
 
-            //방만들기 요청
             const createRoom = () => {
-                let payload={
+                let payload = {
                     requestType:"createRoom",
                     userId:$("input[name='id']").val(),
                     roomName:$("input[name='roomName']").val(),
-                }
-
-                console.log(payload);
+                };
                 request(JSON.stringify(payload));
-            }
-
+            };
 
             connect();
-            return {memberList,roomList,request,connect,createRoom};
+
+            // 팝업 관련 로직은 여기에서 직접 구현하시면 됩니다.
+
+            return {
+                memberList,
+                roomList,
+                request,
+                connect,
+                createRoom,
+            };
         }
     }).mount("#app");
-
-
 </script>
 </body>
 </html>

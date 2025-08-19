@@ -10,5 +10,5 @@ public class RoomResponse {
 
     private String responseType;
     private Set<Member> memberList;
-    //private Set<Room> roomList;
+    private Set<Room> roomList;
 }
