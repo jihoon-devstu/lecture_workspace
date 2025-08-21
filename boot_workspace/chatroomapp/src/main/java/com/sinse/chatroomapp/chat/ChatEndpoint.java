@@ -78,7 +78,6 @@ public class ChatEndpoint {
         String requestType = jsonNode.get("requestType").asText();
 
         if (requestType.equals("createRoom")) {
-            log.debug("방 만들어 줄게");
 
             String userId =  jsonNode.get("userId").asText();
             String roomName = jsonNode.get("roomName").asText();
