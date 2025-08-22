@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spring WebSocket 기반 채팅</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            margin-left: 1rem;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #6c757d;
+        }
+        .btn-custom {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .chat-log {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+        .chat-message {
+            margin-bottom: 0.5rem;
+        }
+        .chat-message .sender {
+            font-weight: bold;
+            color: lightcoral;
+        }
+        .chat-message .content {
+            word-wrap: break-word;
+        }
+        .user-list-container, .room-list-container {
+            width: 200px;
+            height: 400px;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #f8f9fa;
+            text-align: left;
+            overflow-y: auto;
+        }
+        .user-list-container h5, .room-list-container h5 {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 1rem;
+        }
+        .user-list-container ul, .room-list-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .user-list-container li, .room-list-container li {
+            padding: 0.25rem 0;
+            color: #6c757d;
+        }
+        .chat-view {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        .input-group > *:not(:last-child) {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .input-group > *:not(:first-child) {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .input-group .btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="main-container">
+        <div v-if="!connected">
+            <div class="chat-container p-3">
+                <h2 class="mb-4 text-center">Spring WebSocket 기반 채팅</h2>
+                <!-- DB 연동 하지 않고, 사용자를 직접 입력하여 채팅 진행 -->
+                <div class="input-group mb-3">
+                    <input type="text" v-model="userName" class="form-control" placeholder="사용자명 입력" @keydown.enter.prevent="connect()">
+                    <button type="button" class="btn btn-custom" @click="connect()">서버 접속</button>
+                </div>
+            </div>
+        </div>
+
+        <div v-else class="chat-view">
+            <!--참여자 목록-->
+            <div class="user-list-container me-3">
+                <h5 class="text-center">참여자 목록</h5>
+                <ul>
+                    <li v-for="user in users">{{ user}}</li>
+                </ul>
+            </div>
+            <div class="chat-container p-3">
+                <p class="lead text-center"><b>{{userName}}</b>님 접속 중</p>
+                <div class="d-grid mb-3">
+                    <button type="button" class="btn btn-outline-danger" @click="disconnect()">접속 종료</button>
+                </div>
+                <div class="input-group">
+                    <div class="chat-log w-100 mb-3">
+                        <!-- 예시 메시지 -->
+                        <div class="chat-message" v-for="msg in msgs">
+                            <span class="sender">{{msg.sender}} :  </span>
+                            <span class="content">{{msg.content}}</span>
+                        </div>
+                    </div>
+                    <input type="text" v-model="message" class="form-control" placeholder="메시지를 입력하세요" @keydown.enter.prevent="sendMsg()">
+                    <button type="button" class="btn btn-custom" @click="sendMsg()">전송</button>
+                </div>
+            </div>
+            <!--방 목록-->
+            <div class="room-list-container ms-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="방이름 입력" v-model="roomName">
+                    <button type="button" class="btn btn-custom" @click="createRoom()">생성</button>
+                </div>
+                <h5 class="text-center">방 목록</h5>
+                <ul>
+                    <li v-for="room in rooms" :key="room.roomId">
+                        <b>{{room.roomName}}</b>(참여자 수 : {{room.users.length}})
+                        <ul>
+                            <li v-for="user in room.users">{{user}}</li>
+                            <button type="button" @click="enterRoom(room.roomId)"> 참여하기</button>
+                            <button type="button" @click="leaveRoom(room.roomId)"> 나가기</button>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const {createApp, ref, reactive} = Vue;
+        createApp({
+            setup(){
+                const userName = ref("");
+                const connected = ref(false);
+                const users = ref([]);
+                const message = ref("");
+                const msgs = ref([]);
+                const roomName=ref("");
+                const rooms = ref([]);
+
+
+                let stompClient = null;
+
+                const connect = () => {
+                    //채팅 아이디를 입력 했을 때만 접속 시도
+                    if(!userName.value.trim()){
+                        alert("채팅 아이디를 입력하세요");
+                        return; //메서드 종료
+                    }
+                    //우리의 경우 , 웹소켓 위에 STOMP를 얹혀 사용할 예정이므로,
+                    //반드시 WebSocket 객체 필요.
+                    const socket = new WebSocket("ws://localhost:7777/ws");
+                    stompClient = Stomp.over(socket); //웹 소켓 위에 STOMP 프로토콜 올리기
+
+                    stompClient.connect({},()=>{
+                        connected.value = true;
+
+                        //접속과 동시에 원하는 채널을 구독하자.
+                        //서버 유저 구독
+                        stompClient.subscribe("/topic/users",(msg)=>{
+                            users.value=JSON.parse(msg.body);
+                        });
+
+                        //채팅 메시지 구독
+                        stompClient.subscribe("/topic/messages",(msg)=>{
+                            msgs.value.push(JSON.parse(msg.body));
+                        });
+
+                        //방 목록 받기 구독
+                        stompClient.subscribe("/topic/rooms",(msg)=>{
+                            rooms.value = JSON.parse(msg.body);
+                        });
+
+                        //서버에 메시지 보내기.
+                        stompClient.send("/app/connect",{},JSON.stringify({sender:userName.value}));
+                        stompClient.send("/app/room.list",{},JSON.stringify({sender: userName.value}));
+                    });
+                }
+
+                const sendMsg = () => {
+                    if(message.value.trim()){
+                       stompClient.send("/app/chat.send",{},JSON.stringify({
+                           sender:userName.value,
+                           content:message.value
+                       }));
+                    }
+                    message.value = "";
+                }
+
+                const createRoom = () => {
+                    if(roomName.value.trim()){
+                        stompClient.send("/app/room.create",{},JSON.stringify({
+                            sender : userName.value,
+                            content : roomName.value
+                        }));
+                        roomName.value = "";
+                    }
+                }
+
+                const enterRoom = (roomId) => {
+                    stompClient.send("/app/room.enter", {}, JSON.stringify({
+                        sender:userName.value,
+                        roomId:roomId
+                    }))
+                }
+
+                const leaveRoom = (roomId) => {
+                    stompClient.send("/app/room.leave", {}, JSON.stringify({
+                        sender:userName.value,
+                        roomId:roomId
+                    }))
+                }
+
+                const disconnect = () => {
+
+                    stompClient.send("/app/disconnect",{},JSON.stringify({
+                        sender:userName.value
+                    }))
+                    stompClient.disconnect(); //모든 사용자에게 나갔음을 알렸으므로 , 나 죽기.
+                    connected.value = false; //뷰 화면 갱신.
+
+                    let newUsers=[];
+                    for(let i =0; i<users.value.length;i++){
+
+                       if(users.value[i] != userName.value){
+                           newUsers.push(users.value[i]);
+                       }
+
+                    }
+                    users.value=newUsers;
+
+                }
+
+                return{
+                    //변수 영역
+                    userName,
+                    connected,
+                    users,
+                    message,
+                    msgs,
+                    roomName,
+                    rooms,
+
+                    //함수 영역
+                    connect,
+                    sendMsg,
+                    createRoom,
+                    enterRoom,
+                    leaveRoom,
+                    disconnect
+                };
+            }
+        }).mount("#app");
+    </script>
+
+</body>
+</html>
