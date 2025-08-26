@@ -3,16 +3,14 @@ package com.sinse.electroshop.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Entity
-@Table(name="store")
-public class Store {
+@Table(name="member")
+public class Member {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY) //Mysql 의 auto_increment 매핑
-    private int store_id;
-    private String business_id;
+    private int member_id;
+    private String id;
     private String password;
-    private String store_name;
+    private String name;
 }

@@ -31,24 +31,19 @@
 
 <main class="login-form">
     <form id="form">
-        <h1 class="h3 mb-3 fw-normal text-center">판매자 로그인</h1>
+        <h1 class="h3 mb-3 fw-normal text-center">회원 로그인</h1>
 
         <!--에러 메세지 출력-->
-        <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
+        <div id="error-message" class="alert alert-danger text-center" style="display: none;"></div>
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="id" name="id" placeholder="아이디" required autofocus>
-            <label for="id">아이디</label>
+            <input type="text" class="form-control" id="memberId" name="memberId" placeholder="아이디" required autofocus>
+            <label for="memberId">아이디</label>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="password" name="pwd" placeholder="비밀번호" required>
-            <label for="password">비밀번호</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="store_name" name="store_name" placeholder="아이디" required autofocus>
-            <label for="store_name">가게명</label>
+            <input type="password" class="form-control" id="memberPwd" name="memberPwd" placeholder="비밀번호" required>
+            <label for="memberPwd">비밀번호</label>
         </div>
 
         <button class="w-100 btn btn-lg btn-primary" type="button" value = "Submit" id="bt_login">로그인</button>
@@ -59,11 +54,17 @@
     function login(){
         //상점 로그인 요청.
         $.ajax({
-            url:"/store/login",
+            url:"/shop/login",
             type:"POST",
             data:$("#form").serialize(),
             success:function(data){
-                console.log(data);
+                console.log("로그인 성공",data);
+                $("#error-message").hide();
+                location.href="../shop/main";
+            },
+            error:function(xhr,status,error){
+                const errorMessage = "아이디 혹은 비밀번호가 올바르지 않습니다.";
+                $("#error-message").text(errorMessage).show();
             }
         });
     }
