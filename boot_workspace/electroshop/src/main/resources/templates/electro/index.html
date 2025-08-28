@@ -1,15 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/electro/fragments/head_link :: head_link_fragment}"></head>
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Electro - HTML Ecommerce Template</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="/electro/css/bootstrap.min.css"/>
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="/electro/css/slick.css"/>
+    <link type="text/css" rel="stylesheet" href="/electro/css/slick-theme.css"/>
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="/electro/css/nouislider.min.css"/>
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="/electro/css/font-awesome.min.css">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="/electro/css/style.css"/>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
 
 <body>
 <div id="app">
     <header>
-        <div th:insert="~{/electro/fragments/top_link :: top_link_fragment}"></div>
-        <div th:insert="~{/electro/fragments/header :: header_fragment}"></div>
+        <div th:insert="~{/electro/fragments/top_link :: top_link}"></div>
+        <div th:insert="~{/electro/fragments/header :: header}"></div>
     </header>
-    <div th:insert="~{/electro/fragments/navi :: navi_fragment}"></div>
+    <div th:insert="~{/electro/fragments/navi :: navi}"></div>
     <div class="section">
         <div class="container">
             <div class="row">
@@ -452,10 +487,10 @@
                 </div>
             </div>
         </div>
-        <div th:insert="~{/electro/fragments/newsletter :: newsletter_fragment}"></div>
+        <div th:insert="~{/electro/fragments/newsletter :: newsletter}"></div>
         <footer id="footer">
-            <div th:insert="~{/electro/fragments/bottom_link :: bottom_link_fragment}"></div>
-            <div th:insert="~{/electro/fragments/footer :: footer_fragment}"></div>
+            <div th:insert="~{/electro/fragments/bottom_link :: bottom_link}"></div>
+            <div th:insert="~{/electro/fragments/footer :: footer}"></div>
         </footer>
     </div>
 </div>

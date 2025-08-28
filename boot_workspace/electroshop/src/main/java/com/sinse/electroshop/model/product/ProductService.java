@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ProductService {
     public List<Product> findAll();
-    public Product findById(int product_id);
+    public Product findById(int productId);
+    public Product save(Product product);
+    public List getListByStoreId(int storeId);
 
 }

@@ -19,7 +19,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findById(int product_id) {
-        return productDAO.findById(product_id);
+    public Product findById(int productId) {
+        return productDAO.findById(productId);
+    }
+
+    @Override
+    public Product save(Product product) {
+        return productDAO.save(product);
+    }
+
+    @Override
+    public List getListByStoreId(int storeId) {
+        return productDAO.findByStore_storeId(storeId);
     }
 }

@@ -11,8 +11,9 @@ import java.util.List;
 public class Store {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY) //Mysql 의 auto_increment 매핑
-    private int store_id;
-    private String business_id;
+    @Column(name="store_id")
+    private int storeId;
+    private String businessId;
     private String password;
-    private String store_name;
+    private String storeName;
 }

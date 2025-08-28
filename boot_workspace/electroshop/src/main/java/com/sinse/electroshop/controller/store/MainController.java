@@ -1,4 +1,4 @@
-package com.sinse.electroshop.controller.shop;
+package com.sinse.electroshop.controller.store;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

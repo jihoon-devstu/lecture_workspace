@@ -1,4 +1,4 @@
-package com.sinse.electroshop.controller.shop;
+package com.sinse.electroshop.controller.store;
 
 import com.sinse.electroshop.controller.dto.MemberDto;
 import com.sinse.electroshop.domain.Member;

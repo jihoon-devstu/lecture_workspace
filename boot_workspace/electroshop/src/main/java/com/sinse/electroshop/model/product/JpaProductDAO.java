@@ -10,15 +10,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JpaProductDAO implements ProductDAO {
 
-    private final ProductRepository productRepository;
+    private final JpaProductRepository jpaProductRepository;
 
     @Override
-    public Product findById(int product_id) {
-        return productRepository.findById(product_id).get();
+    public Product findById(int productId) {
+        return jpaProductRepository.findById(productId).get();
     }
 
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll();
+        return jpaProductRepository.findAll();
+    }
+
+    @Override
+    public Product save(Product product) {
+        return jpaProductRepository.save(product);
+    }
+
+    @Override
+    public List<Product> findByStore_storeId(int storeId) {
+        return jpaProductRepository.findByStore_storeId(storeId);
     }
 }

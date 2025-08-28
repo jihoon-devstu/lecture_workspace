@@ -1,4 +1,4 @@
-package com.sinse.electroshop.controller.shop;
+package com.sinse.electroshop.controller.store;
 
 import com.sinse.electroshop.domain.Product;
 import com.sinse.electroshop.model.product.ProductService;
@@ -26,9 +26,9 @@ public class ProductController {
     }
 
     @GetMapping("/product/detail")
-    public String getDetail(int product_id, Model model) {
+    public String getDetail(int productId, Model model) {
 
-        Product product = productService.findById(product_id);
+        Product product = productService.findById(productId);
         model.addAttribute("product", product);
         return "electro/product";
 

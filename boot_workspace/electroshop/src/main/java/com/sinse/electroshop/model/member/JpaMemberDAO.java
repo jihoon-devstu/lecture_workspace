@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class JpaMemberDAO implements MemberDAO {
 
-    private final MemberRepository memberRepository;
+    private final JpaMemberRepository jpaMemberRepository;
 
     @Override
     public Member login(Member member) {
-        return memberRepository.findByIdAndPassword(member.getId(), member.getPassword());
+        return jpaMemberRepository.findByIdAndPassword(member.getId(), member.getPassword());
     }
 }

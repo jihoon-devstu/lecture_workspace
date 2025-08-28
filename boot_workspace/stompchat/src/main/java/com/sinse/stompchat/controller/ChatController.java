@@ -86,7 +86,6 @@ public class ChatController {
     @MessageMapping("/room.list")
     @SendTo("/topic/rooms")
     public Collection<ChatRoom> roomList(ChatMessage chatMessage) {
-        //방 검색하여 , 발견된 방의 Set 에서 유저명 빼기
         return roomStorage.values();
     }
 

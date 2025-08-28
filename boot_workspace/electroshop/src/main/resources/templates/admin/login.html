@@ -46,11 +46,6 @@
             <label for="password">비밀번호</label>
         </div>
 
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="store_name" name="store_name" placeholder="아이디" required autofocus>
-            <label for="store_name">가게명</label>
-        </div>
-
         <button class="w-100 btn btn-lg btn-primary" type="button" value = "Submit" id="bt_login">로그인</button>
     </form>
 </main>
@@ -59,11 +54,12 @@
     function login(){
         //상점 로그인 요청.
         $.ajax({
-            url:"/store/login",
+            url:"/admin/login",
             type:"POST",
             data:$("#form").serialize(),
             success:function(data){
                 console.log(data);
+                location.href="/admin/product/listbystore";
             }
         });
     }
