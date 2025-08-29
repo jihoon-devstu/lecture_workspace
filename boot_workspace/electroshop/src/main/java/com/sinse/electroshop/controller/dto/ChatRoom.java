@@ -3,6 +3,7 @@ package com.sinse.electroshop.controller.dto;
 import lombok.Data;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
  * 채팅방 정보를 담는 DTO 객체

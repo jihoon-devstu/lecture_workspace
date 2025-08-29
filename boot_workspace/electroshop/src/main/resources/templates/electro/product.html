@@ -130,7 +130,7 @@
                 <!-- Product details -->
                 <div class="col-md-5">
                     <div class="product-details">
-                        <h2 class="product-name" th:text="${product.product_name}"></h2>
+                        <h2 class="product-name" th:text="${product.productName}"></h2>
                         <input type="hidden" th:value="${product.productId}" id="product_id">
                         <div>
                             <div class="product-rating">
@@ -237,21 +237,14 @@
                                     <!-- Reviews -->
                                     <div class="col-md-9" >
                                         <div id="reviews">
-                                            <ul class="reviews" v-for="message in messages">
+                                            <ul class="reviews" v-for="msg in messages">
                                                 <li>
                                                     <div class="review-heading">
-                                                        <h5 class="name">John</h5>
+                                                        <h5 class="name">{{msg.sender}}</h5>
                                                         <p class="date">27 DEC 2018, 8:0 PM</p>
-                                                        <div class="review-rating">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star-o empty"></i>
-                                                        </div>
                                                     </div>
                                                     <div class="review-body">
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+                                                        <p>{{msg.content}}</p>
                                                     </div>
                                                 </li>
 
@@ -270,8 +263,11 @@
                                     <!-- Review Form -->
                                     <div class="col-md-3" v-if="connected">
                                         <div id="review-form">
-                                            <form class="review-form">
-                                                <textarea class="input" placeholder="Your Review"></textarea>
+                                            <h3>
+                                                현재 참여자 수 : <span>{{users.length}}</span>
+                                            </h3>
+                                            <input type="hidden" id="user_id" th:value="${session.member.id}">
+                                                <textarea class="input" placeholder="Your Review" v-model="message" @keydown.enter="sendMessage()"></textarea>
                                                 <div class="input-rating">
                                                     <span>Your Rating: </span>
                                                     <div class="stars">
@@ -283,7 +279,6 @@
                                                     </div>
                                                 </div>
                                                 <button class="primary-btn">Submit</button>
-                                            </form>
                                         </div>
                                     </div>
 
@@ -475,7 +470,9 @@
                 setup(){
                     const productList = reactive([]);
                     const connected = ref(false); //연결 정보를 시각적으로 표현하기 위한 논리값.
-                    const messages=ref([1,2,3,4,5,6,7,8,9]);
+                    const messages = ref([]);
+                    const users=ref([]); //채팅방에 참여한 참여자 목록
+                    const message = ref("");
 
                     let stompClient = null;
 
@@ -492,6 +489,19 @@
                             stompClient.send("/app/connect",{},JSON.stringify({
                                 content : $("#product_id").val()
                             }));
+
+                            //방 참여자 구독하기
+                            stompClient.subscribe("/topic/users",(msg)=>{
+                                console.log("채팅참여자는 " +msg.body);
+                                users.value=JSON.parse(msg.body);
+                            });
+
+                            //서버의 메시지 구독 요청
+                            stompClient.subscribe("/topic/messages",(msg)=>{
+                                const chatMessage = JSON.parse(msg.body);
+                                messages.value.push(chatMessage);
+                            });
+
                         });
                     }
 
@@ -508,16 +518,30 @@
                         });
                     }
 
+                    const sendMessage=()=>{
+                        //메시지 입력을 하면 , 서버에 전송
+                        if(message.value.trim()){
+                            stompClient.send("/app/chat.send",{},JSON.stringify({
+                                sender : $("#user_id").val(),
+                                content : message.value
+                            }));
+                            message.value = "";
+                        }
+                    }
+
                     getProductList();
                     return{
                         //변수 영역
                         productList,
                         connected,
+                        users,
                         messages,
+                        message,
 
                         //함수 영역
                         connect,
-                        getProductList
+                        getProductList,
+                        sendMessage
                     }
 
                 }

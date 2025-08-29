@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <form action="" id="form1">
+            <h3>단일 파일 업로드</h3>
+            <input type="file" name="file">
+            <button type="button" id="bt1">upload</button>
+        </form>
+    </div>
+    <div>
+        <form action="" id="form2">
+            <h3>다중 파일 업로드</h3>
+            <input type="file" name="fileList" id="fileList" multiple>
+            <button type="button" id="bt2">upload</button>
+        </form>
+    </div>
+
+    <script>
+        //파일을 서버에 비동기로 전송
+        function regist(){
+            const form1Data = new FormData(document.getElementById("form1"));
+
+
+            //비동기로 파일 전송할 때엔 웹 브라우저가 디폴트로 설정하는
+            //processData 및 contentType 을 false로 돌려놔야함.
+            $.ajax({
+                url:"/file/upload",
+                method:"POST",
+                data:form1Data,
+                processData: false,
+                contentType: false,
+                success:function(data){
+                    console.log(data);
+                },
+                error:function(data){
+                    console.log(data);
+                }
+            });
+        }
+
+        function registMulti(){
+            const form2Data = new FormData();
+
+            console.log("유저가 선택한 파일의 수는" + document.getElementById( "fileList").files);
+
+            for (const file of document.getElementById( "fileList").files){
+                //ajax 의 비동기 업로드를 위해 formData에 유저가 선택한 파일들을 옴겨심자.
+                //files 라는 파라미터명을 이용하여 배열 생성.
+                form2Data.append("files", file);
+            }
+
+            //생성된 폼 데이터를 비동기 전송
+            $.ajax({
+                url:"/files/upload",
+                method:"POST",
+                data:form2Data,
+                processData: false,
+                contentType: false,
+                success:(data)=>{
+                    console.log(data);
+                },
+                error:(data)=>{
+                    console.log(data);
+                }
+            });
+
+        }
+
+        $("#bt1").click(()=>{
+            regist();
+        });
+
+        $("#bt2").click(()=>{
+            registMulti();
+        });
+
+    </script>
+
+</body>
+</html>

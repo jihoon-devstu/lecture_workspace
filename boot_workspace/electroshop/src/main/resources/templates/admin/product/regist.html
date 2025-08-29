@@ -76,7 +76,8 @@
                                 <!-- /.card-body -->
 
                                 <div class="card-footer">
-                                    <button type="button" class="btn btn-primary" id="bt_regist">Submit</button>
+                                    <button type="button" class="btn btn-primary" id="bt_regist">등록</button>
+                                    <button type="button" class="btn btn-primary" id="bt_list">목록</button>
                                 </div>
                             </form>
                         </div>
@@ -151,6 +152,9 @@
         $("#bt_regist").click(()=>{
             regist();
         });
+        $("#bt_list").click(()=>{
+            location.href="/admin/product/listbystore"
+        })
     });
 </script>
 

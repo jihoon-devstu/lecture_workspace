@@ -106,14 +106,14 @@
                         <div class="products-tabs">
                             <div id="tab1" class="tab-pane active">
                                 <div class="products-slick" data-nav="#slick-nav-1">
-                                    <div class="product" v-for="product in productList" :key="product.product_id">
+                                    <div class="product" v-for="product in productList" :key="product.productId">
                                         <div class="product-img">
                                             <img src="/electro/img/product01.png" alt="">
                                         </div>
                                         <div class="product-body">
-                                            <p class="product-category" v-text="product.store.store_name"></p>
+                                            <p class="product-category" v-text="product.store.storeName"></p>
                                             <h3 class="product-name"v-text="product.brand"></h3>
-                                            <h3 class="product-name"><a :href="'/product/detail?product_id='+product.product_id" v-text="product.product_name"></a></h3>
+                                            <h3 class="product-name"><a :href="'/product/detail?productId='+product.productId" v-text="product.productName"></a></h3>
                                             <h4 class="product-price" v-text="product.price"></h4>
                                             <div class="product-btns">
                                                 <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>

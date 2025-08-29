@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/detail")
-    public String getDetail(int productId, Model model) {
+    public String getDetail(Integer productId, Model model) {
 
         Product product = productService.findById(productId);
         model.addAttribute("product", product);

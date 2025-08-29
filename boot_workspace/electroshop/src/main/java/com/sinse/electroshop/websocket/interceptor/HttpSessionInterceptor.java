@@ -1,6 +1,7 @@
 package com.sinse.electroshop.websocket.interceptor;
 
 import com.sinse.electroshop.domain.Member;
+import com.sinse.electroshop.domain.Store;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
@@ -32,11 +33,17 @@ public class HttpSessionInterceptor implements HandshakeInterceptor {
         HttpSession httpSession = servletRequest.getServletRequest().getSession(false);
 
         if(httpSession != null){
-            Member member = (Member) httpSession.getAttribute("member");
-            attributes.put("member", member);
-            log.debug("핸드셰이크 시점에 추출한 회원의 이름은" + member.getId());
-        }else {
-            log.warn("HTTP 세션이 존재하지 않습니다. 인터셉터 로직이 실행되지 않습니다.");
+            if(httpSession.getAttribute("member") != null){
+                Member member = (Member) httpSession.getAttribute("member");
+                attributes.put("member", member);
+                log.debug("핸드셰이크 시점에 추출한 일반회원의 이름은" + member.getId());
+            }else if(httpSession.getAttribute("store") != null){
+                Store store = (Store) httpSession.getAttribute("store");
+                attributes.put("store", store);
+                log.debug("핸드셰이크 시점에 추출한 상점회원의 이름은" + store.getStoreName());
+            }
+
+
         }
 
         return true;
