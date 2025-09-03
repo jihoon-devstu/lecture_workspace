@@ -64,7 +64,7 @@
          APR (HTTP/AJP) Connector: /docs/apr.html
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
     -->
-    <Connector connectionTimeout="20000" maxParameterCount="1000" port="8888" protocol="HTTP/1.1" redirectPort="8443"/>
+    <Connector connectionTimeout="20000" maxParameterCount="1000" port="9999" protocol="HTTP/1.1" redirectPort="8443"/>
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
@@ -171,10 +171,8 @@
       
       
       
-      <Context docBase="mall" path="/" reloadable="true" source="org.eclipse.jst.jee.server:mall">
-      	<ResourceLink global="jndi/mysql" name="jndi/mysql" type="javax.sql.DataSource"/>
-      </Context>
-      </Host>
+      
+      <Context docBase="JwtBasic" path="/" reloadable="true" source="org.eclipse.jst.jee.server:JwtBasic"/></Host>
     </Engine>
   </Service>
 </Server>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <form id="form1">
+        <input type="text" placeholder="아이디 입력" name="username">
+        <input type="password" placeholder="비밀번호 입력" name="password">
+        <button type="button" id="bt1">Login</button>
+        <button type="button" id="bt2">회원만 사용 가능한 자원에 접근</button>
+    </form>
+
+    <script>
+        $("#bt1").click(()=>{
+            //비동기 방식 로그인 요청
+            $.ajax({
+                url:"/member/login",
+                method:"POST",
+                data:$("#form1").serialize(),
+                success:result=>{
+                    console.log(result);
+                    //브라우저가 데이터 저장 시 사용하는 스토리지 저장소에 토큰을 저장해두자.
+                    //localstorage : 오직 브라우저에서만 접근 가능 , 서버로 자동 전송되지 않음.
+                    //쿠키저장소 != localStroage
+                    // 브라우저를 닫아도 사라지지 않음. 사용자가 직접 삭제하거나 javascript 에서 removeItem() , clear() 를
+                    //실행하지 않는 한 , 무기한, 영구적으로 유지... 만료일 같은 개념이 없음.
+                    
+                    localStorage.setItem("accessToken",result.accessToken);
+                },
+                error:xhr=>{
+                    console.log("로그인 실패",xhr.responseText);
+                }
+            });
+        });
+        
+        $("#bt2").click(()=>{
+        
+        	
+        	
+        });
+        
+    </script>
+
+</body>
+</html>
