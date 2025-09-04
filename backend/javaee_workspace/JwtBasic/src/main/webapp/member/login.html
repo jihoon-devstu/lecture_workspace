@@ -7,10 +7,16 @@
 </head>
 <body>
     <form id="form1">
+    	<div>
         <input type="text" placeholder="아이디 입력" name="username">
+        </div>
+        <div>
         <input type="password" placeholder="비밀번호 입력" name="password">
+        </div>
+        <div>
         <button type="button" id="bt1">Login</button>
         <button type="button" id="bt2">회원만 사용 가능한 자원에 접근</button>
+        </div>
     </form>
 
     <script>
@@ -37,8 +43,22 @@
         });
         
         $("#bt2").click(()=>{
-        
-        	
+        	const token = localStorage.getItem("accessToken");
+        	alert("서버에 요청시 지참할 토큰은" + token);
+        	$.ajax({
+				url:"/api/protected",
+				method:"get",
+				//JWT토큰을 get , post 던 상관없이 언제나 서버에 요청 시 지참해야 하므로 , Header에 보여하여 요청 시도 ! 
+				headers:{
+					"Authorization" : "Bearer "+token
+				},
+				success:result=>{
+					console.log("API 접근 성공",result);
+				},
+				error:xhr=>{
+					console.log("API접근 실패", xhr.responseText);
+				}
+        	});
         	
         });
         

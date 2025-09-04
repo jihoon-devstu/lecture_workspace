@@ -20,18 +20,20 @@ public class ProtectedApiServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
-		
 		//로그인 한 유저의 경우 request 객체에 심어진 데이터를 가져가도록
 		String username = (String)request.getAttribute("username");
 		
 		//응답 정보를 json으로 가져갈 수 있도록 처리
 		response.setContentType("application/json; charset=utf-8");
-		
-		
 		Map<String,String> map = new HashMap<>();
-		map.put("message", "보호된 데이터 접근 성공");
-		map.put("user",username);
+		
+		if(username==null) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			map.put("error","로그인 정보가 올바르지 않습니다.");
+		}else {
+			map.put("message", "보호된 데이터 접근 성공");
+			map.put("user",username);
+		}
 		
 		response.getWriter().print(new Gson().toJson(map));
 	}
