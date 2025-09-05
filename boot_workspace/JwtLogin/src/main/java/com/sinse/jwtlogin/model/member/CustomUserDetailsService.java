@@ -1,5 +1,6 @@
 package com.sinse.jwtlogin.model.member;
 
+import com.sinse.jwtlogin.domain.CustomUserDetails;
 import com.sinse.jwtlogin.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,8 +25,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("로그인 정보가 올바르지 않습니다");
         }
 
+
         //하지만 코드에는 보이지 않지만 , 내부적으로 DaoAuthenticationprovider가 비밀번호 검증을 스스로 수행.
-        return null;
+        return new CustomUserDetails(member);
     }
 
 }

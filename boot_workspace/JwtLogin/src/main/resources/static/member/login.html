@@ -37,12 +37,12 @@
         <div id="error-message" class="alert alert-danger text-center" style="display: none;"></div>
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="memberId" name="memberId" placeholder="아이디" required autofocus>
+            <input type="text" class="form-control" id="memberId" name="username" placeholder="아이디" required autofocus>
             <label for="memberId">아이디</label>
         </div>
 
         <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="memberPwd" name="memberPwd" placeholder="비밀번호" required>
+            <input type="password" class="form-control" id="memberPwd" name="password" placeholder="비밀번호" required>
             <label for="memberPwd">비밀번호</label>
         </div>
 
@@ -52,19 +52,48 @@
 </main>
 
 <script>
+
+/*    $("#bt_login").click(()=>{
+        $("form").attr({
+            action: "/member/login",
+            method: "POST"
+        });
+        $("form").submit();
+    });*/
+
+
     $("#bt_login").click(()=>{
         $.ajax({
             url:"/member/login",
             method:"POST",
             data:$("form").serialize(),
-            success:result=>{
-                console.log(result);
+            success:data=>{
+                console.log(data);
+                //AccessToken 꺼내서 보관해놓아야함
+                localStorage.setItem("accessToken",data.accessToken);
             },
             error:xhr=>{
-                console.log(xhr.statusText);
+                console.log(xhr.status," , ",xhr.responseText);
             }
         });
     });
+
+    $("#bt_access").click(()=>{
+        $.ajax({
+            url:"/member/mypage",
+            method:"GET",
+            headers:{
+                "Authorization":"Bearer "+localStorage.getItem("accessToken"),
+            },
+            success:result=>{
+                console.log(result);
+            },
+            error:xr=>{
+                console.log(xr.status," , ",xr.responseText);
+            }
+        });
+    });
+
 </script>
 </body>
 </html>
