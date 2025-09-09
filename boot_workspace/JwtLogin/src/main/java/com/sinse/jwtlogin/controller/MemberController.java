@@ -29,7 +29,6 @@ public class MemberController {
         //이 객체가 검증을 시도하게 하려면 , AuthenticationManager가 보유한 authencate() 메서드 호출
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username,password);
         Authentication  authentication = authenticationManager.authenticate(token);
-
         //Access Token
         String accessToken = jwtUtil.generateAccessToken(authentication.getName());
 
