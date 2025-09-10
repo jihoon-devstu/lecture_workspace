@@ -59,10 +59,16 @@
             contentType:"application/json",
             data : JSON.stringify({
                 id:$("input[name=id]").val(),
-                password:$("input[name=password]").val()
+                password:$("input[name=password]").val(),
+                deviceId:"browser"
             }),
             success:function(data){
                 console.log(data);
+                localStorage.setItem("accessToken",data.accessToken);
+                localStorage.setItem("deviceId","browser");
+
+                //로그인 성공 후 메인 페이지 보여주기
+                location.href="/member/index.html";
             },
             error:function(xhr){
                 console.log(xhr.responseText);

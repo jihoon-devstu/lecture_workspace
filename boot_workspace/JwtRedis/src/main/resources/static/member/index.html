@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body style="background-color: rgb(240, 240, 240);">
+    <button type="button" onClick="getMyInfo()">나의 정보 얻어오기</button>
+    <button type="button" onClick="logout()">로그 아웃</button>
+
+    <script>
+        //서버측에서 401 (UnAuthorized) status 코드를 전송받으면
+        //만료된 AccessToken 에 대한 재발급 요청
+        function refreshToken(){
+
+        }
+
+        function getMyInfo(){
+            //로그인 시점에 저장해놓은 accessToken 꺼내기
+            const token = localStorage.getItem("accessToken");
+            $.ajax({
+                url:"/member/myinfo",
+                method:"GET",
+                headers:{
+                    "Authorization" : "Bearer "+token
+                },
+                success:function(data){
+                    console.log(data);
+                },
+                error:function(xhr){
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function logout(){
+
+        }
+    </script>
+
+</body>
+</html>

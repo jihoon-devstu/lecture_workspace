@@ -22,8 +22,30 @@ Redis 는 데이터를 넣을 때 , 문자열화 시켜서 넣어야 하므로 �
 
 --------------------------------------------------------------------------------------------------------
 
+CustomUserDetails 의 getAuthorities 메서드.
 
+"ROLE_USER"
+에서 ROLE_ 라는 접두어가 붙는 이유.
 
+	-> 시큐리티 내에서는 role_ 접두어가 붙은 문자열을 권한으로 인식.
+	-> 어디에 사용할 수 있는가? 
+		- 1) 다음과 같은 URL 접근 제어에 사용가능
+		- http.authrizeHttpRequests(auth -> auth
+			.requestMatchers("/admin/**")).hasRole("ADMIN")
+
+		- 2) 서비스나 컨트롤러 메서드에서 어노테이션 붙여서 제어 가능
+		- @PreAuthorize("hasRole('ADMIN')")
+		  public void removeMembeR(){}
+
+		- 3) 런타임(실행타임) 시 현재 유저가 보유한 권한을 확인할 때 사용 가능.
+		- Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		-  Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+		for(GrantedAuthroity authority : authorities){
+			log.debug(authority.getAuthorities)
+		}
+
+질문 : 그럼 DB에 저장된 테이블명(Role) , 컬럼(role_name) 은 어떻게 인식해요??
 
 
 

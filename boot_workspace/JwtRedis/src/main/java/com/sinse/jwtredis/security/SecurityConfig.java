@@ -1,8 +1,8 @@
 package com.sinse.jwtredis.security;
 
-import com.sinse.jwtredis.domain.CustomUserDetails;
+import com.sinse.jwtredis.filter.JwtAuthFilter;
 import com.sinse.jwtredis.model.member.MemberDetailsService;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,11 +14,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.context.NullSecurityContextRepository;
+import org.springframework.security.web.authentication.AuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -58,9 +62,13 @@ public class SecurityConfig {
                 .logout(logout -> logout.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/member/regist.html" , "/member/login" , "/member/login.html","/member/regist", "/member/refresh" , "/member/logout").permitAll()
+                        .requestMatchers("/member/regist.html" , "/member/login" , "/member/login.html","/member/regist", "/member/refresh" , "/member/logout" , "/member/index.html").permitAll()
                         .anyRequest().authenticated() //이외 요청은 로그인을 해야만 통과
-                ).build();
+                )
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
+
+                .build();
 
     }
 }

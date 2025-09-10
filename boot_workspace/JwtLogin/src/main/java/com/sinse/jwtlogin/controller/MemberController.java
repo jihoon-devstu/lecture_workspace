@@ -21,6 +21,8 @@ public class MemberController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
+    //로그인 요청 처리
+    //발급받은 JWT가 없다면 인증 후 JWT 발급.
     @PostMapping("/member/login")
     public ResponseEntity<?> login(String username, String password){
         log.debug("로그인 요청 처리를 개발자가 정의한 컨트롤러에서 처리함");
