@@ -14,7 +14,7 @@ public class CookieUtil {
     //서버 측에서 응답정보로 포함시킬수도 있다. ...jsp/servlet에서도 쿠키를 클라이언트측에 생성하는 것이 가능하다.
     //예 ) 브라우저에게 어떤 쿠키를 만들지 서버가 결정할 수 있다.
     public static void setRefreshCooke(HttpServletResponse response,String token, int maxAgeSec) {
-        Cookie cookie = new Cookie("Refresh",token);
+        Cookie cookie = new Cookie("refresh",token);
         cookie.setHttpOnly(true);      //JS 접근 불가 (보안처리가 된 쿠키)
         cookie.setSecure(false);       //true인 경우 , HTTPS 로 주고받아야함. 따라서 false 및 HTTP 통신
         cookie.setPath("/");             //클라이언트의 모든 경로에서 쿠키 사용 가능.

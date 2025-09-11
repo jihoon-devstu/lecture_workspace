@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .logout(logout -> logout.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/member/regist.html" , "/member/login" , "/member/login.html","/member/regist", "/member/refresh" , "/member/logout" , "/member/index.html").permitAll()
+                        .requestMatchers("/member/regist.html" , "/member/login" , "/member/login.html","/member/regist", "/member/refresh" ,"/member/index.html").permitAll()
                         .anyRequest().authenticated() //이외 요청은 로그인을 해야만 통과
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

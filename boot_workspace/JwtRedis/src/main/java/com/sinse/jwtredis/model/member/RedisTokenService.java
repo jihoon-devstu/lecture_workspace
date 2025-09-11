@@ -14,7 +14,7 @@ import java.time.Duration;
     2) 사용자의 모든 디바이스로부터 로그아웃을 수행하기 위한 버전 키값에 대한 설계
         uv:<userId>
     3) access 토큰과 함께 발급되는 refresh 토큰을 저장하기 위한 키값에 대한 설계
-        rt:<userId>
+        rt:<userId>:<deviceId>
  */
 
 @Service
@@ -68,5 +68,26 @@ public class RedisTokenService {
         return exist !=null && exist;
     }
 
+    //리프레시 토큰 저장하기
+    public void saveRefreshToken(String username, String deviceId,String refreshToken , long ttlSeconds){
+        redis.opsForValue().set("rt:"+username+":"+deviceId,refreshToken,Duration.ofSeconds(ttlSeconds));
+        // 참고로 , 추후 이 사용자의 디바이스를 목록으로 만들어 놓으려면 select * from userdevice 를 못하므로
+        // 따로 SADD rtkeys:<userid>
+    }
+
+    //RefreshToken 일치 여부 확인 메서드 정의
+    // GET rt:유저id:deviceId
+    public boolean matchesRefreshToken(String username, String deviceId, String refreshToken){
+        //기존 redis  에 저장해놓은 refreshtoken 에 대한 키 갖고오기
+        String storedValue = redis.opsForValue().get("rt:"+username+":"+deviceId);
+
+        //저장된 키와 refreshtoken 비교
+        return storedValue != null && storedValue.equals(refreshToken);
+    }
+
+    //특정 refreshToken 지우기
+    public void deleteRefreshToken(String username, String deviceId){
+        redis.delete("rt:"+username+":"+deviceId);
+    }
 
 }
